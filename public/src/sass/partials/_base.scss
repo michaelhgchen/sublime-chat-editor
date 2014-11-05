@@ -1,0 +1,25 @@
+html {
+  box-sizing: border-box;
+
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-size-adjust: 100%;
+      -ms-text-size-adjust: 100%;
+  text-rendering: optimizeLegibility; // Very little support for this
+}
+
+* {
+  &, &:before, &:after {
+    box-sizing: inherit;
+  }
+}
+
+body {
+  font-family: $font-family;
+  color: $color-font;
+  line-height: 1.42857143;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}

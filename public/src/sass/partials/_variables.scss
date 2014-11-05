@@ -1,0 +1,17 @@
+// Padding/margin values
+$space-xs: 0.3125em;
+$space-s: 2 * $space-xs; // ~10px
+$space-m: 3 * $space-xs; // ~15px
+$space-l: 2 * $space-s;  // ~20px
+$space-xl: 2 * $space-m; // ~30px
+
+// Media queries
+$break-desktop: 48em;
+
+// Text
+$font-family: sans-serif;
+
+// Colors
+$color-border: #bcbcbc;
+$color-font: black;
+$color-text-shadow: lighten($color-font, 75%);
