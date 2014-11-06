@@ -121,7 +121,11 @@ app.use(express.static(__dirname + '/public'));
 app.use(cookieParser(secrets.cookie));
 
 // Enable sessions
-app.use(expressSession());
+app.use(expressSession({
+  secret: secrets.cookie,
+  resave: true,
+  saveUninitialized: true
+}));
 
 // ============================================================================
 // Locals
