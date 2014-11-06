@@ -1,12 +1,10 @@
 var
-  AppDispatcher = require('../dispatcher/AppDispatcher');
-  ActionTypes   = require('../contants/Constants').ActionTypes;
+  AppDispatcher = require('../dispatcher/AppDispatcher'),
+  ActionTypes   = require('../constants/Constants').ActionTypes,
+  ChatServerAPI = require('../util/ChatServerAPI');
 
 module.exports = {
-  log: function(message) {
-    AppDispatcher.handleViewAction({
-      type: ActionTypes.LOG_CLIENT,
-      message: message
-    });
+  sendMessage: function(message) {
+    ChatServerAPI.sendMessage(message);
   }
 }

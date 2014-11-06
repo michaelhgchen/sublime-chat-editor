@@ -6,9 +6,11 @@ var
   CHANGE_EVENT  = 'change',
   Store;
 
+var messages = [];
+
 Store = assign({}, EventEmitter.prototype, {
-  getMessage: function() {
-    return 'Hello world!';
+  getMessages: function() {
+    return messages;
   },
 
   emitChange: function() {
@@ -28,11 +30,8 @@ Store.dispatchToken = AppDispatcher.register(function(payload) {
   var action = payload.action;
 
   switch(action.type) {
-    case ActionTypes.LOG_CLIENT:
-      Store.emitChange();
-      break;
-
-    case ActionTypes.LOG_SERVER:
+    case ActionTypes.RECEIVE_MESSAGE:
+      messages.push(action.messageData);
       Store.emitChange();
       break;
 

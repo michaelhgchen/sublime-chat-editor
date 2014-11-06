@@ -1,10 +1,11 @@
 var
-  React = require('react'),
-  App   = require('./components/App.react');
+  React   = require('react'),
+  ChatApp = require('./components/ChatApp.react');
 
 window.React = React;
 
+var socket =
 React.render(
-  <App />,
+  <ChatApp />,
   document.getElementById('app')
 );

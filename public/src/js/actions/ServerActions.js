@@ -1,12 +1,12 @@
 var
   AppDispatcher = require('../dispatcher/AppDispatcher');
-  ActionTypes   = require('../contants/Constants').ActionTypes;
+  ActionTypes   = require('../constants/Constants').ActionTypes;
 
 module.exports = {
-  log: function(message) {
+  receiveMessage: function(messageData) {
     AppDispatcher.handleServerAction({
-      type: ActionTypes.LOG_SERVER,
-      message: message
+      type: ActionTypes.RECEIVE_MESSAGE,
+      messageData: messageData
     });
   }
 }

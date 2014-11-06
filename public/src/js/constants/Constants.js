@@ -1,7 +1,7 @@
 module.exports = {
   ActionTypes: {
-    LOG_CLIENT: 'LOG_CLIENT',
-    LOG_SERVER: 'LOG_SERVER',
+    SEND_MESSAGE: 'SEND_MESSAGE',
+    RECEIVE_MESSAGE: 'RECEIVE_MESSAGE'
   },
 
   PayloadSources: {

@@ -1,7 +1,6 @@
 {
-  "name": "node-react-flux-starter",
+  "name": "react-flux-chat",
   "version": "0.0.1",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -25,7 +24,10 @@
     "flux": "^2.0.1",
     "mongoose": "^3.8.18",
     "object-assign": "^1.0.0",
-    "react": "^0.12.0"
+    "react": "^0.12.0",
+    "socket.io": "^1.2.0",
+    "socket.io-client": "^1.2.0",
+    "uuid": "^2.0.1"
   },
   "devDependencies": {
     "browser-sync": "^1.6.3",

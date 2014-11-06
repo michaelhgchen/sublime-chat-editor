@@ -1,14 +1,17 @@
 var
-  React = require('react'),
-  Store = require('../stores/Store');
+  React     = require('react'),
+  Store     = require('../stores/Store'),
+  ChatName  = require('./ChatName.react'),
+  ChatInput = require('./ChatInput.react'),
+  ChatLog   = require('./ChatLog.react');
 
 function getStateFromStores() {
   return {
-    message: Store.getMessage()
-  };
+    messages: Store.getMessages()
+  }
 }
 
-var App = React.createClass({
+var ChatApp = React.createClass({
   getInitialState: function() {
     return getStateFromStores();
   },
@@ -22,11 +25,12 @@ var App = React.createClass({
   },
 
   render: function() {
-    var message = this.state.message;
-
     return (
       <div>
-        <h1>{message}</h1>
+        <ChatName />
+        <ChatInput />
+        <ChatLog
+          messages={this.state.messages}/>
       </div>
     )
   },
@@ -36,4 +40,4 @@ var App = React.createClass({
   }
 });
 
-module.exports = App;
+module.exports = ChatApp;

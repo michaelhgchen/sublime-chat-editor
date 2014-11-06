@@ -26,9 +26,10 @@ var
   config  = require('./config'),
 
   // Other
-  port = config.port,
-  app  = express(),
-  server;
+  port   = config.port,
+  app    = express(),
+  server = http.Server(app),
+  io     = require('socket.io')(server);
 
 // ============================================================================
 // Configuration
@@ -138,6 +139,31 @@ app.use(function(req, res, next) {
 });
 
 // ============================================================================
+// Socket
+// ============================================================================
+var nameMap = {};
+
+io.on('connection', function(socket) {
+  console.log(socket.id);
+  console.log('A user has connected');
+
+  socket.on('chat:message-sent', function(message) {
+    io.emit('chat:message-received', {
+      author: nameMap[socket.id] || 'Anonymous',
+      message: message
+    });
+  });
+
+  socket.on('chat:name-set', function(name) {
+    nameMap[socket.id] = name;
+  });
+
+  socket.on('disconnect', function() {
+    console.log('A user has disconnected');
+  });
+});
+
+// ============================================================================
 // Routing
 // ============================================================================
 routes(app);
@@ -160,7 +186,7 @@ app.use(function(err, req, res, next) {
 // Server w/ app cluster support
 // ============================================================================
 function startServer() {
-  server = http.createServer(app).listen(port, function() {
+  server.listen(port, function() {
     console.log(
       'Express started in %s mode on port %d',
       app.get('env'),
