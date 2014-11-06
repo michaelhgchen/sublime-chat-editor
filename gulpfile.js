@@ -8,7 +8,6 @@ var
 
   // build scripts
   browserify   = require('browserify'),
-  reactify     = require('reactify'),
   watchify     = require('watchify'),
   source       = require('vinyl-source-stream'),
 
@@ -18,6 +17,7 @@ var
 
   // qa
   jshint = require('gulp-jshint'),
+  mocha  = require('gulp-mocha'),
 
   // server
   fork = require('child_process').fork,
@@ -44,14 +44,14 @@ function logTime(task, fn) {
     start = process.hrtime();
 
     gulp.emit('task_start', {
-      task: name
+      task: task
     });
 
     fn();
 
     gulp.emit('task_stop', {
-      hrduration: process.hrtime(start),
-      task: name
+      hrDuration: process.hrtime(start),
+      task: task
     });
   }
 }
@@ -59,30 +59,27 @@ function logTime(task, fn) {
 function buildScripts(config, watch) {
   var bundler, rebundle;
 
-  rebundle = function() {
-    var stream;
-
-    stream = bundler
-      .bundle()
-      .on('error', handleError('build-scripts'));
-
-    return stream
-      .pipe(gulp.dest(config.output))
-      .pipe(gulp.dest(config.dest));
-  }
-
   bundler = browserify(config.src, {
-    fullPaths: watch,
+    fullPaths: !!watch,
     cache: {},
     packageCache: {}
   });
 
-  if(watch) {
-    bundler = watchify(bundler);
-    bundler.on('update', logDuration('build-scripts', rebundle.bind(this)));
-  }
+  if(watch) bundler = watchify(bundler);
 
   bundler.transform(config.transform);
+
+  rebundle = function() {
+    var stream;
+
+    stream = bundler.bundle();
+    stream.on('error', handleError('build-scripts'));
+    stream = stream.pipe(source(config.output));
+
+    return stream.pipe(gulp.dest(config.dest));
+  };
+
+  bundler.on('update', logTime('build-scripts', rebundle.bind(this)));
 
   return rebundle();
 }
@@ -102,7 +99,7 @@ function buildStyles(config) {
 // Clean
 // ====================================
 gulp.task('clean', function(cb) {
-  del('public/build/', cb);
+  del('./public/build/', cb);
 });
 
 // ====================================
@@ -110,17 +107,17 @@ gulp.task('clean', function(cb) {
 // ====================================
 gulp.task('build:scripts', function() {
   return buildScripts({
-    src: 'public/src/js/',
-    dest: 'public/build/js/',
+    src: './public/src/js/app.js',
+    dest: './public/build/js/',
     output: 'scripts.js',
-    transform: reactify
+    transform: 'reactify'
   });
 });
 
 gulp.task('build:styles', function() {
   return buildStyles({
-    src: 'public/src/sass/styles.scss',
-    dest: 'public/build/css/'
+    src: './public/src/sass/styles.scss',
+    dest: './public/build/css/'
   });
 });
 
@@ -165,15 +162,29 @@ gulp.task('test', function() {
 // ====================================
 gulp.task('watch', function() {
   buildScripts({
-    src: 'public/src/js/',
-    dest: 'public/build/js/',
+    src: './public/src/js/app.js',
+    dest: './public/build/js/',
     output: 'scripts.js',
-    transform: reactify,
+    transform: 'reactify',
   }, true);
 
-  gulp.watch('public/src/sass/**/*.scss', ['build:styles']);
+  gulp.watch('./public/src/sass/**/*.scss', ['build:styles']);
 });
 
+gulp.task('watch:reload', ['browser-sync'], function() {
+  buildScripts({
+    src: './public/src/js/app.js',
+    dest: './public/build/js/',
+    output: 'scripts.js',
+    transform: 'reactify',
+  }, true);
+
+  gulp.watch('./public/build/js/scripts.js', ['reload']);
+
+  gulp.watch('./public/src/sass/**/*.scss', function() {
+    runSequence('build:styles', 'reload');
+  });
+});
 // ====================================
 // Other
 // ====================================
@@ -191,5 +202,5 @@ gulp.task('reload', function() {
 // Default
 // ====================================
 gulp.task('default', function() {
-
+  runSequence(['server:start', 'build'], 'watch:reload');
 });
