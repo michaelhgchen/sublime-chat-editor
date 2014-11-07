@@ -1,21 +1,19 @@
 var
   React     = require('react'),
-  ChatStore = require('../stores/ChatStore');
-  // ChatName  = require('./ChatName.react'),
-  // ChatInput = require('./ChatInput.react'),
-  // ChatLog   = require('./ChatLog.react');
+  ChatStore = require('../stores/ChatStore'),
+  Login     = require('./Login.react');
 
-function getStateFromChatStores() {
+function getStateFromStores() {
   return {
-    name: ChatStore.getName(),
-    messages: ChatStore.getMessages(),
-    users: ChatStore.getUsers()
+    username: ChatStore.getUsername(),
+    allUsers: ChatStore.getAllUsers(),
+    messages: ChatStore.getMessages()
   }
 }
 
 var ChatApp = React.createClass({
   getInitialState: function() {
-    return getStateFromChatStores();
+    return getStateFromStores();
   },
 
   componentDidMount: function() {
@@ -27,31 +25,43 @@ var ChatApp = React.createClass({
   },
 
   render: function() {
-    return (
+    var Body, messages, allUsers;
+
+    if(this.state.username) {
+      messages = this.state.messages.map(function(data){
+        return (
+          <li>{data.author ? data.author + ': ' : ''}{data.message}</li>
+        );
+      });
+
+      allUsers = Object.keys(this.state.allUsers).map(function(user) {
+        return (
+          <li>{user}</li>
+        );
+      });
+
+      Body = (
       <div className="chat-app">
         <div className="chat-display">
           <ul className="message-list">
-            <li>message</li>
-            <li>message</li>
-            <li>message</li>
-            <li>message</li>
-            <li>message</li>
+            {messages}
           </ul>
           <ul className="user-list">
-            <li>user</li>
-            <li>user</li>
-            <li>user</li>
-            <li>user</li>
-            <li>user</li>
+            {allUsers}
           </ul>
         </div>
         <input type="text" className="chat-input"/>
       </div>
-    );
+      );
+    } else {
+      Body = <Login/>;
+    }
+
+    return Body;
   },
 
   _onChange: function() {
-    this.setState(getStateFromChatStores());
+    this.setState(getStateFromStores());
   }
 });
 

@@ -34,12 +34,12 @@ ChatInput = React.createClass({
   render: function() {
     return (
       <input
-        type      ="text"
-        value     ={this.state.message}
-        ref       ="chatInput"
-        onChange  ={this.handleChange}
-        onKeyDown ={this.handleEnter}
-        onSubmit  ={this.handleSubmit}/>
+        type="text"
+        value={this.state.message}
+        ref="chatInput"
+        onChange={this.handleChange}
+        onKeyDown={this.handleEnter}
+        onSubmit={this.handleSubmit}/>
     );
   }
 });

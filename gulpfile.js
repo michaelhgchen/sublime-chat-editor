@@ -166,9 +166,36 @@ gulp.task('watch', function() {
   gulp.watch('./public/src/sass/**/*.scss', ['build:styles']);
 });
 
+
+var browserSync = require('browser-sync');
+var reload = browserSync.reload;
+gulp.task('browser-sync', function() {
+  browserSync({
+    proxy: 'http://localhost:8000'
+  });
+});
+
+gulp.task('reload', function() {
+  browserSync.reload();
+});
+
+gulp.task('watch:reload', ['browser-sync'], function() {
+  buildScripts({
+    src: './public/src/js/app.js',
+    dest: './public/build/js/',
+    output: 'scripts.js',
+    transform: 'reactify',
+  }, true);
+
+  gulp.watch('./public/build/js/scripts.js', ['reload']);
+
+  gulp.watch('./public/src/sass/**/*.scss', function() {
+    runSequence('build:styles', 'reload');
+  });
+});
 // ====================================
 // Default
 // ====================================
 gulp.task('default', function() {
-  runSequence(['server:start', 'build'], 'watch');
+  runSequence(['server:start', 'build'], 'watch:reload');
 });

@@ -19,8 +19,7 @@ var
   io     = require('socket.io')(server),
 
   // 'Persistence'
-  usernames = {},
-  userCount = 0;
+  allUsers = {};
 
 // A domain is an execution context that will catch errors that occur inside it
 app.use(function(req, res, next) {
@@ -102,53 +101,58 @@ app.use(expressSession({
 
 // On connection
 io.on('connection', function (socket) {
-  var addedUser;
+  console.log('A user has connected');
 
   socket.on('new user', function (username) {
-    socket.username     = username;
-    usernames[username] = username;
+    if(allUsers[username]) {
+      socket.emit('login fail', 'That name is already in use');
+      return;
+    }
 
-    ++numUsers;
-    addedUser = true;
+    socket.username    = username;
+    allUsers[username] = username;
 
-    socket.emit('login', {
-      numUsers: numUsers
+    socket.emit('login success', {
+      username: username,
+      allUsers: allUsers
     });
 
     socket.broadcast.emit('user joined', {
-      username: socket.username,
-      numUsers: numUsers
+      username: username,
+      allUsers: allUsers
     });
   });
 
-  socket.on('new message', function (message) {
-    socket.broadcast.emit('new message', {
-      username: socket.username,
-      message: message
-    });
-  });
+  // socket.on('new message', function (message) {
+  //   socket.broadcast.emit('new message', {
+  //     username: socket.username,
+  //     message: message
+  //   });
+  // });
 
-  socket.on('typing', function () {
-    socket.broadcast.emit('typing', {
-      username: socket.username
-    });
-  });
+  // socket.on('typing', function () {
+  //   socket.broadcast.emit('typing', {
+  //     username: socket.username
+  //   });
+  // });
 
-  socket.on('stop typing', function () {
-    socket.broadcast.emit('stop typing', {
-      username: socket.username
-    });
-  });
+  // socket.on('stop typing', function () {
+  //   socket.broadcast.emit('stop typing', {
+  //     username: socket.username
+  //   });
+  // });
 
   socket.on('disconnect', function () {
+    console.log('A user has disconnected');
+    
     if (socket.username) {
-      usernames[socket.username];
-      --numUsers;
+      delete allUsers[socket.username];
 
       socket.broadcast.emit('user left', {
         username: socket.username,
-        numUsers: numUsers
       });
+
+      delete socket.username;
     }
   });
 });

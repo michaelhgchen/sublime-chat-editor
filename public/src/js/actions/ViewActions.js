@@ -4,7 +4,7 @@ var
   ChatServerAPI = require('../util/ChatServerAPI');
 
 module.exports = {
-  sendMessage: function(message) {
-    ChatServerAPI.sendMessage(message);
+  newUser: function(username) {
+    ChatServerAPI.newUser(username);
   }
 }

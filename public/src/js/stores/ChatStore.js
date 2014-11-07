@@ -4,19 +4,19 @@ var
   AppDispatcher = require('../dispatcher/AppDispatcher'),
   ActionTypes   = require('../constants/Constants').ActionTypes,
   CHANGE_EVENT  = 'change',
-  messages, usernames, name, ChatStore;
+  loginStatus, username, allUsers, messages, ChatStore;
 
-name      = '';
-usernames = {};
-messages  = [];
+username    = '';
+allUsers    = {};
+messages    = [];
 
 ChatStore = assign({}, EventEmitter.prototype, {
-  getName: function() {
-    return name;
+  getUsername: function() {
+    return username;
   },
 
-  getUsers: function() {
-    return usernames;
+  getAllUsers: function() {
+    return allUsers;
   },
 
   getMessages: function() {
@@ -37,31 +37,45 @@ ChatStore = assign({}, EventEmitter.prototype, {
 });
 
 ChatStore.dispatchToken = AppDispatcher.register(function(payload) {
-  var action = payload.action;
+  var action, data;
+
+  action = payload.action;
 
   switch(action.type) {
-    case ActionTypes.NEW_MESSAGE:
-      messages.push(action.message);
+    case ActionTypes.LOGIN_FAIL:
       ChatStore.emitChange();
       break;
 
-    case ActionTypes.NEW_NAME:
-      name = action.name;
+    case ActionTypes.LOGIN_SUCCESS:
+      data     = action.data;
+      username = data.username;
+      allUsers = data.allUsers;
+
       ChatStore.emitChange();
       break;
 
-    case ActionTypes.USER_JOIN:
-      usernames[action.username] = action.username;
+    case ActionTypes.USER_JOINED:
+      data     = action.data;
+      allUsers = data.allUsers;
+
+      messages.push({
+        author: null,
+        message: data.username + ' has joined'
+      });
+      
       ChatStore.emitChange();
       break;
 
-    case ActionTypes.USER_LEAVE:
-      delete usernames[action.username];
-      ChatStore.emitChange();
-      break;
+    case ActionTypes.USER_LEFT:
+      data     = action.data;
+      allUsers = data.allUsers;
 
-    case ActionTypes.GET_USERS:
-      usernames = action.usernames;
+      messages.push({
+        author: null,
+        message: data.username + ' has left'
+      });
+
+      ChatStore.emitChange();
       break;
 
     default:

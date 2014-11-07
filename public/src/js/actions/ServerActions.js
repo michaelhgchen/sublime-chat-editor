@@ -3,38 +3,17 @@ var
   ActionTypes   = require('../constants/Constants').ActionTypes;
 
 module.exports = {
-  newMessage: function(message) {
+  loginSuccess: function(data) {
     AppDispatcher.handleServerAction({
-      type: ActionTypes.NEW_MESSAGE,
-      message: message
+      type: ActionTypes.LOGIN_SUCCESS,
+      data: data
     });
   },
 
-  newName: function(name) {
+  loginFail: function(data) {
     AppDispatcher.handleServerAction({
-      type: ActionTypes.NEW_NAME,
-      name: name
-    });
-  },
-
-  userJoin: function(username) {
-    AppDispatcher.handleServerAction({
-      type: ActionTypes.USER_JOIN,
-      username: username
-    });
-  },
-
-  userLeave: function(username) {
-    AppDispatcher.handleServerAction({
-      type: ActionTypes.USER_LEAVE,
-      username: username
-    });
-  },
-
-  syncUsers: function(usernames) {
-    AppDispatcher.handleServerAction({
-      type: ActionTypes.SYNC_USERS,
-      usernames: usernames
+      type: ActionTypes.LOGIN_FAIL,
+      data: data
     });
   }
 }

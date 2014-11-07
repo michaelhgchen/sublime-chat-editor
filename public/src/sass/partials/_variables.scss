@@ -5,14 +5,23 @@ $space-m: 3 * $space-xs; // ~15px
 $space-l: 2 * $space-s;  // ~20px
 $space-xl: 2 * $space-m; // ~30px
 
+$min-width-app: 30em;
+
 // Dimensions
-$height-chat-input: 3em;
+$height-chat-input: 2em;
+$height-login-input: 3em;
+$height-login-title: 2em * 2; // 2em font
+$height-login-error: 2em;
+$padding-login-container: $space-l;
+$height-login-container: $height-login-input + $height-login-title 
+  + $height-login-error + ($padding-login-container * 2);
+$width-login-container: $min-width-app - $space-l;
 
 // Media queries
 $break-desktop: 48em;
 
 // Text
-$font-family: sans-serif;
+$font-family: Consolas, Menlo Regular, monospace;
 
 // Colors
 $color-border: #bcbcbc;

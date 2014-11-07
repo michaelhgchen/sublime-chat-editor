@@ -1,8 +1,8 @@
 var
   React = require('react'),
-  ChatLog;
+  MessageList;
 
-ChatLog = React.createClass({
+MessageList = React.createClass({
   render: function() {
     var messages = this.props.messages;
 
@@ -20,4 +20,4 @@ ChatLog = React.createClass({
   }
 });
 
-module.exports = ChatLog;
+module.exports = MessageList;
