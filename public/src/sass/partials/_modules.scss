@@ -1,0 +1,55 @@
+.compact-list {
+  list-style-type:none;
+  margin:0;
+  padding:0;
+}
+
+.chat-app {
+  @extend .fill-height;
+  position: relative;
+  min-height: $height-chat-input * 2;
+  min-width: $height-chat-input * 2;
+  
+  width: 100%;
+}
+
+.chat-display {
+  @extend .fill-height;
+  padding-bottom: $height-chat-input;
+}
+
+.message-list {
+  @extend .fill-height;
+  @extend .pull-right;
+
+  width: 80%;
+  padding: $space-m;
+  overflow-y: auto;
+  word-wrap: break-word;
+  
+  & > li {
+    margin: $space-s 0;
+  }
+}
+
+.user-list {
+  @extend .fill-height;
+  @extend .pull-left;
+
+  width: 20%;
+  padding: $space-m;
+  overflow: auto;
+
+  & > li {
+    margin: $space-s 0;
+  }
+}
+
+.chat-input {
+  @extend .fill-width;
+
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: $height-chat-input;
+}

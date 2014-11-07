@@ -1,42 +1,57 @@
 var
   React     = require('react'),
-  Store     = require('../stores/Store'),
-  ChatName  = require('./ChatName.react'),
-  ChatInput = require('./ChatInput.react'),
-  ChatLog   = require('./ChatLog.react');
+  ChatStore = require('../stores/ChatStore');
+  // ChatName  = require('./ChatName.react'),
+  // ChatInput = require('./ChatInput.react'),
+  // ChatLog   = require('./ChatLog.react');
 
-function getStateFromStores() {
+function getStateFromChatStores() {
   return {
-    messages: Store.getMessages()
+    name: ChatStore.getName(),
+    messages: ChatStore.getMessages(),
+    users: ChatStore.getUsers()
   }
 }
 
 var ChatApp = React.createClass({
   getInitialState: function() {
-    return getStateFromStores();
+    return getStateFromChatStores();
   },
 
   componentDidMount: function() {
-    Store.addChangeListener(this._onChange);
+    ChatStore.addChangeListener(this._onChange);
   },
 
   componentWillUnmount: function() {
-    Store.removeChangeListener(this._onChange);
+    ChatStore.removeChangeListener(this._onChange);
   },
 
   render: function() {
     return (
-      <div>
-        <ChatName />
-        <ChatInput />
-        <ChatLog
-          messages={this.state.messages}/>
+      <div className="chat-app">
+        <div className="chat-display">
+          <ul className="message-list">
+            <li>message</li>
+            <li>message</li>
+            <li>message</li>
+            <li>message</li>
+            <li>message</li>
+          </ul>
+          <ul className="user-list">
+            <li>user</li>
+            <li>user</li>
+            <li>user</li>
+            <li>user</li>
+            <li>user</li>
+          </ul>
+        </div>
+        <input type="text" className="chat-input"/>
       </div>
-    )
+    );
   },
 
   _onChange: function() {
-    this.setState(getStateFromStores());
+    this.setState(getStateFromChatStores());
   }
 });
 
