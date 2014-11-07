@@ -12,11 +12,13 @@ ChatInput = React.createClass({
   },
 
   handleSubmit: function() {
-    ViewActions.sendMessage(this.state.message);
+    if(this.state.message) {
+      ViewActions.newMessage(this.state.message);
 
-    this.setState({
-      message: ''
-    });
+      this.setState({
+        message: ''
+      });
+    }
   },
 
   handleChange: function(e) {
@@ -34,6 +36,7 @@ ChatInput = React.createClass({
   render: function() {
     return (
       <input
+        className="chat-input"
         type="text"
         value={this.state.message}
         ref="chatInput"

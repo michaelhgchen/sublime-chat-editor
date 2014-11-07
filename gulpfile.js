@@ -196,6 +196,10 @@ gulp.task('watch:reload', ['browser-sync'], function() {
 // ====================================
 // Default
 // ====================================
-gulp.task('default', function() {
+gulp.task('default2', function() {
   runSequence(['server:start', 'build'], 'watch:reload');
+});
+
+gulp.task('default', function() {
+  runSequence(['server:start', 'build'], 'watch');
 });

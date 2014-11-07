@@ -78,6 +78,28 @@ ChatStore.dispatchToken = AppDispatcher.register(function(payload) {
       ChatStore.emitChange();
       break;
 
+    case ActionTypes.NEW_MESSAGE:
+      data     = action.data;
+
+      messages.push({
+        author: data.username,
+        message: data.message
+      });
+
+      ChatStore.emitChange();
+      break;
+
+    case ActionTypes.SEND_MESSAGE:
+      data     = action.data;
+
+      messages.push({
+        author: username,
+        message: data.message
+      });
+
+      ChatStore.emitChange();
+      break;
+
     default:
       break;
   }

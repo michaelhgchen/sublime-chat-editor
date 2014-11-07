@@ -1,7 +1,8 @@
 var
   React     = require('react'),
   ChatStore = require('../stores/ChatStore'),
-  Login     = require('./Login.react');
+  Login     = require('./Login.react'),
+  ChatInput = require('./ChatInput.react.js');
 
 function getStateFromStores() {
   return {
@@ -44,13 +45,15 @@ var ChatApp = React.createClass({
       <div className="chat-app">
         <div className="chat-display">
           <ul className="message-list">
+          <li><b>messages</b></li>
             {messages}
           </ul>
           <ul className="user-list">
+          <li><b>users</b></li>
             {allUsers}
           </ul>
         </div>
-        <input type="text" className="chat-input"/>
+        <ChatInput />
       </div>
       );
     } else {

@@ -123,12 +123,12 @@ io.on('connection', function (socket) {
     });
   });
 
-  // socket.on('new message', function (message) {
-  //   socket.broadcast.emit('new message', {
-  //     username: socket.username,
-  //     message: message
-  //   });
-  // });
+  socket.on('new message', function (message) {
+    socket.broadcast.emit('new message', {
+      username: socket.username,
+      message: message
+    });
+  });
 
   // socket.on('typing', function () {
   //   socket.broadcast.emit('typing', {
@@ -150,6 +150,7 @@ io.on('connection', function (socket) {
 
       socket.broadcast.emit('user left', {
         username: socket.username,
+        allUsers: allUsers
       });
 
       delete socket.username;
