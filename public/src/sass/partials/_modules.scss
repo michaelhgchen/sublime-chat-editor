@@ -50,7 +50,7 @@ h1.login-title {
   position: relative;
   min-height: $height-chat-input * 2;
   min-width: $height-chat-input * 2;
-  
+
   width: 100%;
 }
 
@@ -60,18 +60,33 @@ h1.login-title {
 }
 
 .message-list {
-  @extend .compact-list;
   @extend .fill-height;
   @extend .pull-right;
 
   width: 80%;
-  padding: $space-m;
+  padding: $space-s;
   overflow-y: auto;
   word-wrap: break-word;
-  
-  & > li {
-    margin: $space-s 0;
-  }
+
+  background-color: $color-message-list-background;
+  color: $color-message-text;
+}
+
+.line {
+  display: table-row;
+  line-height: $message-line-height;
+}
+
+.line-number {
+  display: table-cell;
+  color: $color-message-line-number;
+  border-right: 1px dotted $color-message-line-number;
+  padding: 0 $space-m;
+}
+
+.line-message {
+  display: table-cell;
+  padding: 0 $space-m;
 }
 
 .user-list {
@@ -83,9 +98,8 @@ h1.login-title {
   padding: $space-m;
   overflow: auto;
 
-  & > li {
-    margin: $space-s 0;
-  }
+  background-color: $color-user-list-background;
+  color: $color-user-text;
 }
 
 .chat-input {
@@ -95,4 +109,39 @@ h1.login-title {
   left: 0;
   bottom: 0;
   height: $height-chat-input;
+}
+
+.text-comment {
+  color: $color-message-comment;
+}
+
+.text-var {
+  font-style: italic;
+  color: $color-message-var;
+}
+
+.text-operator {
+  color: $color-message-operator;
+}
+
+.text-string {
+  color: $color-message-string;
+}
+
+.text-number {
+  color: $color-message-number;
+}
+
+.text-method {
+  color: $color-message-method;
+}
+
+.text-function {
+  font-style: italic;
+  color: $color-message-function;
+}
+
+.text-argument {
+  font-style: italic;
+  color: $color-message-argument;
 }

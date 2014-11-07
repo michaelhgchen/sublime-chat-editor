@@ -30,20 +30,15 @@ var ChatApp = React.createClass({
   render: function() {
     var Body;
 
-    if(this.state.username) {
-      Body = (
-      <div className="chat-app">
+    Body = this.state.username
+    ? (<div className="chat-app">
         <div className="chat-display">
           <MessageList messages={this.state.messages} />
           <UserList allUsers={this.state.allUsers} />
         </div>
-
         <ChatInput />
-      </div>
-      );
-    } else {
-      Body = <Login/>;
-    }
+      </div>)
+    : <Login/>;
 
     return Body;
   },

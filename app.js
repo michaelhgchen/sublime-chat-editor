@@ -141,8 +141,6 @@ io.on('connection', function (socket) {
       socket.broadcast.emit('user left', {
         username: socket.username
       });
-
-      delete socket.username;
     }
   });
 });

@@ -3,6 +3,7 @@ var
   EventEmitter  = require('events').EventEmitter,
   AppDispatcher = require('../dispatcher/AppDispatcher'),
   ActionTypes   = require('../constants/Constants').ActionTypes,
+  TextTypes     = require('../constants/Contants').TextTypes,
   CHANGE_EVENT  = 'change',
   loginStatus, username, allUsers, messages, ChatStore;
 
@@ -72,13 +73,19 @@ ChatStore.dispatchToken = AppDispatcher.register(function(payload) {
 
     case ActionTypes.USER_JOINED:
       addUser(action.data.username);
-      addMessage({ message: action.data.username + ' has joined' });
+      addMessage({
+        type: TextTypes.JOINED,
+        username: action.data.username
+      });
       ChatStore.emitChange();
       break;
 
     case ActionTypes.USER_LEFT:
       removeUser(action.data.username);
-      addMessage({ message: action.data.username + ' has left'});
+      addMessage({
+        type: TextTypes.LEFT,
+        username: action.data.username
+      });
       ChatStore.emitChange();
       break;
 
@@ -86,7 +93,8 @@ ChatStore.dispatchToken = AppDispatcher.register(function(payload) {
       data = action.data;
 
       addMessage({
-        author: data.username,
+        type: TextTypes.MESSAGE,
+        username: data.username,
         message: data.message
       });
       ChatStore.emitChange();
@@ -96,6 +104,7 @@ ChatStore.dispatchToken = AppDispatcher.register(function(payload) {
       data = action.data;
 
       addMessage({
+        type: TextTypes.MESSAGE,
         author: username,
         message: data.message
       });

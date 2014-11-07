@@ -13,5 +13,12 @@ module.exports = {
   PayloadSources: {
     SERVER_ACTION:'SERVER_ACTION',
     VIEW_ACTION:'VIEW_ACTION'
+  },
+
+  TextTypes: {
+    JOINED: 'JOINED',
+    LEFT: 'LEFT',
+    MESSAGE: 'MESSAGE',
+    COMMENT: 'COMMENT'
   }
 }

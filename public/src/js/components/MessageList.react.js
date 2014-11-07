@@ -1,13 +1,16 @@
 var
-  React = require('react'),
+  React       = require('react'),
   TypingStore = require('../stores/TypingStore'),
+  TextTypes   = require('../contants/Constants').TextTypes,
+  TextMap     = require('./text/TextMap.react'),
   MessageList;
 
 function getStateFromStores() {
   return {
-    typingUsers: TypingStore.getTypingUsers()
+    typingText: TypingStore.getTypingText()
   }
 }
+
 
 MessageList = React.createClass({
   getInitialState: function() {
@@ -23,37 +26,28 @@ MessageList = React.createClass({
   },
 
   render: function() {
-    var messages, typingUsers, typingUsersNum, typingUsersMessage;
+    var messages;
 
-    messages = this.props.messages.map(function(data){
-      return (
-        <li>{data.author ? data.author + ': ' : ''}{data.message}</li>
-      );
-    });
+    messages = [{
+      type: TextTypes.COMMENT,
+      message: 'list of all messages'
+    }];
 
-    typingUsers = Object.keys(this.state.typingUsers);
-    typingUsersNum = typingUsers.length;
+    messages = messages.concat(this.props.messages);
 
-    if(typingUsersNum) {
-      if(typingUsersNum === 1) {
-        typingUsersMessage = <li>{typingUsers[0]} is typing...</li>;
-      } else if (typingUsersNum < 4) {
-        typingUsersMessage = (<li>
-          {typingUsers.slice(0, 2).join(', ')} and {typingUsers[2]} are typing...
-        </li>);
-      } else {
-        typingUsersMessage = (<li>
-          {typingUsers.slice(0, 2).join(', ')} and {typingUsersNum - 2} other users are typing...
-        </li>);
-      }
+    if(this.state.typingText) {
+      messages = messages.concat([
+        type: TextTypes.COMMENT,
+        message: this.state.typingText
+      ]);
     }
 
+    MessageConverter(messages);
+
     return (
-      <ul className="message-list">
-        <li><b>messages</b></li>
+      <div className="message-list">
         {messages}
-        {typingUsersMessage}
-      </ul>
+      </div>
     );
   },
 

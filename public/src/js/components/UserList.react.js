@@ -14,7 +14,7 @@ UserList = React.createClass({
 
     return (
       <ul className="user-list">
-        <li><b>users</b></li>
+        <li>users</li>
         {allUsers}
       </ul>
     );

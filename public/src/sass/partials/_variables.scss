@@ -13,7 +13,7 @@ $height-login-input: 3em;
 $height-login-title: 2em * 2; // 2em font
 $height-login-error: 2em;
 $padding-login-container: $space-l;
-$height-login-container: $height-login-input + $height-login-title 
+$height-login-container: $height-login-input + $height-login-title
   + $height-login-error + ($padding-login-container * 2);
 $width-login-container: $min-width-app - $space-l;
 
@@ -24,6 +24,27 @@ $break-desktop: 48em;
 $font-family: Consolas, Menlo Regular, monospace;
 
 // Colors
-$color-border: #bcbcbc;
 $color-font: black;
 $color-text-shadow: lighten($color-font, 75%);
+
+$color-border: #505050;
+$color-border-light: #7d7d7d;
+
+$color-user-text: black;
+$color-user-list-background: #e6e6e6;
+$color-user-list-arrow: #868686;
+
+$message-line-height: 1.2;
+$color-message-list-background: #272822;
+$color-message-line-number: #8f908a;
+$color-message-highlighted: #3e3d32;
+$color-message-text: white;
+$color-message-comment: #75715e;
+$color-message-var: #66d9ef;
+$color-message-operator: #f92672;
+$color-message-string: #e6db74;
+$color-message-number: #ae81ff;
+$color-message-method: #91e22e;
+$color-message-function: $color-message-var;
+$color-message-argument: #fd9822;
+$color-bottom-info: #595959;
