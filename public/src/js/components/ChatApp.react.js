@@ -1,8 +1,10 @@
 var
-  React     = require('react'),
-  ChatStore = require('../stores/ChatStore'),
-  Login     = require('./Login.react'),
-  ChatInput = require('./ChatInput.react.js');
+  React       = require('react'),
+  ChatStore   = require('../stores/ChatStore'),
+  Login       = require('./Login.react'),
+  MessageList = require('./MessageList.react'),
+  UserList    = require('./UserList.react'),
+  ChatInput   = require('./ChatInput.react.js');
 
 function getStateFromStores() {
   return {
@@ -26,33 +28,16 @@ var ChatApp = React.createClass({
   },
 
   render: function() {
-    var Body, messages, allUsers;
+    var Body;
 
     if(this.state.username) {
-      messages = this.state.messages.map(function(data){
-        return (
-          <li>{data.author ? data.author + ': ' : ''}{data.message}</li>
-        );
-      });
-
-      allUsers = Object.keys(this.state.allUsers).map(function(user) {
-        return (
-          <li>{user}</li>
-        );
-      });
-
       Body = (
       <div className="chat-app">
         <div className="chat-display">
-          <ul className="message-list">
-          <li><b>messages</b></li>
-            {messages}
-          </ul>
-          <ul className="user-list">
-          <li><b>users</b></li>
-            {allUsers}
-          </ul>
+          <MessageList messages={this.state.messages} />
+          <UserList allUsers={this.state.allUsers} />
         </div>
+
         <ChatInput />
       </div>
       );

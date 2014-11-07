@@ -1,24 +1,13 @@
 var
-  // Node
-  http    = require('http'),
-  domain  = require('domain'),
-  cluster = require('cluster'),
-
-  // Installed
-  express        = require('express'),
-  expressSession = require('express-session'),
-
-  // Local
-  secrets = require('./secrets'),
-  config  = require('./config'),
-
-  // Other
-  port   = config.port,
-  app    = express(),
-  server = http.Server(app),
-  io     = require('socket.io')(server),
-
-  // 'Persistence'
+  http     = require('http'),
+  domain   = require('domain'),
+  cluster  = require('cluster'),
+  express  = require('express'),
+  secrets  = require('./secrets'),
+  port     = require('./config').port,
+  app      = express(),
+  server   = http.Server(app),
+  io       = require('socket.io')(server),
   allUsers = {};
 
 // A domain is an execution context that will catch errors that occur inside it
@@ -92,23 +81,21 @@ app.use(function(req, res, next) {
 // Routing
 app.use(express.static(__dirname + '/public'));
 
-// Enable sessions (NOT BEING USED)
-app.use(expressSession({
-  secret: secrets.cookie,
-  resave: true,
-  saveUninitialized: true
-}));
-
-// On connection
+// Socket
 io.on('connection', function (socket) {
   console.log('A user has connected');
 
+  // Logging in
   socket.on('new user', function (username) {
+    // If username is already in use, fail login
     if(allUsers[username]) {
-      socket.emit('login fail', 'That name is already in use');
+      socket.emit('login fail', {
+        error:'That name is already in use'
+      });
       return;
     }
 
+    // Otherwise set socket username and store in allUsers
     socket.username    = username;
     allUsers[username] = username;
 
@@ -118,11 +105,11 @@ io.on('connection', function (socket) {
     });
 
     socket.broadcast.emit('user joined', {
-      username: username,
-      allUsers: allUsers
+      username: username
     });
   });
 
+  // Sending a message
   socket.on('new message', function (message) {
     socket.broadcast.emit('new message', {
       username: socket.username,
@@ -130,27 +117,29 @@ io.on('connection', function (socket) {
     });
   });
 
-  // socket.on('typing', function () {
-  //   socket.broadcast.emit('typing', {
-  //     username: socket.username
-  //   });
-  // });
+  // Typing
+  socket.on('typing', function () {
+    socket.broadcast.emit('typing', {
+      username: socket.username
+    });
+  });
 
-  // socket.on('stop typing', function () {
-  //   socket.broadcast.emit('stop typing', {
-  //     username: socket.username
-  //   });
-  // });
+  socket.on('stop typing', function () {
+    socket.broadcast.emit('stop typing', {
+      username: socket.username
+    });
+  });
 
+  // Disconnecting
   socket.on('disconnect', function () {
     console.log('A user has disconnected');
-    
+
     if (socket.username) {
+      // If socket had a username, delete it
       delete allUsers[socket.username];
 
       socket.broadcast.emit('user left', {
-        username: socket.username,
-        allUsers: allUsers
+        username: socket.username
       });
 
       delete socket.username;

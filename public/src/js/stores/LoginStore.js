@@ -8,6 +8,14 @@ var
 
 loginError = '';
 
+function setLoginError(error) {
+  loginError = error;
+}
+
+function clearLoginError() {
+  loginError = '';
+}
+
 LoginStore = assign({}, EventEmitter.prototype, {
   getLoginError: function() {
     return loginError;
@@ -33,12 +41,12 @@ LoginStore.dispatchToken = AppDispatcher.register(function(payload) {
 
   switch(action.type) {
     case ActionTypes.LOGIN_FAIL:
-      loginError = action.data;
+      setLoginError(action.data.error);
       LoginStore.emitChange();
       break;
 
     case ActionTypes.LOGIN_SUCCESS:
-      loginError = '';
+      clearLoginError();
       LoginStore.emitChange();
       break;
 

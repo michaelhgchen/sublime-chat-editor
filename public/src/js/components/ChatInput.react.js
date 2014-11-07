@@ -2,7 +2,9 @@ var
   React       = require('react'),
   ViewActions = require('../actions/ViewActions'),
   ENTER_KEY   = 13,
-  ChatInput;
+  typingTimeout, debounce, ChatInput;
+
+debounce = 500;
 
 ChatInput = React.createClass({
   getInitialState: function() {
@@ -22,6 +24,17 @@ ChatInput = React.createClass({
   },
 
   handleChange: function(e) {
+    if(!typingTimeout) {
+      ViewActions.typing();
+    } else {
+      clearTimeout(typingTimeout);
+    }
+
+    typingTimeout = setTimeout(function() {
+      ViewActions.stopTyping();
+      typingTimeout = null;
+    }, debounce);
+
     this.setState({
       message: e.target.value
     });

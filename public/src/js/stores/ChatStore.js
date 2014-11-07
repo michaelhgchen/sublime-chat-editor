@@ -10,6 +10,26 @@ username    = '';
 allUsers    = {};
 messages    = [];
 
+function setUsername(name) {
+  username = name;
+}
+
+function addUser(user) {
+  allUsers[user] = user;
+}
+
+function addAllUsers(users) {
+  allUsers = users;
+}
+
+function removeUser(user) {
+  delete allUsers[user];
+}
+
+function addMessage(message) {
+  messages.push(message);
+}
+
 ChatStore = assign({}, EventEmitter.prototype, {
   getUsername: function() {
     return username;
@@ -42,61 +62,43 @@ ChatStore.dispatchToken = AppDispatcher.register(function(payload) {
   action = payload.action;
 
   switch(action.type) {
-    case ActionTypes.LOGIN_FAIL:
-      ChatStore.emitChange();
-      break;
-
     case ActionTypes.LOGIN_SUCCESS:
-      data     = action.data;
-      username = data.username;
-      allUsers = data.allUsers;
+      data = action.data;
 
+      setUsername(data.username);
+      addAllUsers(data.allUsers);
       ChatStore.emitChange();
       break;
 
     case ActionTypes.USER_JOINED:
-      data     = action.data;
-      allUsers = data.allUsers;
-
-      messages.push({
-        author: null,
-        message: data.username + ' has joined'
-      });
-      
+      addUser(action.data.username);
+      addMessage({ message: action.data.username + ' has joined' });
       ChatStore.emitChange();
       break;
 
     case ActionTypes.USER_LEFT:
-      data     = action.data;
-      allUsers = data.allUsers;
-
-      messages.push({
-        author: null,
-        message: data.username + ' has left'
-      });
-
+      removeUser(action.data.username);
+      addMessage({ message: action.data.username + ' has left'});
       ChatStore.emitChange();
       break;
 
     case ActionTypes.NEW_MESSAGE:
-      data     = action.data;
+      data = action.data;
 
-      messages.push({
+      addMessage({
         author: data.username,
         message: data.message
       });
-
       ChatStore.emitChange();
       break;
 
     case ActionTypes.SEND_MESSAGE:
-      data     = action.data;
+      data = action.data;
 
-      messages.push({
+      addMessage({
         author: username,
         message: data.message
       });
-
       ChatStore.emitChange();
       break;
 

@@ -36,5 +36,19 @@ module.exports = {
       type: ActionTypes.NEW_MESSAGE,
       data: data
     });
+  },
+
+  typing: function(data) {
+    AppDispatcher.handleServerAction({
+      type: ActionTypes.TYPING,
+      data: data
+    });
+  },
+
+  stopTyping: function(data) {
+    AppDispatcher.handleServerAction({
+      type: ActionTypes.STOP_TYPING,
+      data: data
+    });
   }
 }

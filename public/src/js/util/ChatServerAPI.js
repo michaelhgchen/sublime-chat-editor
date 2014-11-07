@@ -24,6 +24,14 @@ Socket.on('new message', function(data) {
   ServerActions.newMessage(data);
 });
 
+Socket.on('typing', function(data) {
+  ServerActions.typing(data);
+});
+
+Socket.on('stop typing', function(data) {
+  ServerActions.stopTyping(data);
+});
+
 module.exports = {
   newUser: function(username) {
     Socket.emit('new user', username);
@@ -31,5 +39,13 @@ module.exports = {
 
   newMessage: function(message) {
     Socket.emit('new message', message);
+  },
+
+  typing: function() {
+    Socket.emit('typing');
+  },
+
+  stopTyping: function() {
+    Socket.emit('stop typing');
   }
 }

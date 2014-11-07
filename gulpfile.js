@@ -167,8 +167,8 @@ gulp.task('watch', function() {
 });
 
 
-var browserSync = require('browser-sync');
-var reload = browserSync.reload;
+// var browserSync = require('browser-sync');
+// var reload = browserSync.reload;
 gulp.task('browser-sync', function() {
   browserSync({
     proxy: 'http://localhost:8000'

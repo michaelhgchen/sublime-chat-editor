@@ -17,5 +17,13 @@ module.exports = {
     });
 
     ChatServerAPI.newMessage(message);
+  },
+
+  typing: function() {
+    ChatServerAPI.typing();
+  },
+
+  stopTyping: function() {
+    ChatServerAPI.stopTyping();
   }
 }
