@@ -6,54 +6,28 @@ var
 
   // Installed
   express        = require('express'),
-  mongoose       = require('mongoose'),
-  cookieParser   = require('cookie-parser'),
   expressSession = require('express-session'),
-  handlebars     = require('express-handlebars').create({
-  defaultLayout: 'main',
-    helpers: {
-      // Allow nested views to add content to parents
-      section: function(name, options) {
-        this._sections = this._sections || {};
-        this._sections[name] = options.fn(this);
-      }
-    }
-  }),
 
   // Local
   secrets = require('./secrets'),
-  routes  = require('./routes'),
   config  = require('./config'),
 
   // Other
   port   = config.port,
   app    = express(),
   server = http.Server(app),
-  io     = require('socket.io')(server);
+  io     = require('socket.io')(server),
 
-// ============================================================================
-// Configuration
-// ============================================================================
-// Set templating engine to Handlebars's
-app.engine('handlebars', handlebars.engine);
+  // 'Persistence'
+  usernames = {},
+  userCount = 0;
 
-// Set handlerbars as default engine extension
-app.set('view engine', 'handlebars');
-
-// Connect to database
-// mongoose.connect(secrets.mongo.development.URI, config.mongo);
-
-// ============================================================================
-// Middleware
-// ============================================================================
 // A domain is an execution context that will catch errors that occur inside it
-// so instead of having one global uncaught exception handler, you can have as
-// many through domains as you want.  (100% uptime!)
 app.use(function(req, res, next) {
   var newDomain, killTimer, worker
 
   // Create a domain for this request
-  var newDomain = domain.create();
+  newDomain = domain.create();
 
   // Handle errors that occur on this domain
   newDomain.on('error', function(err) {
@@ -116,10 +90,8 @@ app.use(function(req, res, next) {
   next();
 });
 
+// Routing
 app.use(express.static(__dirname + '/public'));
-
-// Cookie getters/setters through res.cookie
-app.use(cookieParser(secrets.cookie));
 
 // Enable sessions
 app.use(expressSession({
@@ -128,63 +100,60 @@ app.use(expressSession({
   saveUninitialized: true
 }));
 
-// ============================================================================
-// Locals
-// ============================================================================
-app.use(function(req, res, next) {
-  res.locals.testing = app.get('env') !== 'production'
-    && (req.query.test === '1' || req.query.grep);
+// On connection
+io.on('connection', function (socket) {
+  var addedUser;
 
-  next();
-});
+  socket.on('new user', function (username) {
+    socket.username     = username;
+    usernames[username] = username;
 
-// ============================================================================
-// Socket
-// ============================================================================
-var nameMap = {};
+    ++numUsers;
+    addedUser = true;
 
-io.on('connection', function(socket) {
-  console.log(socket.id);
-  console.log('A user has connected');
+    socket.emit('login', {
+      numUsers: numUsers
+    });
 
-  socket.on('chat:message-sent', function(message) {
-    io.emit('chat:message-received', {
-      author: nameMap[socket.id] || 'Anonymous',
+    socket.broadcast.emit('user joined', {
+      username: socket.username,
+      numUsers: numUsers
+    });
+  });
+
+  socket.on('new message', function (message) {
+    socket.broadcast.emit('new message', {
+      username: socket.username,
       message: message
     });
   });
 
-  socket.on('chat:name-set', function(name) {
-    nameMap[socket.id] = name;
+  socket.on('typing', function () {
+    socket.broadcast.emit('typing', {
+      username: socket.username
+    });
   });
 
-  socket.on('disconnect', function() {
-    console.log('A user has disconnected');
+  socket.on('stop typing', function () {
+    socket.broadcast.emit('stop typing', {
+      username: socket.username
+    });
+  });
+
+  socket.on('disconnect', function () {
+    if (socket.username) {
+      usernames[socket.username];
+      --numUsers;
+
+      socket.broadcast.emit('user left', {
+        username: socket.username,
+        numUsers: numUsers
+      });
+    }
   });
 });
 
-// ============================================================================
-// Routing
-// ============================================================================
-routes(app);
-
-// ============================================================================
-// Error handling
-// ============================================================================
-app.use(function(req, res) {
-  res.status(404);
-  res.render('404');
-});
-
-app.use(function(err, req, res, next) {
-  console.error(err.stack);
-  res.status(500);
-  res.render('500');
-});
-
-// ============================================================================
 // Server w/ app cluster support
-// ============================================================================
 function startServer() {
   server.listen(port, function() {
     console.log(

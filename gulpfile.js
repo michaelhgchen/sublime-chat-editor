@@ -20,12 +20,7 @@ var
   mocha  = require('gulp-mocha'),
 
   // server
-  fork = require('child_process').fork,
-
-  // other
-  port        = require('./config').port,
-  browserSync = require('browser-sync'),
-  reload      = browserSync.reload;
+  fork = require('child_process').fork;
 
 // ============================================================================
 // Functions
@@ -171,36 +166,9 @@ gulp.task('watch', function() {
   gulp.watch('./public/src/sass/**/*.scss', ['build:styles']);
 });
 
-gulp.task('watch:reload', ['browser-sync'], function() {
-  buildScripts({
-    src: './public/src/js/app.js',
-    dest: './public/build/js/',
-    output: 'scripts.js',
-    transform: 'reactify',
-  }, true);
-
-  gulp.watch('./public/build/js/scripts.js', ['reload']);
-
-  gulp.watch('./public/src/sass/**/*.scss', function() {
-    runSequence('build:styles', 'reload');
-  });
-});
-// ====================================
-// Other
-// ====================================
-gulp.task('browser-sync', function() {
-  browserSync({
-    proxy: 'http://localhost:' + port
-  });
-});
-
-gulp.task('reload', function() {
-  browserSync.reload();
-});
-
 // ====================================
 // Default
 // ====================================
 gulp.task('default', function() {
-  runSequence(['server:start', 'build'], 'watch:reload');
+  runSequence(['server:start', 'build'], 'watch');
 });

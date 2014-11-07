@@ -2,9 +2,9 @@ var
   React   = require('react'),
   ChatApp = require('./components/ChatApp.react');
 
+// global react for debugging
 window.React = React;
 
-var socket =
 React.render(
   <ChatApp />,
   document.getElementById('app')

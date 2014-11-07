@@ -1,7 +1,10 @@
 module.exports = {
   ActionTypes: {
-    SEND_MESSAGE: 'SEND_MESSAGE',
-    RECEIVE_MESSAGE: 'RECEIVE_MESSAGE'
+    NEW_MESSAGE: 'NEW_MESSAGE',
+    NEW_NAME: 'NEW_NAME',
+    USER_JOIN: 'USER_JOIN',
+    USER_LEAVE: 'USER_LEAVE',
+    SYNC_USERS: 'SYNC_USERS'
   },
 
   PayloadSources: {
