@@ -3,7 +3,7 @@ var
   EventEmitter  = require('events').EventEmitter,
   AppDispatcher = require('../dispatcher/AppDispatcher'),
   ActionTypes   = require('../constants/Constants').ActionTypes,
-  TextTypes     = require('../constants/Contants').TextTypes,
+  TextTypes     = require('../constants/Constants').TextTypes,
   CHANGE_EVENT  = 'change',
   loginStatus, username, allUsers, messages, ChatStore;
 

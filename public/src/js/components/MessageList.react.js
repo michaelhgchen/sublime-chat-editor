@@ -1,8 +1,8 @@
 var
-  React       = require('react'),
-  TypingStore = require('../stores/TypingStore'),
-  TextTypes   = require('../contants/Constants').TextTypes,
-  TextMap     = require('./text/TextMap.react'),
+  React            = require('react'),
+  TypingStore      = require('../stores/TypingStore'),
+  TextTypes        = require('../constants/Constants').TextTypes,
+  MessageConverter = require('../util/MessageConverter'),
   MessageList;
 
 function getStateFromStores() {
@@ -10,7 +10,6 @@ function getStateFromStores() {
     typingText: TypingStore.getTypingText()
   }
 }
-
 
 MessageList = React.createClass({
   getInitialState: function() {
@@ -36,17 +35,17 @@ MessageList = React.createClass({
     messages = messages.concat(this.props.messages);
 
     if(this.state.typingText) {
-      messages = messages.concat([
+      messages = messages.concat([{
         type: TextTypes.COMMENT,
         message: this.state.typingText
-      ]);
+      }]);
     }
 
     MessageConverter(messages);
 
     return (
       <div className="message-list">
-        {messages}
+      Hi
       </div>
     );
   },
