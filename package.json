@@ -1,5 +1,5 @@
 {
-  "name": "react-flux-chat",
+  "name": "sublime-chat-editor",
   "version": "0.0.1",
   "main": "index.js",
   "scripts": {
@@ -7,14 +7,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/michaelhgchen/node-react-flux-starter.git"
+    "url": "https://github.com/michaelhgchen/sublime-chat-editor.git"
   },
   "author": "Michael Hon-Gen Chen <michaelhgchen@gmail.com>",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/michaelhgchen/node-react-flux-starter/issues"
+    "url": "https://github.com/michaelhgchen/sublime-chat-editor/issues"
   },
-  "homepage": "https://github.com/michaelhgchen/node-react-flux-starter",
+  "homepage": "https://github.com/michaelhgchen/sublime-chat-editor",
   "dependencies": {
     "connect": "^3.3.2",
     "express": "^4.10.1",

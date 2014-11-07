@@ -92,7 +92,7 @@ app.use(function(req, res, next) {
 // Routing
 app.use(express.static(__dirname + '/public'));
 
-// Enable sessions
+// Enable sessions (NOT BEING USED)
 app.use(expressSession({
   secret: secrets.cookie,
   resave: true,
