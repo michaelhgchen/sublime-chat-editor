@@ -1,32 +1,47 @@
-.overlay {
-  position: fixed;
+.login-overlay {
+  @extend .fill-width;
+  @extend .center-align;
+
+  position: absolute;
   top: 0;
   left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 100;
+  z-index: 1;
 }
 
 .login-container {
-  background-color: white;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  height: $height-login-container;
-  width: $width-login-container;
-  margin-left: -($width-login-container / 2);
-  margin-top: -($height-login-container / 2);
-  padding: $padding-login-container;
+  @include lighten-gradient($color-login-background);
+
+  display: inline-block;
+  padding: $space-xs;
+  width: $min-width-app * .75;
 }
 
 .login-input {
   @extend .fill-width;
-  height: $height-login-input;
+
+  color: black;
+  margin-top: -1px;
+  height: $height-chat-input;
+  padding: $padding-chat-bottom;
+  border: 1px solid $color-border;
+  box-shadow: 0 .5px 0 $color-border-light;
 }
 
-.login-error {
-  color: red;
-  font-weight: bold;
-  height: $height-login-error;
-  line-height: $height-login-error;
+.login-list {
+  @extend .compact-list;
+  @extend .left-align;
+
+  color: $color-login-list;
+  padding: $space-xs 0;
+
+  & > li {
+    &:first-child {
+      border: 0;
+      background-color: $color-login-selected-background;
+    }
+
+    padding: $space-xs $space-xs;
+    box-shadow: 0 1px 0 $color-login-list-border-light;
+    border-bottom: 1px solid $color-login-list-border;
+  }
 }

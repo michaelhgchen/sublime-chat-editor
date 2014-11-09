@@ -54,14 +54,18 @@ ChatBottom = React.createClass({
     return (
       <div className="chat-bottom">
         <div className="chat-input-container">
-          <input
-            className="chat-input"
-            type="text"
-            value={this.state.message}
-            ref="chatInput"
-            onChange={this.handleChange}
-            onKeyDown={this.handleEnter}
-            onSubmit={this.handleSubmit}/>
+
+          <div className="chat-input-label">File Name:</div>
+          <div className="chat-input">
+            <input
+              className="input"
+              type="text"
+              value={this.state.message}
+              ref="chatInput"
+              onChange={this.handleChange}
+              onKeyDown={this.handleEnter}
+              onSubmit={this.handleSubmit}/>
+          </div>
         </div>
         <div className="chat-stats">
           Line {lineNumber + 1}, Column 1

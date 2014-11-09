@@ -2,7 +2,7 @@ var
   TextMap = require('./TextMap.react');
 
 module.exports = function(messages) {
-  var convertedMessages = [], messageCount;
+  var convertedMessages = [];
 
   messages.forEach(function(message) {
     message = TextMap(message);
@@ -10,11 +10,14 @@ module.exports = function(messages) {
     convertedMessages.push(message);
   });
 
+  // add blinking cursor to last line
+  convertedMessages.push(<span className="blinking">|</span>)
+
   convertedMessages = convertedMessages.map(function(message, line) {
     line = line + 1; // 0 indexed
 
     return (
-      <div className="line">
+      <div key={line} className="line">
         <div className="line-number">{line}</div>
         <div className="line-message">
           {message}
@@ -22,15 +25,6 @@ module.exports = function(messages) {
       </div>
     );
   });
-
-  messageCount = convertedMessages.length;
-
-  convertedMessages.push(
-    <div className="line">
-      <div className="line-number">{messageCount + 1}</div>
-      <div className="line-message"><span className="blinking">|</span></div>
-    </div>
-  );
 
   return convertedMessages;
 }

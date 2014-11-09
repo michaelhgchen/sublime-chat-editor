@@ -49,7 +49,7 @@ Login = React.createClass({
 
   render: function() {
     return (
-      <div className="overlay">
+      <div className="login-overlay">
         <div className="login-container">
           <input className="login-input"
             type="text"
@@ -58,6 +58,12 @@ Login = React.createClass({
             onKeyDown={this.handleEnter}
             onSubmit={this.handleSubmit}/>
           <div className="login-error">{this.state.loginError}</div>
+
+          <ul className="login-list">
+            <li>Enter a Username</li>
+            <li>Developed by Michael Chen</li>
+            <li>React Flux Socket.IO</li>
+          </ul>
         </div>
       </div>
     );

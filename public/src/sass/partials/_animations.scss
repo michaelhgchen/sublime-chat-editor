@@ -1,0 +1,30 @@
+.login-transition-enter {
+  opacity: 0.01;
+  transition: opacity 200ms ease-in 200ms;
+}
+
+.login-transition-enter.login-transition-enter-active {
+  opacity: 1;
+}
+
+.login-transition-leave {
+  opacity: 1;
+  transition: opacity 200ms ease-in;
+}
+
+.login-transition-leave.login-transition-leave-active {
+  opacity: 0.01;
+}
+
+.blinking {
+  animation: 1s blink step-end infinite;
+}
+
+@keyframes "blink" {
+  from,to {
+  color: transparent;
+}
+ 50% {
+    color: white;
+ }
+}

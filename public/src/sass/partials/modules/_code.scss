@@ -1,0 +1,33 @@
+.code-comment {
+  color: $color-code-comment;
+}
+
+.code-var, .code-function {
+  font-style: italic;
+  color: $color-code-var;
+}
+
+.code-argument {
+  font-style: italic;
+  color: $color-code-argument;
+}
+
+.code-operator {
+  color: $color-code-operator;
+}
+
+.code-string {
+  color: $color-code-string;
+}
+
+.code-number {
+  color: $color-code-number;
+}
+
+.code-method {
+  color: $color-code-method;
+}
+
+.code-indent {
+  border-left: 1px dotted $color-border-light;
+}

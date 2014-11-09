@@ -4,42 +4,44 @@
   right: 0;
   bottom: 0;
   height: $height-chat-bottom;
+  color: $color-font-chat-bottom;
+  text-shadow: $text-shadow-chat-bottom;
 }
 
 .chat-input-container {
   @include lighten-gradient($color-chat-bottom-background);
 
   height: $height-chat-input-container;
-  padding: $padding-chat-bottom;
+  line-height: $height-chat-input-container;
+  padding: 0 $padding-chat-bottom;
   border-top: 1px solid $color-border-light;
   box-shadow: 0 -1px 0 $color-border;
 }
 
+.chat-input-label {
+  @extend .pull-left;
+  @extend .center-align;
+
+  padding-right: $padding-chat-bottom;
+}
+
 .chat-input {
-  margin-top: -1px;
-  height: $height-chat-input;
-  padding: $padding-chat-bottom;
-  border: 1px solid $color-border;
-  box-shadow: 0 .5px 0 $color-border-light;
-  @extend .fill-width;
+  overflow: hidden; // respect block formatting context
 }
 
 .chat-stats {
   @include lighten-gradient($color-chat-bottom-background);
 
-  font-family: $font-family-chat-stats;
-  color: $color-font-chat-stats;
-  text-shadow: $text-shadow-chat-stats;
-  letter-spacing: .5px;
   height: $height-chat-stats;
   line-height: $height-chat-stats;
-  text-indent: $padding-chat-bottom;
+  padding: 0 $padding-chat-bottom;
   border-top: 1px solid $color-border-light;
   box-shadow: 0 -1px 0 $color-border;
 }
 
 .chat-stats-info {
   @extend .center-align;
+
   padding: 0 $space-xl;
   border-left: 1px solid $color-border-light;
 }

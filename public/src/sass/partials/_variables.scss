@@ -14,11 +14,12 @@ $color-border: #3a3a3a;
 $color-border-light: #7d7d7d;
 
 // Font
-$font-family: Consolas, Menlo Regular, monospace;
+$font-family: Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif;
 $font-size: 10px;
 
 // Dimensions
-$min-width-app: 30em;
+$min-width-app: 48em;
+$min-height-app: 24em;
 
 // Media Queries
 $break-desktop: 48em;
@@ -26,13 +27,12 @@ $break-desktop: 48em;
 // ============================================================================
 // Login
 // ============================================================================
-$height-login-input: 3em;
-$height-login-error: 2em;
-$padding-login-container: $space-l;
-$height-login-container: $height-login-input + $height-login-error 
-  + ($padding-login-container * 2);
-$width-login-container: $min-width-app - $padding-login-container;
+$color-login-list-border: #363636;
+$color-login-list-border-light: #4d4d4d;
 
+$color-login-list: #c8c8c8;
+$color-login-background: #404040;
+$color-login-selected-background: #575757;
 // ============================================================================
 // Chat Bottom
 // ============================================================================
@@ -41,21 +41,21 @@ $padding-chat-bottom: $space-xs;
 
 // Colors
 $color-chat-bottom-background: #555555;
-$color-font-chat-stats: white;
+$color-font-chat-bottom: white;
 
 // Font
-$text-shadow-chat-stats: 0px -.75px 0px black;
-$font-family-chat-stats: sans-serif;
+$text-shadow-chat-bottom: 0px -.75px 0px black;
 
 // Dimensions
 $height-chat-input: 2em;
-$height-chat-input-container: $height-chat-input + (2 * $padding-chat-bottom); 
+$height-chat-input-container: $height-chat-input + (2 * $padding-chat-bottom);
 $height-chat-stats: 1em + (2 * $padding-chat-bottom);
 $height-chat-bottom: $height-chat-input-container + $height-chat-stats;
 
 // ============================================================================
 // User list
 // ============================================================================
+$width-user-list: 15em;
 $color-user-text: black;
 $color-user-list-background: #e6e6e6;
 $color-user-list-arrow: #868686;
@@ -75,12 +75,13 @@ $message-line-height: 1.2;
 // Text
 // ============================================================================
 // Colors
-$color-message-text: white;
-$color-message-comment: #75715e;
-$color-message-var: #66d9ef;
-$color-message-operator: #f92672;
-$color-message-string: #e6db74;
-$color-message-number: #ae81ff;
-$color-message-method: #91e22e;
-$color-message-function: $color-message-var;
-$color-message-argument: #fd9822;
+$font-family-code: Consolas, Menlo Regular, monospace;
+$color-code: white;
+$color-code-comment: #75715e;
+$color-code-var: #66d9ef;
+$color-code-operator: #f92672;
+$color-code-string: #e6db74;
+$color-code-number: #ae81ff;
+$color-code-method: #91e22e;
+$color-code-function: $color-code-var;
+$color-code-argument: #fd9822;

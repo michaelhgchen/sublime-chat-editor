@@ -1,0 +1,10 @@
+.input {
+  @extend .fill-width;
+
+  color: black;
+  margin-top: -1px;
+  height: $height-chat-input;
+  padding: $padding-chat-bottom;
+  border: 1px solid $color-border;
+  box-shadow: 0 .5px 0 $color-border-light;
+}

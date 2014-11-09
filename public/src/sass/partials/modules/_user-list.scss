@@ -3,7 +3,7 @@
   @extend .fill-height;
   @extend .pull-left;
 
-  width: 20%;
+  width: $width-user-list;
   padding: $space-m;
   overflow: auto;
 

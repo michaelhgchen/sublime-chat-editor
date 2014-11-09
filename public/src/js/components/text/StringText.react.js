@@ -1,4 +1,4 @@
-var 
+var
   React = require('react'),
   StringText;
 

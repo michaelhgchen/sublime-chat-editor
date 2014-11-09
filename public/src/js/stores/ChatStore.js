@@ -9,10 +9,7 @@ var
 
 username    = '';
 allUsers    = {};
-messages    = [{
-  type: TextTypes.COMMENT,
-  message: 'list of all messages'
-}];
+messages    = [];
 
 function setUsername(name) {
   username = name;
@@ -71,6 +68,11 @@ ChatStore.dispatchToken = AppDispatcher.register(function(payload) {
 
       setUsername(data.username);
       addAllUsers(data.allUsers);
+      addMessage({
+        type: TextTypes.COMMENT,
+        message: 'list of all messages'
+      });
+
       ChatStore.emitChange();
       break;
 

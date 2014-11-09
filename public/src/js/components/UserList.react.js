@@ -8,7 +8,7 @@ UserList = React.createClass({
 
     allUsers = Object.keys(this.props.allUsers).map(function(user) {
       return (
-        <li>{user}</li>
+        <li key={user}>{user}</li>
       );
     });
 

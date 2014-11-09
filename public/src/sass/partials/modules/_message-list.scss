@@ -1,14 +1,13 @@
 .message-list {
   @extend .fill-height;
-  @extend .pull-right;
 
-  width: 80%;
   padding: $space-xs 0;
   position: relative;
   overflow: auto;
 
   background-color: $color-message-list-background;
-  color: $color-message-text;
+  font-family: $font-family-code;
+  color: $color-code;
 }
 
 .line {

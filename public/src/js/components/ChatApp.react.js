@@ -1,10 +1,11 @@
 var
-  React       = require('react'),
-  ChatStore   = require('../stores/ChatStore'),
-  Login       = require('./Login.react'),
-  MessageList = require('./MessageList.react'),
-  UserList    = require('./UserList.react'),
-  ChatBottom  = require('./ChatBottom.react.js');
+  React              = require('react'),
+  CSSTransitionGroup = require('react/addons').addons.CSSTransitionGroup,
+  ChatStore          = require('../stores/ChatStore'),
+  Login              = require('./Login.react'),
+  MessageList        = require('./MessageList.react'),
+  UserList           = require('./UserList.react'),
+  ChatBottom         = require('./ChatBottom.react.js');
 
 function getStateFromStores() {
   return {
@@ -21,6 +22,7 @@ var ChatApp = React.createClass({
 
   componentDidMount: function() {
     ChatStore.addChangeListener(this._onChange);
+
   },
 
   componentWillUnmount: function() {
@@ -28,15 +30,24 @@ var ChatApp = React.createClass({
   },
 
   render: function() {
+    var Body;
+
+    Body = this.state.username
+      ? <UserList key="user-list" allUsers={this.state.allUsers} />
+      : <Login key="log-in"/>;
+
     return (
-      <div className="chat-app">
-        {this.state.username ? '' : <Login/>}
+      <div key="chat-app" className="chat-app">
         <div className="chat-display">
+          <CSSTransitionGroup transitionName="login-transition">
+            {Body}
+          </CSSTransitionGroup>
           <MessageList messages={this.state.messages} />
-          <UserList allUsers={this.state.allUsers} />
         </div>
         <ChatBottom messages={this.state.messages} />
       </div>
+
+
     );
   },
 
