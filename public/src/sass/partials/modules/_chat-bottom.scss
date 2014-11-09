@@ -27,6 +27,7 @@
 
 .chat-input {
   overflow: hidden; // respect block formatting context
+  font-family: $font-family-code;
 }
 
 .chat-stats {

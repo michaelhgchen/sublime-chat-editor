@@ -16,17 +16,6 @@
   width: $min-width-app * .75;
 }
 
-.login-input {
-  @extend .fill-width;
-
-  color: black;
-  margin-top: -1px;
-  height: $height-chat-input;
-  padding: $padding-chat-bottom;
-  border: 1px solid $color-border;
-  box-shadow: 0 .5px 0 $color-border-light;
-}
-
 .login-list {
   @extend .compact-list;
   @extend .left-align;
@@ -44,4 +33,9 @@
     box-shadow: 0 1px 0 $color-login-list-border-light;
     border-bottom: 1px solid $color-login-list-border;
   }
+}
+
+.login-bold {
+  color: white;
+  font-weight: 900;
 }

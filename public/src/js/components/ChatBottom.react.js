@@ -58,6 +58,7 @@ ChatBottom = React.createClass({
           <div className="chat-input-label">File Name:</div>
           <div className="chat-input">
             <input
+              disabled={!this.props.loggedIn}
               className="input"
               type="text"
               value={this.state.message}

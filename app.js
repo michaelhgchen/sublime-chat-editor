@@ -28,7 +28,7 @@ io.on('connection', function (socket) {
     // If username is already in use, fail login
     if(allUsers[username]) {
       socket.emit('login fail', {
-        error:'That name is already in use'
+        error:'DUPLICATE'
       });
       return;
     }
@@ -45,27 +45,27 @@ io.on('connection', function (socket) {
     socket.broadcast.emit('user joined', {
       username: username
     });
+  });
 
-      // Sending a message
-      socket.on('new message', function (message) {
-        socket.broadcast.emit('new message', {
-          username: socket.username,
-          message: message
-        });
-      });
+  // Sending a message
+  socket.on('new message', function (message) {
+    socket.broadcast.emit('new message', {
+      username: socket.username,
+      message: message
+    });
+  });
 
-      // Typing
-      socket.on('typing', function () {
-        socket.broadcast.emit('typing', {
-          username: socket.username
-        });
-      });
+  // Typing
+  socket.on('typing', function () {
+    socket.broadcast.emit('typing', {
+      username: socket.username
+    });
+  });
 
-      socket.on('stop typing', function () {
-        socket.broadcast.emit('stop typing', {
-          username: socket.username
-        });
-      });
+  socket.on('stop typing', function () {
+    socket.broadcast.emit('stop typing', {
+      username: socket.username
+    });
   });
 
   // Disconnecting

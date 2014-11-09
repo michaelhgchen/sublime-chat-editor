@@ -30,14 +30,19 @@ Login = React.createClass({
   },
 
   handleSubmit: function() {
-    if(this.state.name) {
-      ViewActions.newUser(this.state.name);
+    var name;
+
+    name = this.state.name.trim();
+
+    if(name) {
+      ViewActions.newUser(name);
     }
   },
 
   handleChange: function(e) {
     this.setState({
-      name: e.target.value
+      name: e.target.value,
+      loginError: ''
     });
   },
 
@@ -48,21 +53,43 @@ Login = React.createClass({
   },
 
   render: function() {
+    var name, loginError, listing;
+
+    name = this.state.name.trim();
+    loginError = this.state.loginError;
+    listing = [
+      loginError
+        ? loginError.replace('Name', name)
+        : 'Enter a Nickname',
+      'Made With: Node, React, Flux and Socket.IO',
+      'Sublime Chat Editor: Developed by Michael Chen'
+    ];
+
+    listing = listing.map(function(list) {
+      var toMatch, toReplace;
+
+      toMatch = new RegExp(name, 'gi');
+      toReplace = ['<span class="login-bold">', '$&', '</span>'].join('');
+
+      if(list.match(toMatch)) {
+        return <li key={list}
+          dangerouslySetInnerHTML={{__html: list.replace(toMatch, toReplace)}}/>;
+      } else {
+        return null;
+      }
+    });
+
     return (
       <div className="login-overlay">
         <div className="login-container">
-          <input className="login-input"
+          <input className="input"
             type="text"
             value={this.state.name}
             onChange={this.handleChange}
             onKeyDown={this.handleEnter}
             onSubmit={this.handleSubmit}/>
-          <div className="login-error">{this.state.loginError}</div>
-
           <ul className="login-list">
-            <li>Enter a Username</li>
-            <li>Developed by Michael Chen</li>
-            <li>React Flux Socket.IO</li>
+            {listing}
           </ul>
         </div>
       </div>

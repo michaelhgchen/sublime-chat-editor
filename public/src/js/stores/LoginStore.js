@@ -41,7 +41,12 @@ LoginStore.dispatchToken = AppDispatcher.register(function(payload) {
 
   switch(action.type) {
     case ActionTypes.LOGIN_FAIL:
-      setLoginError(action.data.error);
+      switch(action.data.error) {
+        case 'DUPLICATE':
+          setLoginError('Name is Already in Use: Please Try Again');
+          break;
+      }
+
       LoginStore.emitChange();
       break;
 

@@ -30,21 +30,23 @@ var ChatApp = React.createClass({
   },
 
   render: function() {
-    var Body;
+    var loggedIn, messages;
 
-    Body = this.state.username
-      ? <UserList key="user-list" allUsers={this.state.allUsers} />
-      : <Login key="log-in"/>;
+    loggedIn = !!this.state.username.trim();
 
     return (
       <div key="chat-app" className="chat-app">
         <div className="chat-display">
           <CSSTransitionGroup transitionName="login-transition">
-            {Body}
+            {
+              loggedIn
+                ? <UserList key="user-list" allUsers={this.state.allUsers} />
+                : <Login key="log-in"/>
+            }
           </CSSTransitionGroup>
           <MessageList messages={this.state.messages} />
         </div>
-        <ChatBottom messages={this.state.messages} />
+        <ChatBottom loggedIn={loggedIn} messages={this.state.messages} />
       </div>
 
 

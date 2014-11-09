@@ -28,7 +28,7 @@ function removeUser(user) {
 }
 
 function addMessage(message) {
-  messages.push(message);
+  if(username) messages.push(message);
 }
 
 ChatStore = assign({}, EventEmitter.prototype, {
