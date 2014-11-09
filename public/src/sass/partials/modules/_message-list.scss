@@ -1,0 +1,34 @@
+.message-list {
+  @extend .fill-height;
+  @extend .pull-right;
+
+  width: 80%;
+  padding: $space-xs 0;
+  position: relative;
+  overflow: auto;
+
+  background-color: $color-message-list-background;
+  color: $color-message-text;
+}
+
+.line {
+  display: table-row;
+  line-height: $message-line-height;
+  text-indent: $space-xs;
+
+  // highlight last line-number
+  &:last-child > .line-number {
+    background-color: $color-message-line-highlight;
+  }
+}
+
+.line-number {
+  @extend .right-align;
+  display: table-cell;
+  color: $color-message-line-number;
+  padding: 0 $space-l;
+}
+
+.line-message {
+  display: table-cell;
+}

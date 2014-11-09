@@ -1,0 +1,12 @@
+.user-list {
+  @extend .compact-list;
+  @extend .fill-height;
+  @extend .pull-left;
+
+  width: 20%;
+  padding: $space-m;
+  overflow: auto;
+
+  background-color: $color-user-list-background;
+  color: $color-user-text;
+}

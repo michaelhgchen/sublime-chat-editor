@@ -9,7 +9,10 @@ var
 
 username    = '';
 allUsers    = {};
-messages    = [];
+messages    = [{
+  type: TextTypes.COMMENT,
+  message: 'list of all messages'
+}];
 
 function setUsername(name) {
   username = name;
@@ -93,7 +96,7 @@ ChatStore.dispatchToken = AppDispatcher.register(function(payload) {
       data = action.data;
 
       addMessage({
-        type: TextTypes.MESSAGE,
+        type: TextTypes.NEW_MESSAGE,
         username: data.username,
         message: data.message
       });
@@ -104,8 +107,8 @@ ChatStore.dispatchToken = AppDispatcher.register(function(payload) {
       data = action.data;
 
       addMessage({
-        type: TextTypes.MESSAGE,
-        author: username,
+        type: TextTypes.SEND_MESSAGE,
+        username: username,
         message: data.message
       });
       ChatStore.emitChange();

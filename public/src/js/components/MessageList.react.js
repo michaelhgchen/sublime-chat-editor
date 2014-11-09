@@ -2,7 +2,7 @@ var
   React            = require('react'),
   TypingStore      = require('../stores/TypingStore'),
   TextTypes        = require('../constants/Constants').TextTypes,
-  MessageConverter = require('../util/MessageConverter'),
+  MessageConverter = require('../util/MessageConverter.react'),
   MessageList;
 
 function getStateFromStores() {
@@ -27,25 +27,18 @@ MessageList = React.createClass({
   render: function() {
     var messages;
 
-    messages = [{
-      type: TextTypes.COMMENT,
-      message: 'list of all messages'
-    }];
-
-    messages = messages.concat(this.props.messages);
+    messages = this.props.messages.slice(0);
 
     if(this.state.typingText) {
-      messages = messages.concat([{
+      messages.push({
         type: TextTypes.COMMENT,
         message: this.state.typingText
-      }]);
+      });
     }
-
-    MessageConverter(messages);
 
     return (
       <div className="message-list">
-      Hi
+      {MessageConverter(messages)}
       </div>
     );
   },

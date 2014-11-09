@@ -1,0 +1,13 @@
+.chat-app {
+  @extend .fill-height;
+  position: relative;
+  min-height: $height-chat-bottom * 2;
+  min-width: $height-chat-bottom * 2;
+
+  width: 100%;
+}
+
+.chat-display {
+  @extend .fill-height;
+  padding-bottom: $height-chat-bottom;
+}

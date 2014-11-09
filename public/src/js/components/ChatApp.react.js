@@ -4,7 +4,7 @@ var
   Login       = require('./Login.react'),
   MessageList = require('./MessageList.react'),
   UserList    = require('./UserList.react'),
-  ChatInput   = require('./ChatInput.react.js');
+  ChatBottom  = require('./ChatBottom.react.js');
 
 function getStateFromStores() {
   return {
@@ -28,19 +28,16 @@ var ChatApp = React.createClass({
   },
 
   render: function() {
-    var Body;
-
-    Body = this.state.username
-    ? (<div className="chat-app">
+    return (
+      <div className="chat-app">
+        {this.state.username ? '' : <Login/>}
         <div className="chat-display">
           <MessageList messages={this.state.messages} />
           <UserList allUsers={this.state.allUsers} />
         </div>
-        <ChatInput />
-      </div>)
-    : <Login/>;
-
-    return Body;
+        <ChatBottom messages={this.state.messages} />
+      </div>
+    );
   },
 
   _onChange: function() {

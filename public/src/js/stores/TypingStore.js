@@ -24,7 +24,7 @@ TypingStore = assign({}, EventEmitter.prototype, {
   getTypingText: function() {
     var typingUsers, typingUsersNum, typingText;
 
-    typingUsers   = Object.keys(this.getTypingUsers),
+    typingUsers   = Object.keys(this.getTypingUsers()),
     typingUserNum = typingUsers.length,
     typingText    = '';
 

@@ -51,7 +51,6 @@ Login = React.createClass({
     return (
       <div className="overlay">
         <div className="login-container">
-          <h1 className="login-title">What is your name?</h1>
           <input className="login-input"
             type="text"
             value={this.state.name}

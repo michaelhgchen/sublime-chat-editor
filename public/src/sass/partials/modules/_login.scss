@@ -1,0 +1,32 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 100;
+}
+
+.login-container {
+  background-color: white;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  height: $height-login-container;
+  width: $width-login-container;
+  margin-left: -($width-login-container / 2);
+  margin-top: -($height-login-container / 2);
+  padding: $padding-login-container;
+}
+
+.login-input {
+  @extend .fill-width;
+  height: $height-login-input;
+}
+
+.login-error {
+  color: red;
+  font-weight: bold;
+  height: $height-login-error;
+  line-height: $height-login-error;
+}

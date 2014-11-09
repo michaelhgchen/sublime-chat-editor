@@ -2,11 +2,11 @@ var
   React       = require('react'),
   ViewActions = require('../actions/ViewActions'),
   ENTER_KEY   = 13,
-  typingTimeout, debounce, ChatInput;
+  typingTimeout, debounce, ChatBottom;
 
 debounce = 500;
 
-ChatInput = React.createClass({
+ChatBottom = React.createClass({
   getInitialState: function() {
     return {
       message: ''
@@ -47,17 +47,30 @@ ChatInput = React.createClass({
   },
 
   render: function() {
+    var lineNumber;
+
+    lineNumber = this.props.messages.length;
+
     return (
-      <input
-        className="chat-input"
-        type="text"
-        value={this.state.message}
-        ref="chatInput"
-        onChange={this.handleChange}
-        onKeyDown={this.handleEnter}
-        onSubmit={this.handleSubmit}/>
+      <div className="chat-bottom">
+        <div className="chat-input-container">
+          <input
+            className="chat-input"
+            type="text"
+            value={this.state.message}
+            ref="chatInput"
+            onChange={this.handleChange}
+            onKeyDown={this.handleEnter}
+            onSubmit={this.handleSubmit}/>
+        </div>
+        <div className="chat-stats">
+          Line {lineNumber + 1}, Column 1
+          <div className="pull-right chat-stats-info">JavaScript</div>
+          <div className="pull-right chat-stats-info">Spaces: 2</div>
+        </div>
+      </div>
     );
   }
 });
 
-module.exports = ChatInput;
+module.exports = ChatBottom;

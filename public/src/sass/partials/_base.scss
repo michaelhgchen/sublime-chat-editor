@@ -16,7 +16,7 @@ html {
 
 body {
   font-family: $font-family;
-  line-height: 1.42857143;
+  font-size: $font-size;
   color: $color-font;
   height: 100%;
 }
@@ -24,8 +24,4 @@ body {
 a {
   text-decoration: none;
   color: inherit;
-}
-
-input {
-  padding: $space-s;
 }
