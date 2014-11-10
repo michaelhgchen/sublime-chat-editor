@@ -70,8 +70,8 @@ ChatBottom = React.createClass({
         </div>
         <div className="chat-stats">
           Line {lineNumber + 1}, Column 1
-          <div className="pull-right chat-stats-info">JavaScript</div>
-          <div className="pull-right chat-stats-info">Spaces: 2</div>
+          <div className="pull-right chat-stats-info no-mobile">JavaScript</div>
+          <div className="pull-right chat-stats-info no-mobile">Spaces: 2</div>
         </div>
       </div>
     );

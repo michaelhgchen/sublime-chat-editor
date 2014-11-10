@@ -18,6 +18,7 @@
 
 .blinking {
   animation: 1s blink step-end infinite;
+  margin-left: -2px;
 }
 
 @keyframes "blink" {

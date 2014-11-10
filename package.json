@@ -42,5 +42,8 @@
     "run-sequence": "^1.0.1",
     "vinyl-source-stream": "^1.0.0",
     "watchify": "^2.1.1"
+  },
+  "engines" : {
+    "node" : ">=0.10.3 <0.12"
   }
 }

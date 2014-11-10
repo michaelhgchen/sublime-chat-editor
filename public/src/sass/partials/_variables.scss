@@ -18,21 +18,24 @@ $font-family: Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif;
 $font-size: 10px;
 
 // Dimensions
-$min-width-app: 48em;
+$min-width-app: 24em;
 $min-height-app: 24em;
 
 // Media Queries
-$break-desktop: 48em;
+$break-desktop: 32em;
 
 // ============================================================================
 // Login
 // ============================================================================
+// Colors
 $color-login-list-border: #363636;
 $color-login-list-border-light: #4d4d4d;
-
 $color-login-list: #c8c8c8;
 $color-login-background: #404040;
 $color-login-selected-background: #575757;
+
+// Dimensions
+$width-login-container: 36em;
 // ============================================================================
 // Chat Bottom
 // ============================================================================
@@ -84,6 +87,5 @@ $color-text-var: #66d9ef;
 $color-text-operator: #f92672;
 $color-text-string: #e6db74;
 $color-text-number: #ae81ff;
-$color-text-method: #91e22e;
-$color-text-function: $color-text-var;
+$color-text-function: #91e22e;
 $color-text-argument: #fd9822;

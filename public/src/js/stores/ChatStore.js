@@ -69,8 +69,7 @@ ChatStore.dispatchToken = AppDispatcher.register(function(payload) {
       setUsername(data.username);
       addAllUsers(data.allUsers);
       addMessage({
-        type: TextTypes.COMMENT,
-        message: 'list of all messages'
+        type: TextTypes.INIT
       });
 
       ChatStore.emitChange();

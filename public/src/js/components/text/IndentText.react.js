@@ -10,7 +10,7 @@ IndentText = React.createClass({
 
     for(i = 0, j = this.props.number; i < j; ++i) {
       indents.push(
-        <span className="text-indent">{'  '}</span>
+        <span className="text-indent">{'\u00A0\u00A0'}</span>
       );
     };
 

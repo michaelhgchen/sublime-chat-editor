@@ -7,7 +7,7 @@ module.exports = function(messages) {
   messages.forEach(function(message) {
     message = TextMap(message);
 
-    convertedMessages.push(message);
+    convertedMessages = convertedMessages.concat(message);
   });
 
   // add blinking cursor to last line

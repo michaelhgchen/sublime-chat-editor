@@ -5,17 +5,13 @@ var
   app           = express(),
   server        = http.Server(app),
   domainHandler = require('./lib/domain-handler')(server),
-  logCluster    = require('./lib/log-cluster'),
   io            = require('socket.io')(server),
   allUsers      = {};
 
-// A domain is an execution context that will catch errors that occur inside it
+// domain-handler creates an execution context that will catch errors
 app.use(domainHandler);
 
-// Log which worker handles requests when clustering
-app.use(logCluster);
-
-// Routing
+// Static routing
 app.use(express.static(__dirname + '/public'));
 
 // Socket
@@ -29,6 +25,7 @@ io.on('connection', function (socket) {
       socket.emit('login fail', {
         error:'DUPLICATE'
       });
+
       return;
     }
 
@@ -82,22 +79,10 @@ io.on('connection', function (socket) {
   });
 });
 
-// Server w/ app cluster support
-function startServer() {
-  server.listen(port, function() {
-    console.log(
-      'Express started in %s mode on port %d',
-      app.get('env'),
-      port
-    );
-  });
-}
-
-// Run application directly
-if(require.main === module) {
-  startServer();
-
-// Otherwise export as a function to create the server
-} else {
-  module.exports = startServer;
-}
+server.listen(port, function() {
+  console.log(
+    'Express started in %s mode on port %d',
+    app.get('env'),
+    port
+  );
+});

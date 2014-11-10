@@ -1,26 +1,39 @@
-// startup
-function User(userame) {
+function User(username) {
   this._username = username;
+  this._history  = [];
 }
 
 User.prototype = {
-  
-}
+  constructor: User,
 
-function ChatRoom() {
-  this._users = {};
-}
-
-ChatRoom.prototype({
-  constructor: ChatRoom,
-
-  addUser: function(username) {
-    this._users[username] = new User('username');
+  sendMessage: function(message) {
+    this._history.push({
+      from: this._username,
+      message: message,
+    });
   },
 
-  removeUser: function(username) {
-    delete this._users[username];
+  getMessage: function(message) {
+    this._history.push(message);
   }
+}
+
+var $me, myChatRoom;
+
+$me = new User('username');
+myChatRoom = {};
+
+// message received
+$me.getMessage({
+  from: 'michael',
+  message: ''
 });
 
-var myChatRoom = new ChatRoom();
+// message sent
+$me.sendMessage('');
+
+// USER has joined
+myChatRoom['michael'] = new User('michael');
+
+// USER has left
+delete myChatRoom['michael'];

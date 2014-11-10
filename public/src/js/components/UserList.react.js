@@ -16,7 +16,7 @@ UserList = React.createClass({
     });
 
     return (
-      <div className="user-list-container">
+      <div className="user-list-container no-mobile">
         <div className="user-list-title">Folders</div>
         <ul className="folder">
           <li className="open"><i className="icon-folder-open-o"></i>users</li>
