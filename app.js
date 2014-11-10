@@ -1,7 +1,6 @@
 var
   http          = require('http'),
   express       = require('express'),
-  secrets       = require('./secrets'),
   port          = require('./config').port,
   app           = express(),
   server        = http.Server(app),
