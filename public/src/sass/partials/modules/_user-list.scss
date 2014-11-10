@@ -1,12 +1,56 @@
-.user-list {
-  @extend .compact-list;
+.user-list-container {
   @extend .fill-height;
   @extend .pull-left;
 
-  width: $width-user-list;
-  padding: $space-m;
-  overflow: auto;
-
   background-color: $color-user-list-background;
-  color: $color-user-text;
+  width: $width-user-list;
+  overflow: auto;
+  padding: $space-xs;
+}
+
+.user-list-title {
+  color: $color-user-list-title;
+  text-shadow: $text-shadow-user-list;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 1.1em;
+}
+
+.folder {
+  @extend .compact-list;
+  padding-left: 1em;
+
+  & > li:first-child {
+    &.closed {
+      &:before {
+        content: "\e603" ;
+        font-family: icomoon;
+        color: $color-user-list-arrow;
+        display: inline-block;
+        text-align:center;
+        width: 1em;
+        margin-left: -1em;
+        margin-top: -.25em;
+        vertical-align: middle;
+      }
+    }
+
+    &.open {
+      &:before {
+        content: "\e601";
+        font-family: icomoon;
+        color: $color-user-list-arrow;
+        display: inline-block;
+        text-align:center;
+        width: 1em;
+        margin-left: -1em;
+        margin-top: -.25em;
+        vertical-align: middle;
+      }
+    }
+  }
+}
+
+.folder-contents {
+  @extend .compact-list;
 }

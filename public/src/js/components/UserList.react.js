@@ -8,15 +8,23 @@ UserList = React.createClass({
 
     allUsers = Object.keys(this.props.allUsers).map(function(user) {
       return (
-        <li key={user}>{user}</li>
+        <li key={user}>
+          <i className="icon-file-code-o"></i>
+          {user}.js
+        </li>
       );
     });
 
     return (
-      <ul className="user-list">
-        <li>users</li>
-        {allUsers}
-      </ul>
+      <div className="user-list-container">
+        <div className="user-list-title">Folders</div>
+        <ul className="folder">
+          <li className="open"><i className="icon-folder-open-o"></i>users</li>
+          <ul className="folder-contents">
+            {allUsers}
+          </ul>
+        </ul>
+      </div>
     );
   }
 });

@@ -56,9 +56,11 @@ $height-chat-bottom: $height-chat-input-container + $height-chat-stats;
 // User list
 // ============================================================================
 $width-user-list: 15em;
-$color-user-text: black;
+$color-user-list-title: #828282;
+$color-user-list-text: black;
 $color-user-list-background: #e6e6e6;
 $color-user-list-arrow: #868686;
+$text-shadow-user-list: 0px .75px 0px white;
 
 // ============================================================================
 // Message list

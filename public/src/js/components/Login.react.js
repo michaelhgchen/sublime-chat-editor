@@ -60,9 +60,9 @@ Login = React.createClass({
     listing = [
       loginError
         ? loginError.replace('Name', name)
-        : 'Enter a Nickname',
-      'Made With: Node, React, Flux and Socket.IO',
-      'Sublime Chat Editor: Developed by Michael Chen'
+        : 'Choose a Nickname',
+      'Developed by Michael Chen Using: Node, React, Flux and Socket.IO',
+      'Sublime Chat Editor: A Chat Application That Looks Like Sublime'
     ];
 
     listing = listing.map(function(list) {
@@ -100,6 +100,5 @@ Login = React.createClass({
     this.setState(getStateFromStores());
   }
 });
-
 
 module.exports = Login;
