@@ -20,7 +20,11 @@ var
   mocha  = require('gulp-mocha'),
 
   // server
-  fork = require('child_process').fork;
+  fork = require('child_process').fork,
+
+  // optimize
+  minifyCss = require('gulp-minify-css'),
+  uglify    = require('gulp-uglify');
 
 // ============================================================================
 // Functions
@@ -151,6 +155,22 @@ gulp.task('lint', function() {
 gulp.task('test', function() {
 
 });
+// ====================================
+// Optimize
+// ====================================
+gulp.task('uglify', function() {
+  return gulp.src('./public/build/js/scripts.js')
+    .pipe(uglify())
+    .pipe(gulp.dest('./public/build/js/'));
+});
+
+gulp.task('minify-css', function() {
+  return gulp.src('./public/build/css/styles.css')
+    .pipe(minifyCss())
+    .pipe(gulp.dest('./public/build/css/'));
+});
+
+gulp.task('optimize', ['uglify', 'minify-css']);
 
 // ====================================
 // Watch
