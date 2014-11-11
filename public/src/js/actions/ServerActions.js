@@ -3,16 +3,22 @@ var
   ActionTypes   = require('../constants/Constants').ActionTypes;
 
 module.exports = {
-  loginSuccess: function(data) {
+  resetApp: function() {
     AppDispatcher.handleServerAction({
-      type: ActionTypes.LOGIN_SUCCESS,
+      type: ActionTypes.RESET_APP
+    });
+  },
+
+  login: function(data) {
+    AppDispatcher.handleServerAction({
+      type: ActionTypes.LOGIN,
       data: data
     });
   },
 
-  loginFail: function(data) {
+  failLogin: function(data) {
     AppDispatcher.handleServerAction({
-      type: ActionTypes.LOGIN_FAIL,
+      type: ActionTypes.FAIL_LOGIN,
       data: data
     });
   },

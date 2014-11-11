@@ -1,3 +1,5 @@
+// store for login status
+
 var
   assign        = require('object-assign'),
   EventEmitter  = require('events').EventEmitter,
@@ -40,7 +42,7 @@ LoginStore.dispatchToken = AppDispatcher.register(function(payload) {
   action = payload.action;
 
   switch(action.type) {
-    case ActionTypes.LOGIN_FAIL:
+    case ActionTypes.FAIL_LOGIN:
       switch(action.data.error) {
         case 'DUPLICATE':
           setLoginError('Name is Already in Use: Please Try Again');
@@ -50,7 +52,7 @@ LoginStore.dispatchToken = AppDispatcher.register(function(payload) {
       LoginStore.emitChange();
       break;
 
-    case ActionTypes.LOGIN_SUCCESS:
+    case ActionTypes.LOGIN:
       clearLoginError();
       LoginStore.emitChange();
       break;

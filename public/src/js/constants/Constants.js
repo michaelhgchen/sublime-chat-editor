@@ -1,13 +1,13 @@
 module.exports = {
   ActionTypes: {
-    LOGIN_SUCCESS: 'LOGIN_SUCCESS',
-    LOGIN_FAIL: 'LOGIN_FAIL',
-    NEW_USER: 'NEW_USER',
+    LOGIN: 'LOGIN',
+    FAIL_LOGIN: 'FAIL_LOGIN',
     USER_JOINED: 'USER_JOINED',
     NEW_MESSAGE: 'NEW_MESSAGE',
     TYPING: 'TYPING',
     STOP_TYPING: 'STOP_TYPING',
-    USER_LEFT: 'USER_LEFT'
+    USER_LEFT: 'USER_LEFT',
+    RESET_APP: 'RESET_APP'
   },
 
   PayloadSources: {

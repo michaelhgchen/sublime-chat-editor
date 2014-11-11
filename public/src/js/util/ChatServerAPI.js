@@ -1,21 +1,25 @@
 var ServerActions = require('../actions/ServerActions'),
   Socket;
 
-
 // naive check for node vs. browser
 // to prevent errors when rendering React server-side
 try {
   if(window !== undefined) {
     Socket = require('../socket');
 
+    // if no username on connection
+    Socket.on('no username', function() {
+      ServerActions.resetApp();
+    });
+
     // return login error
     Socket.on('login fail', function(data) {
-      ServerActions.loginFail(data);
+      ServerActions.failLogin(data);
     });
 
     // return data with login name, list of users, number of users
     Socket.on('login success', function(data) {
-      ServerActions.loginSuccess(data);
+      ServerActions.login(data);
     });
 
     Socket.on('user joined', function(data) {
@@ -38,9 +42,7 @@ try {
       ServerActions.stopTyping(data);
     });
   }
-} catch(e) {
-  console.error(e);
-}
+} catch(e) {}
 
 module.exports = {
   newUser: function(username) {

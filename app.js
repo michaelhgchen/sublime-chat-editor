@@ -13,27 +13,28 @@ var
   React         = require('react'),
   ChatApp       = require('./server-react/components/ChatApp.react');
 
-// Set templating engine to Handlebars's
+// Set templating engine and default engine extension to Handlebars's
 app.engine('handlebars', handlebars.engine);
-
-// Set handlerbars as default engine extension
 app.set('view engine', 'handlebars');
 
-// domain-handler creates an execution context that will catch errors
+// Create an execution context that will catch errors
 app.use(domainHandler);
 
 // Static routing
 app.use(express.static(__dirname + '/public'));
 
 app.get('/', function(req, res) {
+  // Render React App
   res.render('home', {
     react: React.renderToString(ChatApp({}))
   });
 });
 
-// Socket
+// Socket logic
 io.on('connection', function (socket) {
-  console.log('A user has connected');
+  if(!socket.username) {
+    socket.emit('no username');
+  }
 
   // Logging in
   socket.on('new user', function (username) {
@@ -44,23 +45,32 @@ io.on('connection', function (socket) {
       });
 
       return;
+    } else if (!username) {
+      socket.emit('login fail', {
+        error:'INVALID NAME'
+      });
     }
 
-    // Otherwise set socket username and store in allUsers
+    // Otherwise the name assignment is successful
+    console.log((new Date()).toString(), ':', username, 'has joined');
+
+    // Set name in socket and store in allUsers
     socket.username    = username;
     allUsers[username] = username;
 
+    // Let user know they have joined
     socket.emit('login success', {
       username: username,
       allUsers: allUsers
     });
 
+    // Let other users know user has joined
     socket.broadcast.emit('user joined', {
       username: username
     });
   });
 
-  // Sending a message
+  // Users receive a new message
   socket.on('new message', function (message) {
     socket.broadcast.emit('new message', {
       username: socket.username,
@@ -68,13 +78,14 @@ io.on('connection', function (socket) {
     });
   });
 
-  // Typing
+  // A user is typing
   socket.on('typing', function () {
     socket.broadcast.emit('typing', {
       username: socket.username
     });
   });
 
+  // A user has stopped typing
   socket.on('stop typing', function () {
     socket.broadcast.emit('stop typing', {
       username: socket.username
@@ -86,6 +97,8 @@ io.on('connection', function (socket) {
     console.log('A user has disconnected');
 
     if (socket.username) {
+      console.log((new Date()).toString(), ':', socket.username, 'has left');
+
       // If socket had a username, delete it
       delete allUsers[socket.username];
 

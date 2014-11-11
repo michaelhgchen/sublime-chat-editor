@@ -1,3 +1,5 @@
+// store for messages, users and current username
+
 var
   assign        = require('object-assign'),
   EventEmitter  = require('events').EventEmitter,
@@ -29,6 +31,10 @@ function removeUser(user) {
 
 function addMessage(message) {
   if(username) messages.push(message);
+}
+
+function clearMessages() {
+  messages = [];
 }
 
 ChatStore = assign({}, EventEmitter.prototype, {
@@ -63,7 +69,13 @@ ChatStore.dispatchToken = AppDispatcher.register(function(payload) {
   action = payload.action;
 
   switch(action.type) {
-    case ActionTypes.LOGIN_SUCCESS:
+    case ActionTypes.RESET_APP:
+      setUsername('');
+      clearMessages();
+      ChatStore.emitChange();
+      break;
+
+    case ActionTypes.LOGIN:
       data = action.data;
 
       setUsername(data.username);

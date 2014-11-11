@@ -1,3 +1,5 @@
+// store for users who are currently typing
+
 var
   assign        = require('object-assign'),
   EventEmitter  = require('events').EventEmitter,
@@ -21,6 +23,7 @@ TypingStore = assign({}, EventEmitter.prototype, {
     return typingUsers;
   },
 
+  // return text for typing users (move somewhere else?)
   getTypingText: function() {
     var typingUsers, typingUsersNum, typingText;
 

@@ -30,6 +30,7 @@ var
 // ============================================================================
 // Functions
 // ============================================================================
+// handle task errors
 function handleError(task) {
   return function(err) {
     console.error(task, err.message);
@@ -37,6 +38,7 @@ function handleError(task) {
   }
 }
 
+// log duration of tasks specifically for watchify
 function logTime(task, fn) {
   return function() {
     var start;
@@ -56,6 +58,7 @@ function logTime(task, fn) {
   }
 }
 
+// browserify + reactify, with option to watchify
 function buildScripts(config, watch) {
   var bundler, rebundle;
 
@@ -84,6 +87,7 @@ function buildScripts(config, watch) {
   return rebundle();
 }
 
+// compile sass and auto-prefix resulting css
 function buildStyles(config) {
   return gulp.src(config.src)
     .pipe(plumber())
@@ -105,12 +109,14 @@ gulp.task('clean', function(cb) {
 // ====================================
 // Build
 // ====================================
+// compile jsx for server-side use
 gulp.task('build:scripts:server', function() {
   return gulp.src('./public/src/js/**/*.js')
     .pipe(react())
     .pipe(gulp.dest('server-react'));
 });
 
+// browserify + reactify jsx for client-side use
 gulp.task('build:scripts', function() {
   return buildScripts({
     src: './public/src/js/app.js',
@@ -120,6 +126,7 @@ gulp.task('build:scripts', function() {
   });
 });
 
+// compile sass and auto-prefix resulting css
 gulp.task('build:styles', function() {
   return buildStyles({
     src: './public/src/sass/styles.scss',
@@ -127,6 +134,7 @@ gulp.task('build:styles', function() {
   });
 });
 
+// clean built then build everything again
 gulp.task('build', function(cb) {
   runSequence('clean', ['build:scripts', 'build:scripts:server', 'build:styles'], cb);
 });
@@ -134,6 +142,7 @@ gulp.task('build', function(cb) {
 // ====================================
 // Server
 // ====================================
+// start a server
 (function(){
   var server;
 
@@ -155,22 +164,20 @@ gulp.task('build', function(cb) {
 // ====================================
 // Test
 // ====================================
-gulp.task('lint', function() {
+gulp.task('lint', function() {});
+gulp.task('test', function() {});
 
-});
-
-gulp.task('test', function() {
-
-});
 // ====================================
 // Optimize
 // ====================================
+// optimize client-side js
 gulp.task('uglify', function() {
   return gulp.src('./public/build/js/scripts.js')
     .pipe(uglify())
     .pipe(gulp.dest('./public/build/js/'));
 });
 
+// optimize css
 gulp.task('minify-css', function() {
   return gulp.src('./public/build/css/styles.css')
     .pipe(minifyCss())
@@ -182,6 +189,7 @@ gulp.task('optimize', ['uglify', 'minify-css']);
 // ====================================
 // Watch
 // ====================================
+// compile jsx for client and server-side, build css
 gulp.task('watch', function() {
   buildScripts({
     src: './public/src/js/app.js',
@@ -198,6 +206,7 @@ gulp.task('watch', function() {
 // ====================================
 // Default
 // ====================================
+// start server, build, then watch
 gulp.task('default', function() {
   runSequence(['server:start', 'build'], 'watch');
 });
