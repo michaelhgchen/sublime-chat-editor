@@ -1,12 +1,15 @@
 var
-  TextMap           = require('./TextMap.react'),
-  StringToReactSpan = require('./StringToReactSpan');
+  TextMap           = require('./TextMap.react');
 
 module.exports = function(messages) {
   var convertedMessages = [];
 
   messages.forEach(function(message) {
     message = TextMap(message);
+
+    if(message[0] === convertedMessages[convertedMessages.length - 1]) {
+      convertedMessages.pop();
+    }
 
     convertedMessages = convertedMessages.concat(message);
   });

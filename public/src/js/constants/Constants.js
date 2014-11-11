@@ -16,6 +16,7 @@ module.exports = {
   },
 
   TextTypes: {
+    INIT: 'INIT',
     JOINED: 'JOINED',
     LEFT: 'LEFT',
     SEND_MESSAGE: 'SEND_MESSAGE',

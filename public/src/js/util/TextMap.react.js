@@ -1,77 +1,134 @@
 var
-  TextTypes         = require('../constants/Constants').TextTypes,
-  StringToReactSpan = require('./StringToReactSpan');
+  React     = require('react'),
+  TextTypes = require('../constants/Constants').TextTypes;
 
-// TODO: make a parser
+// string
+var S = React.createClass({
+  render: function() {
+    return (
+      <span className="text-string">
+        {"'"}{this.props.text}{"'"}
+      </span>
+    );
+  }
+});
+
+// operator
+var O = React.createClass({
+  render: function() {
+    return (
+      <span className="text-operator">
+        {this.props.text}
+      </span>
+    );
+  }
+});
+
+// var
+var V = React.createClass({
+  render: function() {
+    return (
+      <span className="text-var">
+        {this.props.text}
+      </span>
+    );
+  }
+});
+
+// indent
+var I = React.createClass({
+  render: function() {
+    return (
+      <span className="text-indent">
+        {'\u00A0\u00A0'}
+      </span>
+    );
+  }
+});
+
+// comment
+var C = React.createClass({
+  render: function() {
+    return (
+      <span className="text-comment">
+      {'// '}{this.props.text}
+      </span>
+    );
+  }
+});
+
 module.exports = function(message) {
   switch(message.type) {
     case TextTypes.INIT:
       return [
         <span>
-          <span className="text-var">{'var '}</span>
-          <span className="text-operator">{'$'}</span>{'me '}
-          <span className="text-operator">{'= new'}</span>{' User();'}
+          <V text={'var '} /><O text={'$'} />{'me, users;'}
+        </span>,
+
+        '',
+
+        <span>
+          <O text={'$'} />{'me '}<O text={'= new'} />
+          {' User();'}
+        </span>,
+
+        <span>
+          {'users = {};'}
+        </span>,
+
+        '',
+
+        <C text={'you have joined the room'}/>,
+
+        <span>
+        {'users['}<S text={message.username}/>{'] '}<O text={'= $'} />{'me;'}
+        </span>,
+
+        ''
+      ];
+
+    case TextTypes.JOINED:
+      return [
+        '',
+        <C text={message.username + ' has joined the room'}/>,
+        <span>
+          {'users['}<S text={message.username}/>{'] '}<O text={'= new'}/>
+          {' User();'}
         </span>,
         ''
       ];
 
-    // user joins
-    case TextTypes.JOINED:
-      return [
-        <span>
-        {'myChatRoom.newUser('}
-          <span className="text-string">
-            {"'"}{message.username}{"'"}
-          </span>
-        {');'}
-        </span>
-      ];
-
-    // user leaves
     case TextTypes.LEFT:
-      return [];
+      return [
+        '',
+        <C text={message.username + ' has left the room'}/>,
+        <span>
+          <O text={'delete'}/>{' users['}<S text={message.username}/>{'];'}
+        </span>,
+        ''
+      ];
 
     // receive a new message from another user
     case TextTypes.NEW_MESSAGE:
       return [
-        'myChatRoom.getMessage({',
         <span>
-          <span className="text-indent">{'\u00A0\u00A0'}</span>
-          {'from: '}
-          <span className="text-string">
-            {"'"}{message.username}{"'"}
-          </span>
-          {';'}
-        </span>,
-        <span>
-          <span className="text-indent">{'\u00A0\u00A0'}</span>
-          {'message: '}
-          <span className="text-string">
-            {"'"}{message.message}{"'"}
-          </span>
-          {';'}
-        </span>,
-        '};',
-        ''
+        {'users['}<S text={message.username}/>{'].read('}
+          <S text={message.message}/>{');'}
+        </span>
       ];
 
     // send a message to all
     case TextTypes.SEND_MESSAGE:
       return [
         <span>
-          <span className="text-operator">{'$'}</span>{'me.sendMessage('}
-          <span className="text-string">
-            {"'"}{message.message}{"'"}
-          </span>
-          {');'}
+          <O text={'$'} />{'me.send('}
+          <S text={message.message} />{');'}
         </span>
       ];
 
     case TextTypes.TYPING:
       return [
-        <span className="text-comment">
-          {'// '}{message.message}
-        </span>
+        <C text={message.message}/>
       ];
   }
 }
