@@ -1,12 +1,6 @@
 var
-  TextTypes    = require('../constants/Constants').TextTypes,
-  CommentText  = require('../components/text/CommentText.react'),
-  VarText      = require('../components/text/VarText.react'),
-  FunctionText = require('../components/text/FunctionText.react'),
-  ArgumentText = require('../components/text/ArgumentText.react'),
-  OperatorText = require('../components/text/OperatorText.react'),
-  StringText   = require('../components/text/StringText.react'),
-  IndentText   = require('../components/text/IndentText.react');
+  TextTypes         = require('../constants/Constants').TextTypes,
+  StringToReactSpan = require('./StringToReactSpan');
 
 // TODO: make a parser
 module.exports = function(message) {
@@ -14,22 +8,10 @@ module.exports = function(message) {
     case TextTypes.INIT:
       return [
         <span>
-          <VarText text={'function'}/>
-          {' '}
-          <FunctionText text={'User'}/>
-          {'('}
-          <ArgumentText text={'username'}/>
-          {') {'}
+          <span className="text-var">{'var '}</span>
+          <span className="text-operator">{'$'}</span>{'me '}
+          <span className="text-operator">{'= new'}</span>{' User();'}
         </span>,
-        <span>
-          <IndentText number={1}/>
-          {'this._username'}{' '}<OperatorText text={'='}/>{' '}{'username;'}
-        </span>,
-        <span>
-          <IndentText number={1}/>
-          {'this._history'}{' '}<OperatorText text={'='}/>{' '}{'[];'}
-        </span>,
-        '}',
         ''
       ];
 
@@ -37,50 +19,59 @@ module.exports = function(message) {
     case TextTypes.JOINED:
       return [
         <span>
-          <VarText text={'var'} />
-          {' '}{message.username}{' '}
-          <OperatorText text={'= new'} />
-          {' '}{'User();'}
+        {'myChatRoom.newUser('}
+          <span className="text-string">
+            {"'"}{message.username}{"'"}
+          </span>
+        {');'}
         </span>
       ];
 
     // user leaves
     case TextTypes.LEFT:
-      return [
-        <span>
-          <OperatorText text={'delete'} />{' '}
-          {'Users['}
-          <StringText text={message.username} />
-          {'];'}
-        </span>
-      ];
+      return [];
 
     // receive a new message from another user
     case TextTypes.NEW_MESSAGE:
       return [
+        'myChatRoom.getMessage({',
         <span>
-          {message.username}
-          {'.getMessage('}
-          <StringText text={message.message} />
-          {');'}
-        </span>
+          <span className="text-indent">{'\u00A0\u00A0'}</span>
+          {'from: '}
+          <span className="text-string">
+            {"'"}{message.username}{"'"}
+          </span>
+          {';'}
+        </span>,
+        <span>
+          <span className="text-indent">{'\u00A0\u00A0'}</span>
+          {'message: '}
+          <span className="text-string">
+            {"'"}{message.message}{"'"}
+          </span>
+          {';'}
+        </span>,
+        '};',
+        ''
       ];
 
     // send a message to all
     case TextTypes.SEND_MESSAGE:
       return [
         <span>
-          {'sendMessage('}
-            <StringText text={message.message} />
+          <span className="text-operator">{'$'}</span>{'me.sendMessage('}
+          <span className="text-string">
+            {"'"}{message.message}{"'"}
+          </span>
           {');'}
         </span>
       ];
 
-    // general comments
-    case TextTypes.COMMENT:
+    case TextTypes.TYPING:
       return [
-        <CommentText
-          text={message.message} />
+        <span className="text-comment">
+          {'// '}{message.message}
+        </span>
       ];
   }
 }

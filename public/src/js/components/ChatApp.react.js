@@ -48,8 +48,6 @@ var ChatApp = React.createClass({
         </div>
         <ChatBottom loggedIn={loggedIn} messages={this.state.messages} />
       </div>
-
-
     );
   },
 

@@ -20,6 +20,6 @@ module.exports = {
     LEFT: 'LEFT',
     SEND_MESSAGE: 'SEND_MESSAGE',
     NEW_MESSAGE: 'NEW_MESSAGE',
-    COMMENT: 'COMMENT'
+    TYPING: 'TYPING'
   }
 }

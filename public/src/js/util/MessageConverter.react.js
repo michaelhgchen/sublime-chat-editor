@@ -1,5 +1,6 @@
 var
-  TextMap = require('./TextMap.react');
+  TextMap           = require('./TextMap.react'),
+  StringToReactSpan = require('./StringToReactSpan');
 
 module.exports = function(messages) {
   var convertedMessages = [];
@@ -13,6 +14,7 @@ module.exports = function(messages) {
   // add blinking cursor to last line
   convertedMessages.push(<span className="blinking">|</span>)
 
+  // each line is a react span
   convertedMessages = convertedMessages.map(function(message, line) {
     line = line + 1; // 0 indexed
 

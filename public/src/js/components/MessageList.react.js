@@ -31,7 +31,7 @@ MessageList = React.createClass({
 
     if(this.state.typingText) {
       messages.push({
-        type: TextTypes.COMMENT,
+        type: TextTypes.TYPING,
         message: this.state.typingText
       });
     }
