@@ -1,5 +1,5 @@
 var
-  React       = require('react'),
+  React       = require('react/addons'),
   ViewActions = require('../actions/ViewActions'),
   ENTER_KEY   = 13,
   typingTimeout, debounce, ChatBottom;

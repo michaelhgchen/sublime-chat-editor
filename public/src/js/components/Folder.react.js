@@ -1,5 +1,5 @@
 var
-  React = require('react'),
+  React = require('react/addons'),
   Folder;
 
 Folder = React.createClass({

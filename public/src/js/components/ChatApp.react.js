@@ -1,5 +1,5 @@
 var
-  React              = require('react'),
+  React              = require('react/addons'),
   CSSTransitionGroup = require('react/addons').addons.CSSTransitionGroup,
   ChatStore          = require('../stores/ChatStore'),
   Login              = require('./Login.react'),
@@ -22,7 +22,6 @@ var ChatApp = React.createClass({
 
   componentDidMount: function() {
     ChatStore.addChangeListener(this._onChange);
-
   },
 
   componentWillUnmount: function() {

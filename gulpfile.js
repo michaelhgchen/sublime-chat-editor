@@ -20,7 +20,8 @@ var
   mocha  = require('gulp-mocha'),
 
   // server
-  fork = require('child_process').fork,
+  fork  = require('child_process').fork,
+  react = require('gulp-react'),
 
   // optimize
   minifyCss = require('gulp-minify-css'),
@@ -104,6 +105,12 @@ gulp.task('clean', function(cb) {
 // ====================================
 // Build
 // ====================================
+gulp.task('build:scripts:server', function() {
+  return gulp.src('./public/src/js/**/*.js')
+    .pipe(react())
+    .pipe(gulp.dest('server-react'));
+});
+
 gulp.task('build:scripts', function() {
   return buildScripts({
     src: './public/src/js/app.js',
@@ -121,7 +128,7 @@ gulp.task('build:styles', function() {
 });
 
 gulp.task('build', function(cb) {
-  runSequence('clean', ['build:scripts', 'build:styles'], cb);
+  runSequence('clean', ['build:scripts', 'build:scripts:server', 'build:styles'], cb);
 });
 
 // ====================================
@@ -183,43 +190,14 @@ gulp.task('watch', function() {
     transform: 'reactify',
   }, true);
 
+  gulp.watch('./public/build/js/**/*.js', ['build:scripts:server']);
+
   gulp.watch('./public/src/sass/**/*.scss', ['build:styles']);
 });
 
-
-// var browserSync = require('browser-sync');
-// var reload = browserSync.reload;
-gulp.task('browser-sync', function() {
-  browserSync({
-    proxy: 'http://localhost:8000'
-  });
-});
-
-gulp.task('reload', function() {
-  browserSync.reload();
-});
-
-gulp.task('watch:reload', ['browser-sync'], function() {
-  buildScripts({
-    src: './public/src/js/app.js',
-    dest: './public/build/js/',
-    output: 'scripts.js',
-    transform: 'reactify',
-  }, true);
-
-  gulp.watch('./public/build/js/scripts.js', ['reload']);
-
-  gulp.watch('./public/src/sass/**/*.scss', function() {
-    runSequence('build:styles', 'reload');
-  });
-});
 // ====================================
 // Default
 // ====================================
-gulp.task('default2', function() {
-  runSequence(['server:start', 'build'], 'watch:reload');
-});
-
 gulp.task('default', function() {
   runSequence(['server:start', 'build'], 'watch');
 });

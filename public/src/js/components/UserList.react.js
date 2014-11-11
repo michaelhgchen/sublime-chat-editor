@@ -1,5 +1,5 @@
 var
-  React = require('react'),
+  React = require('react/addons'),
   UserList;
 
 UserList = React.createClass({

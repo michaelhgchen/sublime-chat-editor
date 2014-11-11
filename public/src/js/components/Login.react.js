@@ -1,5 +1,5 @@
 var
-  React       = require('react'),
+  React       = require('react/addons'),
   LoginStore  = require('../stores/LoginStore'),
   ViewActions = require('../actions/ViewActions'),
   ENTER_KEY   = 13,
@@ -53,11 +53,11 @@ Login = React.createClass({
   },
 
   render: function() {
-    var name, loginError, listing;
+    var name, loginError, listings;
 
     name = this.state.name.trim();
     loginError = this.state.loginError;
-    listing = [
+    listings = [
       loginError
         ? loginError.replace('Name', name)
         : 'Choose a Nickname',
@@ -65,15 +65,17 @@ Login = React.createClass({
       'Sublime Chat Editor: A Chat Application That Looks Like Sublime'
     ];
 
-    listing = listing.map(function(list) {
+    listings = listings.map(function(listing) {
       var toMatch, toReplace;
 
       toMatch = new RegExp(name, 'gi');
       toReplace = ['<span class="login-bold">', '$&', '</span>'].join('');
 
-      if(list.match(toMatch)) {
-        return <li key={list}
-          dangerouslySetInnerHTML={{__html: list.replace(toMatch, toReplace)}}/>;
+      if(listing.match(toMatch)) {
+        return <li key={listing}
+          dangerouslySetInnerHTML={{__html: name
+            ? listing.replace(toMatch, toReplace)
+            : listing }}/>;
       } else {
         return null;
       }
@@ -89,7 +91,7 @@ Login = React.createClass({
             onKeyDown={this.handleEnter}
             onSubmit={this.handleSubmit}/>
           <ul className="login-list">
-            {listing}
+            {listings}
           </ul>
         </div>
       </div>

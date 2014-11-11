@@ -1,3 +1,4 @@
+// client-side entry point
 var
   React   = require('react'),
   ChatApp = require('./components/ChatApp.react');

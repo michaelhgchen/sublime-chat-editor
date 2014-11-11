@@ -1,5 +1,5 @@
 var
-  React            = require('react'),
+  React            = require('react/addons'),
   TypingStore      = require('../stores/TypingStore'),
   TextTypes        = require('../constants/Constants').TextTypes,
   MessageConverter = require('../util/MessageConverter.react'),

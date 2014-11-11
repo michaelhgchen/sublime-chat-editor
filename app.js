@@ -4,15 +4,32 @@ var
   port          = require('./config').port,
   app           = express(),
   server        = http.Server(app),
+  handlebars    = require('express-handlebars').create({
+    defaultLayout: 'main'
+  }),
   domainHandler = require('./lib/domain-handler')(server),
   io            = require('socket.io')(server),
-  allUsers      = {};
+  allUsers      = {},
+  React         = require('react'),
+  ChatApp       = require('./server-react/components/ChatApp.react');
+
+// Set templating engine to Handlebars's
+app.engine('handlebars', handlebars.engine);
+
+// Set handlerbars as default engine extension
+app.set('view engine', 'handlebars');
 
 // domain-handler creates an execution context that will catch errors
 app.use(domainHandler);
 
 // Static routing
 app.use(express.static(__dirname + '/public'));
+
+app.get('/', function(req, res) {
+  res.render('home', {
+    react: React.renderToString(ChatApp({}))
+  });
+});
 
 // Socket
 io.on('connection', function (socket) {

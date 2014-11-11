@@ -1,5 +1,6 @@
 var
-  TextMap           = require('./TextMap.react');
+  React   = require('react'),
+  TextMap = require('./TextMap.react');
 
 module.exports = function(messages) {
   var convertedMessages = [];
