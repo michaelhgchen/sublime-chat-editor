@@ -1,7 +1,6 @@
 .message-list {
   @extend .fill-height;
 
-  padding: $space-xs 0;
   position: relative;
   overflow: auto;
 
@@ -30,4 +29,32 @@
 
 .line-message {
   display: table-cell;
+}
+
+.message-list-header {
+  background-color: black;
+  height: $height-message-list-header;
+  padding: $space-s;
+  border-bottom: 1px solid $color-border;
+}
+
+%arrow {
+  font-size: 1.5em;
+  color: $color-arrow;
+  margin: 0;
+}
+
+.right-arrow {
+  @extend %arrow;
+  @extend .icon-arrow-right;
+}
+
+.left-arrow {
+  @extend %arrow;
+  @extend .icon-arrow-left;
+}
+
+.down-arrow {
+  @extend %arrow;
+  @extend .icon-arrow-down;
 }

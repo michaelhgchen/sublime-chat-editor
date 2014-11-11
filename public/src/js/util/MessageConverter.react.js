@@ -1,5 +1,5 @@
 var
-  React   = require('react'),
+  React   = require('react/addons'),
   TextMap = require('./TextMap.react');
 
 module.exports = function(messages) {

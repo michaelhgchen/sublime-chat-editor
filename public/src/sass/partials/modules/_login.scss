@@ -3,7 +3,7 @@
   @extend .center-align;
 
   position: absolute;
-  top: 0;
+  top: $height-message-list-header;
   left: 0;
   z-index: 1;
 }

@@ -9,7 +9,7 @@
   font-style: normal;
 }
 
-[class^="icon-"], [class*=" icon-"] {
+%icon {
   font-family: 'icomoon';
   speak: none;
   font-style: normal;
@@ -24,35 +24,46 @@
 }
 
 .icon-arrow-left:before {
+  @extend %icon;
   content: "\e600";
 }
 .icon-arrow-down:before {
+  @extend %icon;
   content: "\e601";
 }
 .icon-arrow-up:before {
+  @extend %icon;
   content: "\e602";
 }
 .icon-arrow-right:before {
+  @extend %icon;
   content: "\e603";
 }
 .icon-file-o:before {
+  @extend %icon;
   content: "\f016";
 }
 .icon-photo:before {
+  @extend %icon;
   content: "\f03e";
 }
 .icon-folder-o:before {
+  @extend %icon;
   content: "\f114";
 }
 .icon-folder-open-o:before {
+  @extend %icon;
   content: "\f115";
 }
 .icon-envelope-square:before {
+  @extend %icon;
   content: "\f199";
 }
 .icon-file-code-o:before {
+  @extend %icon;
   content: "\f1c9";
 }
 .icon-git-square:before {
+  @extend %icon;
   content: "\f1d2";
 }

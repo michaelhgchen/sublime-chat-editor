@@ -58,11 +58,11 @@ $height-chat-bottom: $height-chat-input-container + $height-chat-stats;
 // ============================================================================
 // User list
 // ============================================================================
+$color-arrow: #868686;
 $width-user-list: 15em;
 $color-user-list-title: #828282;
 $color-user-list-text: black;
 $color-user-list-background: #e6e6e6;
-$color-user-list-arrow: #868686;
 $text-shadow-user-list: 0px .75px 0px white;
 
 // ============================================================================
@@ -75,7 +75,7 @@ $color-message-line-highlight: #39382e;
 
 // Font
 $message-line-height: 1.2;
-
+$height-message-list-header: (2 * $space-s) + 1.5em;
 // ============================================================================
 // Text
 // ============================================================================

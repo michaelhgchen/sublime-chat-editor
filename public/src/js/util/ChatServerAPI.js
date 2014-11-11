@@ -1,4 +1,5 @@
-var ServerActions = require('../actions/ServerActions'),
+var
+  ServerActions = require('../actions/ServerActions'),
   Socket;
 
 // naive check for node vs. browser

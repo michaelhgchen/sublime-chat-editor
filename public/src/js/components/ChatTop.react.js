@@ -1,5 +1,6 @@
 var
   React              = require('react/addons'),
+  CSSTransitionGroup = require('react/addons').addons.CSSTransitionGroup,
   MessageList        = require('./MessageList.react'),
   UserList           = require('./UserList.react');
 

@@ -1,6 +1,6 @@
 // client-side entry point
 var
-  React   = require('react'),
+  React   = require('react/addons'),
   ChatApp = require('./components/ChatApp.react');
 
 // global react for debugging

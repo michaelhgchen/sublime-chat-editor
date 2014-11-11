@@ -38,7 +38,12 @@ MessageList = React.createClass({
 
     return (
       <div className="message-list">
-      {MessageConverter(messages)}
+        <div className="message-list-header">
+          <i className="left-arrow"></i>
+          <i className="right-arrow"></i>
+          <i className="pull-right down-arrow"></i>
+        </div>
+        {MessageConverter(messages)}
       </div>
     );
   },

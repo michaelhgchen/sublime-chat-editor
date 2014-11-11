@@ -9,6 +9,7 @@
 }
 
 .user-list-title {
+  @extend .no-click;
   color: $color-user-list-title;
   text-shadow: $text-shadow-user-list;
   text-transform: uppercase;
@@ -21,11 +22,13 @@
   padding-left: 1em;
 
   & > li:first-child {
+    @extend .no-click;
+
     &.closed {
       &:before {
         content: "\e603" ;
         font-family: icomoon;
-        color: $color-user-list-arrow;
+        color: $color-arrow;
         display: inline-block;
         text-align:center;
         width: 1em;
@@ -39,7 +42,7 @@
       &:before {
         content: "\e601";
         font-family: icomoon;
-        color: $color-user-list-arrow;
+        color: $color-arrow;
         display: inline-block;
         text-align:center;
         width: 1em;
@@ -52,5 +55,6 @@
 }
 
 .folder-contents {
+  @extend .no-click;
   @extend .compact-list;
 }
