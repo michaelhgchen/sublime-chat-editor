@@ -1,2 +1,2 @@
 // shared socket instance
-module.exports = require('socket.io-client')('//localhost');
+module.exports = require('socket.io-client')();
