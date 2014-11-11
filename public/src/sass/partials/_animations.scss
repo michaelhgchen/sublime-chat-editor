@@ -16,6 +16,24 @@
   opacity: 0.01;
 }
 
+.folder-toggle-transition-enter {
+  opacity: 0.01;
+  transition: opacity 100ms ease-in;
+}
+
+.folder-toggle-transition-enter.folder-toggle-transition-enter-active {
+  opacity: 1;
+}
+
+.folder-toggle-transition-leave {
+  opacity: 1;
+  transition: opacity 100ms ease-in;
+}
+
+.folder-toggle-transition-leave.folder-toggle-transition-leave-active {
+  opacity: 0.01;
+}
+
 .blinking {
   animation: 1s blink step-end infinite;
   margin-left: -2px;

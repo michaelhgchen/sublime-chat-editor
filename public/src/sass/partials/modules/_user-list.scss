@@ -19,35 +19,55 @@
 
 .folder {
   @extend .compact-list;
-  padding-left: 1em;
+  // padding-left: 1em;
 
   & > li:first-child {
     @extend .no-click;
 
     &.closed {
-      &:before {
-        content: "\e603" ;
-        font-family: icomoon;
+      & > .icon-arrow {
+        @extend .icon-arrow-right;
         color: $color-arrow;
-        display: inline-block;
-        text-align:center;
-        width: 1em;
-        margin-left: -1em;
-        margin-top: -.25em;
+        margin: 0;
+        vertical-align: middle;
+
+        // content: "\e603" ;
+        // font-family: icomoon;
+        // color: $color-arrow;
+        // display: inline-block;
+        // text-align:center;
+        // width: 1em;
+        // margin-left: -1em;
+        // margin-top: -.25em;
+        // vertical-align: middle;
+      }
+
+      & > .icon-folder {
+        @extend .icon-folder-o;
         vertical-align: middle;
       }
     }
 
     &.open {
-      &:before {
-        content: "\e601";
-        font-family: icomoon;
+      & > .icon-arrow {
+        @extend .icon-arrow-down;
         color: $color-arrow;
-        display: inline-block;
-        text-align:center;
-        width: 1em;
-        margin-left: -1em;
-        margin-top: -.25em;
+        margin: 0;
+        vertical-align: middle;
+
+        // content: "\e601";
+        // font-family: icomoon;
+        // color: $color-arrow;
+        // display: inline-block;
+        // text-align:center;
+        // width: 1em;
+        // margin-left: -1em;
+        // margin-top: -.25em;
+        // vertical-align: middle;
+      }
+
+      & > .icon-folder {
+        @extend .icon-folder-open-o;
         vertical-align: middle;
       }
     }
@@ -57,4 +77,5 @@
 .folder-contents {
   @extend .no-click;
   @extend .compact-list;
+  margin-left: 1em;
 }
