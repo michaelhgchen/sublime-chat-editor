@@ -29,7 +29,7 @@ var V = React.createClass({
   }
 });
 
-// function/method, reserved
+// function/method
 var F = React.createClass({
   render: function() {
     return (
@@ -38,6 +38,7 @@ var F = React.createClass({
   }
 });
 
+// argument
 var A = React.createClass({
   render: function() {
     return (
@@ -116,30 +117,24 @@ module.exports = function(message) {
 
         <span>
         {'users['}<S text={message.username}/>{'] '}<O text={'= $'} />{'me;'}
-        </span>,
-
-        ''
+        </span>
       ];
 
     case TextTypes.JOINED:
       return [
-        '',
         <C text={message.username + ' has joined the room'}/>,
         <span>
           {'users['}<S text={message.username}/>{'] '}<O text={'= new'}/>
           {' User();'}
-        </span>,
-        ''
+        </span>
       ];
 
     case TextTypes.LEFT:
       return [
-        '',
         <C text={message.username + ' has left the room'}/>,
         <span>
           <O text={'delete'}/>{' users['}<S text={message.username}/>{'];'}
-        </span>,
-        ''
+        </span>
       ];
 
     // receive a new message from another user

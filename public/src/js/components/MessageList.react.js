@@ -24,6 +24,22 @@ MessageList = React.createClass({
     TypingStore.removeChangeListener(this._onChange);
   },
 
+  // thanks vjeux
+  componentWillUpdate: function() {
+    var node = this.getDOMNode();
+
+    this._shouldScrollBottom =
+      (node.scrollTop + node.offsetHeight) !== node.scrollHeight;
+  },
+
+  componentDidUpdate: function() {
+    if(this._shouldScrollBottom) {
+      var node = this.getDOMNode();
+
+      node.scrollTop = node.scrollHeight
+    }
+  },
+
   render: function() {
     var messages;
 
@@ -50,7 +66,9 @@ MessageList = React.createClass({
 
   _onChange: function() {
     this.setState(getStateFromStores());
-  }
+  },
+
+  _shouldScrollBottom: false
 });
 
 module.exports = MessageList;

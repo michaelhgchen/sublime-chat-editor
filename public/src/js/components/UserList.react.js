@@ -1,6 +1,7 @@
 var
   React              = require('react/addons'),
   CSSTransitionGroup = require('react/addons').addons.CSSTransitionGroup,
+  classSet           = require('react/addons').addons.classSet,
   UserList;
 
 UserList = React.createClass({
@@ -17,7 +18,7 @@ UserList = React.createClass({
   },
 
   render: function() {
-    var folderContents, allUsers;
+    var folderContents, allUsers, listClasses;
 
     if(this.state.open) {
       allUsers = Object.keys(this.props.allUsers).map(function(user) {
@@ -38,11 +39,17 @@ UserList = React.createClass({
       folderContents = <ul key="closed-folder"></ul>;
     }
 
+    listClasses = classSet({
+      'open': this.state.open,
+      'closed': !this.state.open,
+      'no-select': true
+    });
+
     return (
       <div className="user-list-container no-mobile">
         <div className="user-list-title">Folders</div>
         <ul className="folder">
-          <li onClick={this.toggleContents} className={this.state.open ? 'open' : 'closed'}>
+          <li onClick={this.toggleContents} className={listClasses}>
             <i className="icon-arrow"></i><i className="icon-folder">
             </i>users</li>
           <CSSTransitionGroup transitionName="folder-toggle-transition">

@@ -206,7 +206,7 @@ gulp.task('watch', function() {
 // ====================================
 // Default
 // ====================================
-// start server, build, then watch
+// build, watch then start server
 gulp.task('default', function() {
-  runSequence(['server:start', 'build'], 'watch');
+  runSequence('build', 'watch', 'server:start');
 });

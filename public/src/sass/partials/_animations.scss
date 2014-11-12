@@ -18,7 +18,7 @@
 
 .folder-toggle-transition-enter {
   opacity: 0.01;
-  transition: opacity 100ms ease-in;
+  transition: opacity 100ms linear;
 }
 
 .folder-toggle-transition-enter.folder-toggle-transition-enter-active {
@@ -27,7 +27,7 @@
 
 .folder-toggle-transition-leave {
   opacity: 1;
-  transition: opacity 100ms ease-in;
+  transition: opacity 100ms linear;
 }
 
 .folder-toggle-transition-leave.folder-toggle-transition-leave-active {

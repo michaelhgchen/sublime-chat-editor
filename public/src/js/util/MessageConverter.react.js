@@ -1,18 +1,35 @@
 var
-  React   = require('react/addons'),
-  TextMap = require('./TextMap.react');
+  React     = require('react/addons'),
+  TextMap   = require('./TextMap.react'),
+  TextTypes = require('../constants/Constants').TextTypes;
 
 module.exports = function(messages) {
-  var convertedMessages = [];
+  var convertedMessages, previousType;
+
+  convertedMessages = [];
 
   messages.forEach(function(message) {
-    message = TextMap(message);
+    var type = message.type;
 
-    if(message[0] === convertedMessages[convertedMessages.length - 1]) {
-      convertedMessages.pop();
+    if(previousType
+      && previousType !== type
+      && type !== TextTypes.TYPING
+      && (previousType === TextTypes.SEND_MESSAGE
+        || previousType === TextTypes.NEW_MESSAGE)) {
+      convertedMessages.push('')
     }
 
+    previousType = type;
+
+    message = TextMap(message);
+
     convertedMessages = convertedMessages.concat(message);
+
+    if(type !== TextTypes.SEND_MESSAGE
+      && type !== TextTypes.NEW_MESSAGE
+      && type !== TextTypes.TYPING) {
+      convertedMessages.push('');
+    }
   });
 
   // add blinking cursor to last line
