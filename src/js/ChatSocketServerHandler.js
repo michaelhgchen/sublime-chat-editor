@@ -1,15 +1,17 @@
-var ChatSocketConstants = require('../constants/ChatSocketConstants');
-var ClientConstants = ChatSocketConstants.client;
-var ServerConstants = ChatSocketConstants.server;
+var SocketEventsConstants = require('./constants/SocketEventsConstants');
+var ClientSocketConstants = SocketEventsConstants.client;
+var ServerSocketConstants = SocketEventsConstants.server;
 var allUsers = {};
 
 function ChatSocketServerHandler (socket) {
+  var socketUsername;
+
   // user tries to set a username
-  socket.on(ClientConstants.SET_USERNAME, function (username) {
+  socket.on(ClientSocketConstants.SET_USERNAME, function (username) {
     // if name is already used emit error
     if(allUsers[username]) {
       socket.emit(
-        ServerConstants.SET_USERNAME_FAIL, {
+        ServerSocketConstants.SET_USERNAME_FAIL, {
           username: username,
           error: 'duplicate'
         }
@@ -19,12 +21,12 @@ function ChatSocketServerHandler (socket) {
     }
 
     // otherwise set name in socket and allUsers store
-    socket.username = username;
+    socketUsername = username;
     allUsers[username] = true;
 
     // inform user of success
     socket.emit(
-      ServerConstants.SET_USERNAME_SUCCESS, {
+      ServerSocketConstants.SET_USERNAME_SUCCESS, {
         username: username,
         allUsers: allUsers
       }
@@ -32,39 +34,39 @@ function ChatSocketServerHandler (socket) {
 
     // inform other users of a new user
     socket.broadcast.emit(
-      ServerConstants.USER_CONNECT, {
+      ServerSocketConstants.USER_CONNECT, {
         username: username
       }
     );
   });
 
   // user sends a message
-  socket.on(ClientConstants.SEND_MESSAGE, function (message) {
+  socket.on(ClientSocketConstants.SEND_MESSAGE, function (message) {
     // inform other users of a new message
     socket.broadcast.emit(
-      ServerConstants.USER_MESSAGE, {
-        username: socket.username,
+      ServerSocketConstants.USER_MESSAGE, {
+        username: socketUsername,
         message: message
       }
     );
   });
 
   // user types
-  socket.on(ClientConstants.TYPING, function () {
+  socket.on(ClientSocketConstants.TYPING, function () {
     // inform other users of a user typing
     socket.broadcast.emit(
-      ServerConstants.USER_TYPING, {
-        username: socket.username
+      ServerSocketConstants.USER_TYPING, {
+        username: socketUsername
       }
     );
   });
 
   // user stops typing
-  socket.on(ClientConstants.STOP_TYPING, function () {
+  socket.on(ClientSocketConstants.STOP_TYPING, function () {
     // inform other users a user stopped typing
     socket.broadcast.emit(
-      ServerConstants.USER_STOP_TYPING, {
-        username: socket.username
+      ServerSocketConstants.USER_STOP_TYPING, {
+        username: socketUsername
       }
     );
   });
@@ -72,12 +74,12 @@ function ChatSocketServerHandler (socket) {
   // user disconnects
   socket.on('disconnect', function () {
     // delete username if username is set and inform other users
-    if (socket.username) {
-      delete allUsers[socket.username];
+    if (socketUsername) {
+      delete allUsers[socketUsername];
 
       socket.broadcast.emit(
-        ServerConstants.USER_DISCONNECT, {
-          username: socket.username
+        ServerSocketConstants.USER_DISCONNECT, {
+          username: socketUsername
         }
       );
     }

@@ -1,31 +1,34 @@
-var
-  gulp        = require('gulp'),
-  plumber     = require('gulp-plumber'),
-  runSequence = require('run-sequence'),
+// gulp dependencies
+var gulp = require('gulp');
+var plumber = require('gulp-plumber');
+var changed = require('gulp-changed');
+var sass = require('gulp-sass');
+var autoprefixer = require('gulp-autoprefixer');
+var jshint = require('gulp-jshint');
+var mocha  = require('gulp-mocha');
+var react = require('gulp-react');
+var minifyCss = require('gulp-minify-css');
+var uglify = require('gulp-uglify');
+var runSequence = require('run-sequence');
+var source = require('vinyl-source-stream');
 
-  // clean
-  del = require('del'),
+// node dependencies
+var fork  = require('child_process').fork;
 
-  // build scripts
-  browserify   = require('browserify'),
-  watchify     = require('watchify'),
-  source       = require('vinyl-source-stream'),
+// other dependencies
+var del = require('del');
+var browserify = require('browserify');
+var watchify = require('watchify');
 
-  // build styles
-  sass         = require('gulp-sass'),
-  autoprefixer = require('gulp-autoprefixer'),
-
-  // qa
-  jshint = require('gulp-jshint'),
-  mocha  = require('gulp-mocha'),
-
-  // server
-  fork  = require('child_process').fork,
-  react = require('gulp-react'),
-
-  // optimize
-  minifyCss = require('gulp-minify-css'),
-  uglify    = require('gulp-uglify');
+// constants
+var BUILD_PATH = './public/build/';
+var JSX_DEST = './src/js/compiled-jsx/';
+var BROWSERIFY_SRC = './src/js/ClientReactApp.js';
+var BROWSERIFY_OUTPUT = 'scripts.js';
+var SASS_SRC = './src/sass/styles.scss';
+var CSS_SRC = './public/build/styles.css';
+var JSX_SRC = ['!./src/js/compiled-jsx', './src/js/**/*.js'];
+var SASS_ALL = './src/sass/**/*.scss';
 
 // ============================================================================
 // Functions
@@ -41,16 +44,10 @@ function handleError(task) {
 // log duration of tasks specifically for watchify
 function logTime(task, fn) {
   return function() {
-    var start;
+    var start = process.hrtime();
 
-    start = process.hrtime();
-
-    gulp.emit('task_start', {
-      task: task
-    });
-
+    gulp.emit('task_start', { task: task });
     fn();
-
     gulp.emit('task_stop', {
       hrDuration: process.hrtime(start),
       task: task
@@ -58,8 +55,8 @@ function logTime(task, fn) {
   }
 }
 
-// browserify + reactify, with option to watchify
-function buildScripts(config, watch) {
+// browserify scripts with option to watchify
+function browserifyScripts(config, watch) {
   var bundler, rebundle;
 
   bundler = browserify(config.src, {
@@ -76,25 +73,15 @@ function buildScripts(config, watch) {
     var stream;
 
     stream = bundler.bundle();
-    stream.on('error', handleError('build-scripts'));
+    stream.on('error', handleError('browserifyScripts'));
     stream = stream.pipe(source(config.output));
 
     return stream.pipe(gulp.dest(config.dest));
   };
 
-  bundler.on('update', logTime('build-scripts', rebundle.bind(this)));
+  bundler.on('update', logTime('browserifyScripts', rebundle.bind(this)));
 
   return rebundle();
-}
-
-// compile sass and auto-prefix resulting css
-function buildStyles(config) {
-  return gulp.src(config.src)
-    .pipe(plumber())
-    .pipe(sass())
-      .on('error', handleError('build-styles'))
-    .pipe(autoprefixer())
-    .pipe(gulp.dest(config.dest));
 }
 // ============================================================================
 // Tasks
@@ -102,41 +89,42 @@ function buildStyles(config) {
 // ====================================
 // Clean
 // ====================================
-gulp.task('clean', function(cb) {
-  del('./public/build/', cb);
-});
+gulp.task('clean', function(cb) { del([BUILD_PATH, JSX_DEST], cb); });
 
 // ====================================
 // Build
 // ====================================
-// compile jsx for server-side use
-gulp.task('build:scripts:server', function() {
-  return gulp.src('./public/src/js/**/*.js')
+// compile jsx
+gulp.task('jsx', function() {
+  return gulp.src(JSX_SRC)
+    .pipe(changed(JSX_DEST))
     .pipe(react())
-    .pipe(gulp.dest('server-react'));
+    .pipe(gulp.dest(JSX_DEST));
 });
 
-// browserify + reactify jsx for client-side use
-gulp.task('build:scripts', function() {
-  return buildScripts({
-    src: './public/src/js/app.js',
-    dest: './public/build/js/',
-    output: 'scripts.js',
+// reactify jsx for client-side use
+gulp.task('reactify', function() {
+  return browserifyScripts({
+    src: JSX_SRC,
+    output: BROWSERIFY_OUTPUT,
+    dest: BUILD_PATH,
     transform: 'reactify'
   });
 });
 
-// compile sass and auto-prefix resulting css
-gulp.task('build:styles', function() {
-  return buildStyles({
-    src: './public/src/sass/styles.scss',
-    dest: './public/build/css/'
-  });
+// compile sass and auto-prefix css
+gulp.task('sass', function() {
+  return gulp.src(SASS_SRC)
+    .pipe(plumber())
+    .pipe(sass())
+      .on('error', handleError('build-styles'))
+    .pipe(autoprefixer())
+    .pipe(gulp.dest(BUILD_PATH));
 });
 
-// clean built then build everything again
+// clean then build everything
 gulp.task('build', function(cb) {
-  runSequence('clean', ['build:scripts', 'build:scripts:server', 'build:styles'], cb);
+  runSequence('clean', ['sass', 'reactify', 'jsx'], cb);
 });
 
 // ====================================
@@ -162,45 +150,38 @@ gulp.task('build', function(cb) {
 }());
 
 // ====================================
-// Test
-// ====================================
-gulp.task('lint', function() {});
-gulp.task('test', function() {});
-
-// ====================================
 // Optimize
 // ====================================
 // optimize client-side js
 gulp.task('uglify', function() {
-  return gulp.src('./public/build/js/scripts.js')
+  return gulp.src(BROWSERIFY_DEST + BROWSERIFY_OUTPUT)
     .pipe(uglify())
-    .pipe(gulp.dest('./public/build/js/'));
+    .pipe(gulp.dest(BROWSERIFY_DEST));
 });
 
 // optimize css
-gulp.task('minify-css', function() {
-  return gulp.src('./public/build/css/styles.css')
+gulp.task('minifycss', function() {
+  return gulp.src(CSS_SRC)
     .pipe(minifyCss())
-    .pipe(gulp.dest('./public/build/css/'));
+    .pipe(gulp.dest(BUILD_PATH));
 });
 
-gulp.task('optimize', ['uglify', 'minify-css']);
+gulp.task('optimize', ['uglify', 'minifycss']);
 
 // ====================================
 // Watch
 // ====================================
 // compile jsx for client and server-side, build css
 gulp.task('watch', function() {
-  buildScripts({
-    src: './public/src/js/app.js',
-    dest: './public/build/js/',
-    output: 'scripts.js',
-    transform: 'reactify',
+  browserifyScripts({
+    src: JSX_SRC,
+    output: BROWSERIFY_OUTPUT,
+    dest: BUILD_PATH,
+    transform: 'reactify'
   }, true);
 
-  gulp.watch('./public/build/js/**/*.js', ['build:scripts:server']);
-
-  gulp.watch('./public/src/sass/**/*.scss', ['build:styles']);
+  gulp.watch(JSX_SRC, ['jsx']);
+  gulp.watch(SASS_ALL, ['sass']);
 });
 
 // ====================================

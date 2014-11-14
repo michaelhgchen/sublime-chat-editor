@@ -43,7 +43,8 @@
     "run-sequence": "^1.0.1",
     "vinyl-source-stream": "^1.0.0",
     "watchify": "^2.1.1",
-    "gulp-react": "^2.0.0"
+    "gulp-react": "^2.0.0",
+    "gulp-changed": "^1.0.0"
   },
   "engines": {
     "node": ">=0.10.3 <0.12"

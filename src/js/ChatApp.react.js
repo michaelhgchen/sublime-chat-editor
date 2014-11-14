@@ -1,10 +1,10 @@
 var
   React              = require('react'),
-  CSSTransitionGroup = require('react/addons').addons.CSSTransitionGroup,
+  CSSTransitionGroup = require('react/addons').addons.CSSTransitionGroup;
   // ChatStore          = require('../stores/ChatStore'),
-  Login              = require('./Login.react'),
-  ChatTop            = require('./ChatTop.react'),
-  ChatBottom         = require('./ChatBottom.react.js');
+  // Login              = require('./Login.react'),
+  // ChatTop            = require('./ChatTop.react'),
+  // ChatBottom         = require('./ChatBottom.react.js');
 
 function getStateFromStores() {
   return {
