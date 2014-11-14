@@ -24,8 +24,21 @@ var MessageTypes = enumify({
   RECEIVE: null
 });
 
+var LanguageClasses = {
+  "var": "text-indent",
+  "function": "text-function",
+  "operator": "text-operator",
+  "string": "text-string",
+  "argument": "text-argument",
+  "indent": "text-indent",
+  "reserved": "text-reserved",
+  "comment": "text-comment",
+  "entity": "text-entity"
+};
+
 module.exports = {
   ActionTypes: ActionTypes,
   PayloadSources: PayloadSources,
-  MessageTypes: MessageTypes
+  MessageTypes: MessageTypes,
+  LanguageClasses: LanguageClasses
 }

@@ -14,9 +14,9 @@ function removeTypingUser(username) {
   delete typingUsers[username];
 }
 
-TypingStore = assign({}, EventEmitter.prototype, {
+TypingUserStore = assign({}, EventEmitter.prototype, {
   getTypingUsers: function() {
-    return typingUsers;
+    return Object.keys(typingUsers);
   },
 
   emitChange: function() {
@@ -32,7 +32,7 @@ TypingStore = assign({}, EventEmitter.prototype, {
   }
 });
 
-TypingStore.dispatchToken = AppDispatcher.register(function(payload) {
+TypingUserStore.dispatchToken = AppDispatcher.register(function(payload) {
   var action;
 
   action = payload.action;
@@ -40,17 +40,17 @@ TypingStore.dispatchToken = AppDispatcher.register(function(payload) {
   switch(action.type) {
     case ActionTypes.ADD_MESSAGE:
       removeTypingUser(action.data.username);
-      TypingStore.emitChange();
+      TypingUserStore.emitChange();
       break;
 
     case ActionTypes.ADD_TYPING_USER:
       addTypingUser(action.data.username);
-      TypingStore.emitChange();
+      TypingUserStore.emitChange();
       break;
 
     case ActionTypes.REMOVE_TYPING_USER:
       removeTypingUser(action.data.username);
-      TypingStore.emitChange();
+      TypingUserStore.emitChange();
       break;
 
     default:
@@ -58,4 +58,4 @@ TypingStore.dispatchToken = AppDispatcher.register(function(payload) {
   }
 });
 
-module.exports = TypingStore;
+module.exports = TypingUserStore;

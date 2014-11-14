@@ -3,8 +3,8 @@ var CSSTransitionGroup = React.addons.CSSTransitionGroup;
 var UserStore = require('./stores/UserStore');
 var MessageStore = require('./stores/MessageStore');
 var Login = require('./components/Login.react');
-  // ChatTop            = require('./ChatTop.react'),
-  // ChatBottom         = require('./ChatBottom.react.js');
+var ChatTop = require('./components/ChatTop.react');
+var ChatBottom = require('./components/ChatBottom.react.js');
 
 function getStateFromStores() {
   return {
@@ -30,25 +30,25 @@ var ChatApp = React.createClass({
   },
 
   render: function() {
-    var hasUsername = !!this.state.username.trim();
+    var loggedIn = !!this.state.username.trim();
 
     return (
       <div className="chat-app">
         <CSSTransitionGroup transitionName="login-transition">
-          { hasUsername ? null : <Login key="Login"/> }
+          { loggedIn ? null : <Login key="Login"/> }
         </CSSTransitionGroup>
+
+        <ChatTop
+          allUsers={this.state.allUsers}
+          messages={this.state.messages}
+          loggedIn={loggedIn} />
+
+        <ChatBottom
+          allUsers={this.state.allUsers}
+          messages={this.state.messages}
+          loggedIn={loggedIn} />
       </div>
     );
-
-    //   <ChatTop
-    //     allUsers={this.state.allUsers}
-    //     messages={this.state.messages}
-    //     loggedIn={loggedIn} />
-
-    //   <ChatBottom
-    //     messages={this.state.messages}
-    //     loggedIn={loggedIn} />
-    // </div>
   },
 
   _onChange: function() {

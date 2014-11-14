@@ -1,13 +1,10 @@
-var
-  React            = require('react/addons'),
-  TypingStore      = require('../stores/TypingStore'),
-  TextTypes        = require('../constants/Constants').TextTypes,
-  MessageConverter = require('../util/MessageConverter.react'),
-  MessageList;
+var React = require('react');
+var TypingUserStore = require('../stores/TypingUserStore');
+var MessageLine = require('./MessageLine.react');
 
 function getStateFromStores() {
   return {
-    typingText: TypingStore.getTypingText()
+    typingUsers: TypingUserStore.getTypingUsers()
   }
 }
 
@@ -17,11 +14,11 @@ MessageList = React.createClass({
   },
 
   componentDidMount: function() {
-    TypingStore.addChangeListener(this._onChange);
+    TypingUserStore.addChangeListener(this._onChange);
   },
 
   componentWillUnmount: function() {
-    TypingStore.removeChangeListener(this._onChange);
+    TypingUserStore.removeChangeListener(this._onChange);
   },
 
   // thanks vjeux
@@ -29,7 +26,7 @@ MessageList = React.createClass({
     var node = this.getDOMNode();
 
     this._shouldScrollBottom =
-      (node.scrollTop + node.offsetHeight) !== node.scrollHeight;
+      (node.scrollTop + node.offsetHeight) > node.scrollHeight;
   },
 
   componentDidUpdate: function() {
@@ -41,16 +38,23 @@ MessageList = React.createClass({
   },
 
   render: function() {
-    var messages;
+    var messages = this.props.messages.map(function(message, i) {
+      var line = i + 1;
 
-    messages = this.props.messages.slice(0);
+      return <MessageLine key={line} line={line} message={message} />
+    });
 
-    if(this.state.typingText) {
-      messages.push({
-        type: TextTypes.TYPING,
-        message: this.state.typingText
-      });
-    }
+    // var typingText = '';
+    // var typingUsers = this.state.typingUsers;
+    // var numTypingUsers = typingUsers.length;
+
+    // if(numTypingUsers === 1) {
+    //   typingText += typingUsers[0];
+    //   typingText += ' is typing...';
+    // } else if(numTypingUsers > 1) {
+    //   typingText += typingUsers.join(', ');
+    //   typingText += ' are typing...';
+    // }
 
     return (
       <div className="message-list">
@@ -59,7 +63,7 @@ MessageList = React.createClass({
           <i className="right-arrow"></i>
           <i className="pull-right down-arrow"></i>
         </div>
-        {MessageConverter(messages)}
+        {messages}
       </div>
     );
   },

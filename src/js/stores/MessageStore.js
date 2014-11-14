@@ -1,6 +1,7 @@
 var assign = require('object-assign');
 var EventEmitter = require('events').EventEmitter;
 var AppDispatcher = require('../dispatcher/AppDispatcher');
+var MessageUtil = require('../utils/MessageUtil');
 var Constants = require('../constants/FluxConstants');
 var ActionTypes = Constants.ActionTypes;
 var MessageTypes = Constants.MessageTypes;
@@ -16,7 +17,7 @@ function clearMessages() {
   messages = [];
 }
 
-var ChatStore = assign({}, EventEmitter.prototype, {
+var MessageStore = assign({}, EventEmitter.prototype, {
   getMessages: function() {
     return messages;
   },
@@ -34,47 +35,53 @@ var ChatStore = assign({}, EventEmitter.prototype, {
   }
 });
 
-ChatStore.dispatchToken = AppDispatcher.register(function(payload) {
-  var action, data;
+MessageStore.dispatchToken = AppDispatcher.register(function(payload) {
+  var action, convertedMessage;
 
   action = payload.action;
 
   switch(action.type) {
     case ActionTypes.SET_USERNAME:
-      addMessage({ type: MessageTypes.JOIN });
-      ChatStore.emitChange();
+      convertedMessage = MessageUtil.convertRawMessage(MessageTypes.JOIN);
+      addMessage(convertedMessage);
+      MessageStore.emitChange();
       break;
 
     case ActionTypes.ADD_USER:
-      addMessage({
-        type: MessageTypes.ADD_USER,
-        username: action.data.username
-      });
-      ChatStore.emitChange();
+      convertedMessage = MessageUtil.convertRawMessage(
+        MessageTypes.ADD_USER,
+        action.data.username
+      );
+      addMessage(convertedMessage);
+      MessageStore.emitChange();
       break;
 
     case ActionTypes.REMOVE_USER:
-      addMessage({
-        type: MessageTypes.REMOVE_USER,
-        username: action.data.username
-      });
-      ChatStore.emitChange();
+      convertedMessage = MessageUtil.convertRawMessage(
+        MessageTypes.REMOVE_USER,
+        action.data.username
+      );
+
+      addMessage(convertedMessage);
+      MessageStore.emitChange();
       break;
 
     case ActionTypes.ADD_MESSAGE:
-      data = action.data;
-
-      data.username
-        ? addMessage({
-          type: TextTypes.RECEIVE,
-          username: data.username,
-          message: data.message
-        })
-        : addMessage({
-          type: TextTypes.SEND,
-          message: data.message
-        });
-      ChatStore.emitChange();
+      if(action.data.username) {
+        convertedMessage = MessageUtil.convertRawMessage(
+          MessageTypes.RECEIVE,
+          action.data.username,
+          action.data.message
+        );
+      } else {
+        convertedMessage = MessageUtil.convertRawMessage(
+          MessageTypes.SEND,
+          null,
+          action.data.message
+        );
+      }
+      addMessage(convertedMessage);
+      MessageStore.emitChange();
       break;
 
     default:
@@ -82,4 +89,4 @@ ChatStore.dispatchToken = AppDispatcher.register(function(payload) {
   }
 });
 
-module.exports = ChatStore;
+module.exports = MessageStore;
