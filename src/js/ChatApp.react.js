@@ -1,16 +1,16 @@
-var
-  React              = require('react'),
-  CSSTransitionGroup = require('react/addons').addons.CSSTransitionGroup;
-  // ChatStore          = require('../stores/ChatStore'),
-  // Login              = require('./Login.react'),
+var React = require('react/addons');
+var CSSTransitionGroup = React.addons.CSSTransitionGroup;
+var UserStore = require('./stores/UserStore');
+var MessageStore = require('./stores/MessageStore');
+var Login = require('./components/Login.react');
   // ChatTop            = require('./ChatTop.react'),
   // ChatBottom         = require('./ChatBottom.react.js');
 
 function getStateFromStores() {
   return {
-    username: ChatStore.getUsername(),
-    allUsers: ChatStore.getAllUsers(),
-    messages: ChatStore.getMessages()
+    username: UserStore.getUsername(),
+    allUsers: UserStore.getAllUsers(),
+    messages: MessageStore.getMessages()
   }
 }
 
@@ -20,35 +20,35 @@ var ChatApp = React.createClass({
   },
 
   componentDidMount: function() {
-    ChatStore.addChangeListener(this._onChange);
+    MessageStore.addChangeListener(this._onChange);
+    UserStore.addChangeListener(this._onChange);
   },
 
   componentWillUnmount: function() {
-    ChatStore.removeChangeListener(this._onChange);
+    MessageStore.removeChangeListener(this._onChange);
+    UserStore.removeChangeListener(this._onChange);
   },
 
   render: function() {
-    var loggedIn, messages;
-
-    loggedIn = !!this.state.username.trim();
+    var hasUsername = !!this.state.username.trim();
 
     return (
-      // <div key="chat-app" className="chat-app">
-      //   <CSSTransitionGroup transitionName="login-transition">
-      //     { loggedIn ? null : <Login key="log-in"/> }
-      //   </CSSTransitionGroup>
-
-      //   <ChatTop
-      //     allUsers={this.state.allUsers}
-      //     messages={this.state.messages}
-      //     loggedIn={loggedIn} />
-
-      //   <ChatBottom
-      //     messages={this.state.messages}
-      //     loggedIn={loggedIn} />
-      // </div>
-      <div></div>
+      <div className="chat-app">
+        <CSSTransitionGroup transitionName="login-transition">
+          { hasUsername ? null : <Login key="Login"/> }
+        </CSSTransitionGroup>
+      </div>
     );
+
+    //   <ChatTop
+    //     allUsers={this.state.allUsers}
+    //     messages={this.state.messages}
+    //     loggedIn={loggedIn} />
+
+    //   <ChatBottom
+    //     messages={this.state.messages}
+    //     loggedIn={loggedIn} />
+    // </div>
   },
 
   _onChange: function() {

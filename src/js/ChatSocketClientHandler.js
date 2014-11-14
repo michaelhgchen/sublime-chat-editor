@@ -1,56 +1,56 @@
 var Socket = require('socket.io-client')();
 var ServerActions = require('./actions/ServerActions');
 var SocketEventsConstants = require('./constants/SocketEventsConstants');
-var ClientSocketConstants = SocketEventsConstants.client;
-var ServerSocketConstants = SocketEventsConstants.server;
+var ClientSocketConstants = SocketEventsConstants.Client;
+var ServerSocketConstants = SocketEventsConstants.Server;
 
 // socket events call server actions
 Socket.on(
-  ServerSocketConstants.SET_USERNAME_FAIL,
+  ServerSocketConstants.SET_USERNAME,
   function(data) {
-    ServerActions.failLogin(data);
+    ServerActions.setUsername(data);
   }
 );
 
 Socket.on(
-  ServerSocketConstants.SET_USERNAME_SUCCESS,
+  ServerSocketConstants.SET_USERNAME_FAIL,
   function(data) {
-    ServerActions.login(data);
+    ServerActions.failSetUsername(data);
   }
 );
 
 Socket.on(
   ServerSocketConstants.USER_CONNECT,
   function(data) {
-    ServerActions.joinUser(data);
+    ServerActions.addUser(data);
   }
 );
 
 Socket.on(
   ServerSocketConstants.USER_DISCONNECT,
   function(data) {
-    ServerActions.leaveUser(data);
+    ServerActions.removeUser(data);
   }
 );
 
 Socket.on(
   ServerSocketConstants.USER_MESSAGE,
   function(data) {
-    ServerActions.newMessage(data);
+    ServerActions.addMessage(data);
   }
 );
 
 Socket.on(
   ServerSocketConstants.USER_TYPING,
   function(data) {
-    ServerActions.typing(data);
+    ServerActions.addTypingUser(data);
   }
 );
 
 Socket.on(
   ServerSocketConstants.USER_STOP_TYPING,
   function(data) {
-    ServerActions.stopTyping(data);
+    ServerActions.removeTypingUser(data);
   }
 );
 

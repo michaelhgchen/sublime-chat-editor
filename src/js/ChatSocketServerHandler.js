@@ -1,6 +1,6 @@
 var SocketEventsConstants = require('./constants/SocketEventsConstants');
-var ClientSocketConstants = SocketEventsConstants.client;
-var ServerSocketConstants = SocketEventsConstants.server;
+var ClientSocketConstants = SocketEventsConstants.Client;
+var ServerSocketConstants = SocketEventsConstants.Server;
 var allUsers = {};
 
 function ChatSocketServerHandler (socket) {
@@ -26,7 +26,7 @@ function ChatSocketServerHandler (socket) {
 
     // inform user of success
     socket.emit(
-      ServerSocketConstants.SET_USERNAME_SUCCESS, {
+      ServerSocketConstants.SET_USERNAME, {
         username: username,
         allUsers: allUsers
       }

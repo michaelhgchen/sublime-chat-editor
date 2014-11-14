@@ -1,10 +1,8 @@
-var
-  assign         = require('object-assign'),
-  Dispatcher     = require('flux').Dispatcher,
-  PayloadSources = require('../constants/Constants').PayloadSources,
-  AppDispatcher;
+var assign = require('object-assign');
+var Dispatcher = require('flux').Dispatcher;
+var PayloadSources = require('../constants/FluxConstants').PayloadSources;
 
-AppDispatcher = assign(new Dispatcher(), {
+var AppDispatcher = assign(new Dispatcher(), {
   handleServerAction: function(action) {
     var payload = {
       source: PayloadSources.SERVER_ACTION,

@@ -1,6 +1,6 @@
 var React = require('react');
-var ChatApp = require('./compiled-jsx/ChatApp.react');
+// var ChatApp = require('../compiled-jsx/ChatApp.react');
 
 module.exports = function() {
-  return React.renderToString(ChatApp());
+  return 'React.renderToString(ChatApp())';
 };

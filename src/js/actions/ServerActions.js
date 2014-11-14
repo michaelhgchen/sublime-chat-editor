@@ -1,59 +1,52 @@
-var
-  AppDispatcher = require('../dispatcher/AppDispatcher');
-  ActionTypes   = require('../constants/Constants').ActionTypes;
+var AppDispatcher = require('../dispatcher/AppDispatcher');
+var ActionTypes = require('../constants/FluxConstants').ActionTypes;
 
 module.exports = {
-  resetApp: function() {
+  setUsername: function(data) {
     AppDispatcher.handleServerAction({
-      type: ActionTypes.RESET_APP
-    });
-  },
-
-  login: function(data) {
-    AppDispatcher.handleServerAction({
-      type: ActionTypes.LOGIN,
+      type: ActionTypes.SET_USERNAME,
       data: data
     });
   },
 
-  failLogin: function(data) {
+  failSetUsername: function(data) {
     AppDispatcher.handleServerAction({
-      type: ActionTypes.FAIL_LOGIN,
+      type: ActionTypes.FAIL_SET_USERNAME,
       data: data
     });
   },
 
-  joinUser: function(data) {
+  addUser: function(data) {
     AppDispatcher.handleServerAction({
-      type: ActionTypes.USER_JOINED,
+      type: ActionTypes.ADD_USER,
       data: data
     });
   },
 
-  leaveUser: function(data) {
+  removeUser: function(data) {
     AppDispatcher.handleServerAction({
-      type: ActionTypes.USER_LEFT,
+      type: ActionTypes.REMOVE_USER,
       data: data
     });
   },
 
-  newMessage: function(data) {
+  addMessage: function(data) {
     AppDispatcher.handleServerAction({
-      type: ActionTypes.NEW_MESSAGE,
+      type: ActionTypes.ADD_MESSAGE,
       data: data
     });
   },
 
-  typing: function(data) {
+  addTypingUser: function(data) {
     AppDispatcher.handleServerAction({
-      type: ActionTypes.TYPING,
+      type: ActionTypes.ADD_TYPING_USER,
       data: data
     });
   },
 
-  stopTyping: function(data) {
+  removeTypingUser: function(data) {
     AppDispatcher.handleServerAction({
-      type: ActionTypes.STOP_TYPING,
+      type: ActionTypes.REMOVE_TYPING_USER_USER,
       data: data
     });
   }

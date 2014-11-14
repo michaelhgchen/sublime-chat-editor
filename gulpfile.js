@@ -22,12 +22,12 @@ var watchify = require('watchify');
 
 // constants
 var BUILD_PATH = './public/build/';
-var JSX_DEST = './src/js/compiled-jsx/';
+var JSX_DEST = './src/compiled-app/';
 var BROWSERIFY_SRC = './src/js/ClientReactApp.js';
 var BROWSERIFY_OUTPUT = 'scripts.js';
 var SASS_SRC = './src/sass/styles.scss';
 var CSS_SRC = './public/build/styles.css';
-var JSX_SRC = ['!./src/js/compiled-jsx', './src/js/**/*.js'];
+var JSX_SRC = ['./src/js/**/*.js'];
 var SASS_ALL = './src/sass/**/*.scss';
 
 // ============================================================================
@@ -96,16 +96,16 @@ gulp.task('clean', function(cb) { del([BUILD_PATH, JSX_DEST], cb); });
 // ====================================
 // compile jsx
 gulp.task('jsx', function() {
-  return gulp.src(JSX_SRC)
-    .pipe(changed(JSX_DEST))
-    .pipe(react())
-    .pipe(gulp.dest(JSX_DEST));
+  // return gulp.src(JSX_SRC)
+  //   .pipe(changed(JSX_DEST))
+  //   .pipe(react())
+  //   .pipe(gulp.dest(JSX_DEST));
 });
 
 // reactify jsx for client-side use
 gulp.task('reactify', function() {
   return browserifyScripts({
-    src: JSX_SRC,
+    src: BROWSERIFY_SRC,
     output: BROWSERIFY_OUTPUT,
     dest: BUILD_PATH,
     transform: 'reactify'
@@ -174,7 +174,7 @@ gulp.task('optimize', ['uglify', 'minifycss']);
 // compile jsx for client and server-side, build css
 gulp.task('watch', function() {
   browserifyScripts({
-    src: JSX_SRC,
+    src: BROWSERIFY_SRC,
     output: BROWSERIFY_OUTPUT,
     dest: BUILD_PATH,
     transform: 'reactify'

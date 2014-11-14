@@ -1,51 +1,22 @@
-// store for messages, users and current username
+var assign = require('object-assign');
+var EventEmitter = require('events').EventEmitter;
+var AppDispatcher = require('../dispatcher/AppDispatcher');
+var Constants = require('../constants/FluxConstants');
+var ActionTypes = Constants.ActionTypes;
+var MessageTypes = Constants.MessageTypes;
+var CHANGE_EVENT = 'change';
 
-var
-  assign        = require('object-assign'),
-  EventEmitter  = require('events').EventEmitter,
-  AppDispatcher = require('../dispatcher/AppDispatcher'),
-  ActionTypes   = require('../constants/Constants').ActionTypes,
-  TextTypes     = require('../constants/Constants').TextTypes,
-  CHANGE_EVENT  = 'change',
-  loginStatus, username, allUsers, messages, ChatStore;
-
-username    = '';
-allUsers    = {};
-messages    = [];
-
-function setUsername(name) {
-  username = name;
-}
-
-function addUser(user) {
-  allUsers[user] = user;
-}
-
-function addAllUsers(users) {
-  allUsers = users;
-}
-
-function removeUser(user) {
-  delete allUsers[user];
-}
+var messages = [];
 
 function addMessage(message) {
-  if(username) messages.push(message);
+  messages.push(message);
 }
 
 function clearMessages() {
   messages = [];
 }
 
-ChatStore = assign({}, EventEmitter.prototype, {
-  getUsername: function() {
-    return username;
-  },
-
-  getAllUsers: function() {
-    return allUsers;
-  },
-
+var ChatStore = assign({}, EventEmitter.prototype, {
   getMessages: function() {
     return messages;
   },
@@ -69,62 +40,40 @@ ChatStore.dispatchToken = AppDispatcher.register(function(payload) {
   action = payload.action;
 
   switch(action.type) {
-    case ActionTypes.RESET_APP:
-      setUsername('');
-      clearMessages();
+    case ActionTypes.SET_USERNAME:
+      addMessage({ type: MessageTypes.JOIN });
       ChatStore.emitChange();
       break;
 
-    case ActionTypes.LOGIN:
-      data = action.data;
-
-      setUsername(data.username);
-      addAllUsers(data.allUsers);
+    case ActionTypes.ADD_USER:
       addMessage({
-        type: TextTypes.INIT,
-        username: data.username
-      });
-
-      ChatStore.emitChange();
-      break;
-
-    case ActionTypes.USER_JOINED:
-      addUser(action.data.username);
-      addMessage({
-        type: TextTypes.JOINED,
+        type: MessageTypes.ADD_USER,
         username: action.data.username
       });
       ChatStore.emitChange();
       break;
 
-    case ActionTypes.USER_LEFT:
-      removeUser(action.data.username);
+    case ActionTypes.REMOVE_USER:
       addMessage({
-        type: TextTypes.LEFT,
+        type: MessageTypes.REMOVE_USER,
         username: action.data.username
       });
       ChatStore.emitChange();
       break;
 
-    case ActionTypes.NEW_MESSAGE:
+    case ActionTypes.ADD_MESSAGE:
       data = action.data;
 
-      addMessage({
-        type: TextTypes.NEW_MESSAGE,
-        username: data.username,
-        message: data.message
-      });
-      ChatStore.emitChange();
-      break;
-
-    case ActionTypes.SEND_MESSAGE:
-      data = action.data;
-
-      addMessage({
-        type: TextTypes.SEND_MESSAGE,
-        username: username,
-        message: data.message
-      });
+      data.username
+        ? addMessage({
+          type: TextTypes.RECEIVE,
+          username: data.username,
+          message: data.message
+        })
+        : addMessage({
+          type: TextTypes.SEND,
+          message: data.message
+        });
       ChatStore.emitChange();
       break;
 

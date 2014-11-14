@@ -9,7 +9,7 @@ var ClientSocketEvents = enumify({
 
 var ServerSocketEvents = enumify({
   SET_USERNAME_FAIL: null,
-  SET_USERNAME_SUCCESS: null,
+  SET_USERNAME: null,
   USER_CONNECT: null,
   USER_DISCONNECT: null,
   USER_MESSAGE: null,

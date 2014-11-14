@@ -1,5 +1,5 @@
 var React = require('react');
-var ChatApp = require('./components/ChatApp.react');
+var ChatApp = require('./ChatApp.react');
 var ViewActions = require('./actions/ViewActions');
 var ChatSocketClientHandler = require('./ChatSocketClientHandler');
 

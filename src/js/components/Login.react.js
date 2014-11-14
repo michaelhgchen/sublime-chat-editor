@@ -1,70 +1,36 @@
-var
-  React       = require('react/addons'),
-  LoginStore  = require('../stores/LoginStore'),
-  ViewActions = require('../actions/ViewActions'),
-  ENTER_KEY   = 13,
-  Login;
+var React = require('react');
+var ViewActions = require('../actions/ViewActions');
+var ENTER_KEY = 13;
 
-function getStateFromStores() {
-  return {
-    loginError: LoginStore.getLoginError()
-  };
-}
-
-Login = React.createClass({
+var Login = React.createClass({
   getInitialState: function() {
-    var state;
-
-    state = getStateFromStores();
-    state.name = '';
-
-    return state;
-  },
-
-  componentDidMount: function() {
-    LoginStore.addChangeListener(this._onChange);
-  },
-
-  componentWillUnmount: function() {
-    LoginStore.removeChangeListener(this._onChange);
+    return { name: '' };
   },
 
   handleSubmit: function() {
-    var name;
+    var name = this.state.name.trim();
 
-    name = this.state.name.trim();
-
-    if(name) {
-      ViewActions.newUser(name);
-    }
+    name && ViewActions.setUsername(name);
   },
 
   handleChange: function(e) {
-    this.setState({
-      name: e.target.value,
-      loginError: ''
-    });
+    this.setState({ name: e.target.value });
   },
 
   handleEnter: function(e) {
-    if(e.keyCode === ENTER_KEY) {
-      this.handleSubmit();
-    }
+    e.keyCode === ENTER_KEY && this.handleSubmit();
   },
 
   render: function() {
-    var name, loginError, listings;
+    var name = this.state.name.trim();
 
-    name = this.state.name.trim();
-    loginError = this.state.loginError;
-    listings = [
-      loginError
-        ? loginError.replace('Name', name)
-        : 'Choose a Nickname',
+    var listings = [
+      'Choose a Nickname',
       'Developed by Michael Chen Using: Node, React, Flux and Socket.IO',
       'Sublime Chat Editor: A Chat Application That Looks Like Sublime'
     ];
 
+    // filter listings
     listings = listings.map(function(listing) {
       var toMatch, toReplace;
 
@@ -96,10 +62,6 @@ Login = React.createClass({
         </div>
       </div>
     );
-  },
-
-  _onChange: function() {
-    this.setState(getStateFromStores());
   }
 });
 
