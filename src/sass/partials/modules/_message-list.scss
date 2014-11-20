@@ -1,0 +1,65 @@
+.message-list {
+  @extend .fill-height;
+
+  position: relative;
+  overflow: auto;
+
+  background-color: $color-message-list-background;
+  font-family: $font-family-code;
+  color: $color-code;
+  padding-top: $height-message-list-header;
+}
+
+.line {
+  display: table-row;
+  line-height: $message-line-height;
+  text-indent: $space-xs;
+
+  // highlight last line-number
+  &:last-child > .line-number {
+    background-color: $color-message-line-highlight;
+  }
+}
+
+.line-number {
+  @extend .right-align;
+  display: table-cell;
+  color: $color-message-line-number;
+  padding: 0 $space-l;
+}
+
+.line-message {
+  display: table-cell;
+}
+
+.message-list-header {
+  background-color: lighten(black, 10%);
+  height: $height-message-list-header;
+  padding: $space-s;
+  border-bottom: 1px solid $color-border;
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+}
+
+%arrow {
+  font-size: 1.5em;
+  color: $color-arrow;
+  margin: 0;
+}
+
+.right-arrow {
+  @extend %arrow;
+  @extend .icon-arrow-right;
+}
+
+.left-arrow {
+  @extend %arrow;
+  @extend .icon-arrow-left;
+}
+
+.down-arrow {
+  @extend %arrow;
+  @extend .icon-arrow-down;
+}

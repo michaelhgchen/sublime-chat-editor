@@ -1,0 +1,37 @@
+.text-comment {
+  color: $color-text-comment;
+}
+
+.text-var {
+  font-style: italic;
+  color: $color-text-var;
+}
+
+.text-argument {
+  font-style: italic;
+  color: $color-text-argument;
+}
+
+.text-operator {
+  color: $color-text-operator;
+}
+
+.text-string {
+  color: $color-text-string;
+}
+
+.text-entity {
+  color: $color-text-entity;
+}
+
+.text-function {
+  color: $color-text-function;
+}
+
+.text-indent {
+  border-left: 1px dotted $color-border-light;
+}
+
+.text-reserved {
+  color: $color-text-reserved;
+}

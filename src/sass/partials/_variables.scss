@@ -1,0 +1,92 @@
+// ============================================================================
+// Global
+// ============================================================================
+// Padding/margins
+$space-xs: 0.3125em;
+$space-s: 2 * $space-xs; // ~10px
+$space-m: 3 * $space-xs; // ~15px
+$space-l: 2 * $space-s;  // ~20px
+$space-xl: 2 * $space-m; // ~30px
+
+// Colors
+$color-font: black;
+$color-border: #3a3a3a;
+$color-border-light: #7d7d7d;
+
+// Font
+$font-family: Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif;
+$font-size: 10px;
+
+// Dimensions
+$min-width-app: 24em;
+$min-height-app: 24em;
+
+// Media Queries
+$break-desktop: 32em;
+
+// ============================================================================
+// Login
+// ============================================================================
+// Colors
+$color-login-list-border: #363636;
+$color-login-list-border-light: #4d4d4d;
+$color-login-list: #c8c8c8;
+$color-login-background: #404040;
+$color-login-selected-background: #575757;
+
+// Dimensions
+$width-login-container: 36em;
+// ============================================================================
+// Chat Bottom
+// ============================================================================
+// Padding/margins
+$padding-chat-bottom: $space-xs;
+
+// Colors
+$color-chat-bottom-background: #555555;
+$color-font-chat-bottom: white;
+
+// Font
+$text-shadow-chat-bottom: 0px -.75px 0px black;
+
+// Dimensions
+$height-chat-input: 2em;
+$height-chat-input-container: $height-chat-input + (2 * $padding-chat-bottom);
+$height-chat-stats: 1em + (2 * $padding-chat-bottom);
+$height-chat-bottom: $height-chat-input-container + $height-chat-stats;
+
+// ============================================================================
+// User list
+// ============================================================================
+$color-arrow: #868686;
+$width-user-list: 15em;
+$color-user-list-title: #828282;
+$color-user-list-text: black;
+$color-user-list-background: #e6e6e6;
+$text-shadow-user-list: 0px .75px 0px white;
+
+// ============================================================================
+// Message list
+// ============================================================================
+// Colors
+$color-message-list-background: #272822;
+$color-message-line-number: #8f908a;
+$color-message-line-highlight: #39382e;
+
+// Font
+$message-line-height: 1.2;
+$height-message-list-header: (2 * $space-s) + 1.5em;
+// ============================================================================
+// Text
+// ============================================================================
+// Colors
+$font-family-code: Consolas, Menlo Regular, monospace;
+$color-code: white;
+$color-text-comment: #75715e;
+$color-text-var: #66d9ef;
+$color-text-operator: #f92672;
+$color-text-string: #e6db74;
+$color-text-entity: #ae81ff;
+$color-text-function: #91e22e;
+$color-text-argument: #fd9822;
+$color-text-reserved: #66d9ef;
