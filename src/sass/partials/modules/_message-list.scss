@@ -7,6 +7,7 @@
   background-color: $color-message-list-background;
   font-family: $font-family-code;
   color: $color-code;
+  padding-top: $height-message-list-header;
 }
 
 .line {
@@ -32,10 +33,14 @@
 }
 
 .message-list-header {
-  background-color: black;
+  background-color: lighten(black, 10%);
   height: $height-message-list-header;
   padding: $space-s;
   border-bottom: 1px solid $color-border;
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
 }
 
 %arrow {

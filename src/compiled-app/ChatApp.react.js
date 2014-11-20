@@ -16,7 +16,7 @@ function getStateFromStores() {
   }
 }
 
-var ChatApp = React.createClass({
+var ChatApp = React.createClass({displayName: 'ChatApp',
   getInitialState: function() {
     return getStateFromStores();
   },
@@ -47,21 +47,21 @@ var ChatApp = React.createClass({
     messages.push('<span class="blinking">|</span>');
 
     return (
-      <div className="chat-app">
-        <CSSTransitionGroup transitionName="login-transition">
-          { loggedIn ? null : <Login key="Login"/> }
-        </CSSTransitionGroup>
+      React.createElement("div", {className: "chat-app"}, 
+        React.createElement(CSSTransitionGroup, {transitionName: "login-transition"}, 
+           loggedIn ? null : React.createElement(Login, {key: "Login"})
+        ), 
 
-        <ChatTop
-          allUsers={this.state.allUsers}
-          messages={messages}
-          loggedIn={loggedIn} />
+        React.createElement(ChatTop, {
+          allUsers: this.state.allUsers, 
+          messages: messages, 
+          loggedIn: loggedIn}), 
 
-        <ChatBottom
-          allUsers={this.state.allUsers}
-          messages={messages}
-          loggedIn={loggedIn} />
-      </div>
+        React.createElement(ChatBottom, {
+          allUsers: this.state.allUsers, 
+          messages: messages, 
+          loggedIn: loggedIn})
+      )
     );
   },
 

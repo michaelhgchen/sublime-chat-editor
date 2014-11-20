@@ -96,10 +96,10 @@ gulp.task('clean', function(cb) { del([BUILD_PATH, JSX_DEST], cb); });
 // ====================================
 // compile jsx
 gulp.task('jsx', function() {
-  // return gulp.src(JSX_SRC)
-  //   .pipe(changed(JSX_DEST))
-  //   .pipe(react())
-  //   .pipe(gulp.dest(JSX_DEST));
+  return gulp.src(JSX_SRC)
+    .pipe(changed(JSX_DEST))
+    .pipe(react())
+    .pipe(gulp.dest(JSX_DEST));
 });
 
 // reactify jsx for client-side use
@@ -154,9 +154,9 @@ gulp.task('build', function(cb) {
 // ====================================
 // optimize client-side js
 gulp.task('uglify', function() {
-  return gulp.src(BROWSERIFY_DEST + BROWSERIFY_OUTPUT)
+  return gulp.src(BUILD_PATH + BROWSERIFY_OUTPUT)
     .pipe(uglify())
-    .pipe(gulp.dest(BROWSERIFY_DEST));
+    .pipe(gulp.dest(BUILD_PATH));
 });
 
 // optimize css

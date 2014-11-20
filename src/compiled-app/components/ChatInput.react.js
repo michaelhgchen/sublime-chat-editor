@@ -2,7 +2,7 @@ var React = require('react');
 var ViewActions = require('../actions/ViewActions');
 var ENTER_KEY = 13;
 
-var ChatInput = React.createClass({
+var ChatInput = React.createClass({displayName: 'ChatInput',
   getInitialState: function() {
     return {
       message:''
@@ -46,19 +46,19 @@ var ChatInput = React.createClass({
 
   render: function() {
     return (
-      <div className="chat-input-container">
-        <div className="chat-input-label">{this.props.label}</div>
-        <div className="chat-input">
-          <input
-            disabled={this.props.disabled}
-            className="input"
-            type="text"
-            value={this.state.message}
-            onChange={this.handleChange}
-            onKeyDown={this.handleEnter}
-            onSubmit={this.handleSubmit}/>
-        </div>
-      </div>
+      React.createElement("div", {className: "chat-input-container"}, 
+        React.createElement("div", {className: "chat-input-label"}, this.props.label), 
+        React.createElement("div", {className: "chat-input"}, 
+          React.createElement("input", {
+            disabled: this.props.disabled, 
+            className: "input", 
+            type: "text", 
+            value: this.state.message, 
+            onChange: this.handleChange, 
+            onKeyDown: this.handleEnter, 
+            onSubmit: this.handleSubmit})
+        )
+      )
     )
   },
 
