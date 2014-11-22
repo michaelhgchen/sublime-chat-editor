@@ -6,7 +6,9 @@ var ChatBottom = React.createClass({
   render: function() {
     return (
       <div className="chat-bottom">
-        <ChatInput disabled={!this.props.loggedIn} label="File Name:"/>
+        <ChatInput
+          disabled={!this.props.loggedIn}
+          label="File Name:"/>
         <ChatStats
           line={this.props.messages.length || 1}
           column={1}/>

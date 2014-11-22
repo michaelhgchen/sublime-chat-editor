@@ -37,9 +37,10 @@ StringTransformer.prototype.transform = function(source) {
   if(transformed === null) return this.transform(source, pass + 1);
 
   transformed = transformed.map(function(s) {
-    return this._passes[pass].process(s);
+    return s.replace(toMatch, this._passes[pass].process);
   }.bind(this));
 
+  // TODO: Lol don't do this
   toTransform = source.replace(toMatch, '^^^^^').split('^^^^^');
 
   toTransform = toTransform.map(function(s) {

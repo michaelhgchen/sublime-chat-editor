@@ -1,11 +1,9 @@
-var assign = require('object-assign');
+var FluxFactory = require('../utils/FluxFactory');
 var MessageUtil = require('../utils/MessageUtil');
-var EventEmitter = require('events').EventEmitter;
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var Constants = require('../constants/FluxConstants');
 var ActionTypes = Constants.ActionTypes;
 var MessageTypes = Constants.MessageTypes;
-var CHANGE_EVENT = 'change';
 
 var typingUsers = {};
 
@@ -17,7 +15,7 @@ function removeTypingUser(username) {
   delete typingUsers[username];
 }
 
-TypingUserStore = assign({}, EventEmitter.prototype, {
+var TypingUserStore = FluxFactory.createStore({
   getTypingUsers: function() {
     return Object.keys(typingUsers);
   },
@@ -40,43 +38,31 @@ TypingUserStore = assign({}, EventEmitter.prototype, {
     return MessageUtil.convertRawMessage(MessageTypes.TYPING, '', typingText);
   },
 
-  emitChange: function() {
-    this.emit(CHANGE_EVENT);
-  },
+  dispatchToken: AppDispatcher.register(function(payload) {
+    var action;
 
-  addChangeListener: function(callback) {
-    this.on(CHANGE_EVENT, callback);
-  },
+    action = payload.action;
 
-  removeChangeListener: function(callback) {
-    this.removeListener(CHANGE_EVENT, callback);
-  }
-});
+    switch(action.type) {
+      case ActionTypes.ADD_MESSAGE:
+        removeTypingUser(action.data.username);
+        TypingUserStore.emitChange();
+        break;
 
-TypingUserStore.dispatchToken = AppDispatcher.register(function(payload) {
-  var action;
+      case ActionTypes.ADD_TYPING_USER:
+        addTypingUser(action.data.username);
+        TypingUserStore.emitChange();
+        break;
 
-  action = payload.action;
+      case ActionTypes.REMOVE_TYPING_USER:
+        removeTypingUser(action.data.username);
+        TypingUserStore.emitChange();
+        break;
 
-  switch(action.type) {
-    case ActionTypes.ADD_MESSAGE:
-      removeTypingUser(action.data.username);
-      TypingUserStore.emitChange();
-      break;
-
-    case ActionTypes.ADD_TYPING_USER:
-      addTypingUser(action.data.username);
-      TypingUserStore.emitChange();
-      break;
-
-    case ActionTypes.REMOVE_TYPING_USER:
-      removeTypingUser(action.data.username);
-      TypingUserStore.emitChange();
-      break;
-
-    default:
-      break;
-  }
+      default:
+        break;
+    }
+  })
 });
 
 module.exports = TypingUserStore;

@@ -1,14 +1,11 @@
-var assign = require('object-assign');
-var EventEmitter = require('events').EventEmitter;
+var FluxFactory = require('../utils/FluxFactory');
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var MessageUtil = require('../utils/MessageUtil');
 var Constants = require('../constants/FluxConstants');
 var ActionTypes = Constants.ActionTypes;
 var MessageTypes = Constants.MessageTypes;
-var CHANGE_EVENT = 'change';
 
 var messages = [];
-var previousUser;
 
 // add initial messages
 function initMessages() {
@@ -33,88 +30,70 @@ function resetMessages() {
   initMessages();
 }
 
-var MessageStore = assign({}, EventEmitter.prototype, {
+var MessageStore = FluxFactory.createStore({
   getMessages: function() {
     return messages;
   },
 
+  dispatchToken: AppDispatcher.register(function(payload) {
+    var action, convertedMessage;
 
+    action = payload.action;
 
-  emitChange: function() {
-    this.emit(CHANGE_EVENT);
-  },
+    switch(action.type) {
+      case ActionTypes.SET_USERNAME:
+        initMessages();
+        MessageStore.emitChange();
+        break;
 
-  addChangeListener: function(callback) {
-    this.on(CHANGE_EVENT, callback);
-  },
-
-  removeChangeListener: function(callback) {
-    this.removeListener(CHANGE_EVENT, callback);
-  }
-});
-
-MessageStore.dispatchToken = AppDispatcher.register(function(payload) {
-  var action, convertedMessage;
-
-  action = payload.action;
-
-  switch(action.type) {
-    case ActionTypes.SET_USERNAME:
-      initMessages();
-      MessageStore.emitChange();
-      break;
-
-    case ActionTypes.ADD_USER:
-      convertedMessage = MessageUtil.convertRawMessage(
-        MessageTypes.ADD_USER,
-        action.data.username
-      );
-      addMessages(convertedMessage.split('\n'));
-      MessageStore.emitChange();
-      break;
-
-    case ActionTypes.REMOVE_USER:
-      convertedMessage = MessageUtil.convertRawMessage(
-        MessageTypes.REMOVE_USER,
-        action.data.username
-      );
-
-      addMessages(convertedMessage.split('\n'));
-      MessageStore.emitChange();
-      break;
-
-    case ActionTypes.ADD_MESSAGE:
-      if(action.data.username) {
+      case ActionTypes.ADD_USER:
         convertedMessage = MessageUtil.convertRawMessage(
-          MessageTypes.RECEIVE,
-          action.data.username,
-          action.data.message
+          MessageTypes.ADD_USER,
+          action.data.username
         );
-      } else {
+        addMessages(convertedMessage.split('\n'));
+        MessageStore.emitChange();
+        break;
+
+      case ActionTypes.REMOVE_USER:
         convertedMessage = MessageUtil.convertRawMessage(
-          MessageTypes.SEND,
-          null,
-          action.data.message
+          MessageTypes.REMOVE_USER,
+          action.data.username
         );
-      }
 
-      if(previousUser && previousUser !== action.data.username) addMessage('');
+        addMessages(convertedMessage.split('\n'));
+        MessageStore.emitChange();
+        break;
 
-      previousUser = action.data.username;
+      case ActionTypes.ADD_MESSAGE:
+        if(action.data.username) {
+          convertedMessage = MessageUtil.convertRawMessage(
+            MessageTypes.RECEIVE,
+            action.data.username,
+            action.data.message
+          );
+        } else {
+          convertedMessage = MessageUtil.convertRawMessage(
+            MessageTypes.SEND,
+            null,
+            action.data.message
+          );
+        }
 
-      addMessages(convertedMessage.split('\n'));
+        addMessages(convertedMessage.split('\n'));
 
-      MessageStore.emitChange();
-      break;
+        MessageStore.emitChange();
+        break;
 
-    case ActionTypes.RESET_MESSAGES:
-      resetMessages();
-      MessageStore.emitChange();
-      break;
+      case ActionTypes.RESET_MESSAGES:
+        resetMessages();
+        MessageStore.emitChange();
+        break;
 
-    default:
-      break;
-  }
+      default:
+        break;
+    }
+  })
 });
 
 module.exports = MessageStore;

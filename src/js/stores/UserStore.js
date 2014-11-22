@@ -1,8 +1,6 @@
-var assign = require('object-assign');
-var EventEmitter = require('events').EventEmitter;
+var FluxFactory = require('../utils/FluxFactory');
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var ActionTypes = require('../constants/FluxConstants').ActionTypes;
-var CHANGE_EVENT = 'change';
 
 var username = '';
 var allUsers = {};
@@ -24,7 +22,7 @@ function removeUser(user) {
   delete allUsers[user];
 }
 
-var UserStore = assign({}, EventEmitter.prototype, {
+var UserStore = FluxFactory.createStore({
   getUserError: function() {
     return userError;
   },
@@ -37,42 +35,40 @@ var UserStore = assign({}, EventEmitter.prototype, {
     return allUsers;
   },
 
-  emitChange: function() {
-    this.emit(CHANGE_EVENT);
-  },
+  dispatchToken: AppDispatcher.register(function(payload) {
+    var action;
 
-  addChangeListener: function(callback) {
-    this.on(CHANGE_EVENT, callback);
-  },
+    action = payload.action;
 
-  removeChangeListener: function(callback) {
-    this.removeListener(CHANGE_EVENT, callback);
-  }
-});
+    switch(action.type) {
+      case ActionTypes.SET_USERNAME:
+        userError = false;
+        data = action.data;
 
-UserStore.dispatchToken = AppDispatcher.register(function(payload) {
-  var action;
+        setUsername(data.username);
+        addAllUsers(data.allUsers);
+        UserStore.emitChange();
+        break;
 
-  action = payload.action;
+      case ActionTypes.FAIL_SET_USERNAME:
+        userError = true;
+        UserStore.emitChange();
+        break;
 
-  switch(action.type) {
-    case ActionTypes.SET_USERNAME:
-      userError = false;
-      data = action.data;
+      case ActionTypes.ADD_USER:
+        addUser(action.data.username);
+        UserStore.emitChange();
+        break;
 
-      setUsername(data.username);
-      addAllUsers(data.allUsers);
-      UserStore.emitChange();
-      break;
+      case ActionTypes.REMOVE_USER:
+        removeUser(action.data.username);
+        UserStore.emitChange();
+        break;
 
-    case ActionTypes.FAIL_SET_USERNAME:
-      userError = true;
-      UserStore.emitChange();
-      break;
-
-    default:
-      break;
-  }
+      default:
+        break;
+    }
+  })
 });
 
 module.exports = UserStore;

@@ -55,7 +55,8 @@ var Login = React.createClass({
             value={this.state.name}
             onChange={this.handleChange}
             onKeyDown={this.handleEnter}
-            onSubmit={this.handleSubmit}/>
+            onSubmit={this.handleSubmit}
+            autoFocus={true}/>
           <ul className="login-list">
             {listings}
           </ul>

@@ -5,12 +5,12 @@ var MessageTypes = Constants.MessageTypes;
 var INDENT_REGEX = /\{\{indent\}\}/;
 var COMMENT_REGEX = /\/\*[\s\S]*?\*\/|\/\/[^\n]*(?:$|\n)/;
 var STRING_REGEX = /("|')[\s\S]*?\1/;
-var FUNCTION_REGEX = /\b(function)(?:(\s+?)(\w+?))?(\s*?\()([\w,\s]*?)(\))(\s*?\{)/;
+var FUNCTION_REGEX = /\bfunction(?:(\s+?)(\w+?))?(\s*?)\(([\w,\s]*?)\)/;
 var OPERATOR_REGEX = /'-|static|\+|\*|=|~|!|\$|\*|~|\<|\>|&&|\|\|'/;
-var KEYWORD_REGEX = /\b(?:break|case|catch|const|continue|debugger|default|delete|do|else|export|extends|finally|for|if|import|in|instanceof|new|return|switch|throw|try|typeof|while|with)\s/;
+var KEYWORD_REGEX = /\b(?:break|case|catch|const|continue|debugger|default|delete|do|else|export|extends|finally|for|if|import|in|instanceof|new|return|switch|throw|try|typeof|while|with)\b/;
 var NUMBER_REGEX = /\b[0-9]+\b/;
-var VAR_REGEX  = /\bvar\b/;
-var RESERVED_REGEX = /\.(?:log|port)/; // lazy
+var VAR_REGEX  = /\bvar|function\b/;
+var RESERVED_REGEX = /\.(log|port)/; // lazy
 
 var escapeHtml = require('./escapeHtml');
 
@@ -25,7 +25,8 @@ var passes = [
   {
     regex: INDENT_REGEX,
     process: function() {
-      return '<span class="text-indent">&nbsp;&nbsp;</span>'
+      return '<span class="' + LanguageClasses.INDENT
+        + '">&nbsp;&nbsp;</span>';
     }
   },
   {
@@ -38,12 +39,9 @@ var passes = [
   },
   {
     regex: FUNCTION_REGEX,
-    process: function(source) {
-      return source.replace(FUNCTION_REGEX,
-        '<span class="text-var">$1</span>$2<span class="text-function">\
-        $3</span>$4<span class="text-argument">$5</span>$6$7'
-      );
-    }
+    process: '<span class="' + LanguageClasses.VAR +
+      '">function</span>$1<span class="' + LanguageClasses.FUNCTION +
+      '">$2</span>$3(<span class="' + LanguageClasses.ARGUMENT + '">$4</span>)'
   },
   {
     regex: OPERATOR_REGEX,
@@ -63,10 +61,7 @@ var passes = [
   },
   {
     regex: RESERVED_REGEX,
-    // TODO: Don't be lazy
-    process: function(source) {
-      return '.<span class="text-reserved">' + source.slice(1) + '</span>';
-    }
+    process: '.<span class="' + LanguageClasses.RESERVED + '">$1</span>'
   }
 ];
 
