@@ -23,7 +23,7 @@ var ChatInput = React.createClass({
     self._typeTimeout = setTimeout(function() {
       ViewActions.stopTyping();
       self._typeTimeout = null;
-    }, 200);
+    }, 500);
 
     self.setState({
       message: e.target.value
