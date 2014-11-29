@@ -35,6 +35,10 @@ var ChatInput = React.createClass({
     if(message) {
       if(message === '/clear') {
         ViewActions.resetMessages();
+      } else if (message === '/hide') {
+        ViewActions.hideMessages();
+      } else if (message === '/show') {
+        ViewActions.showMessages();
       } else {
         ViewActions.sendMessage(message);
       }

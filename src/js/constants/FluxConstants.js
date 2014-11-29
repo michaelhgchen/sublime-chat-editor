@@ -8,7 +8,9 @@ var ActionTypes = enumify({
   ADD_MESSAGE: null,
   ADD_TYPING_USER: null,
   REMOVE_TYPING_USER: null,
-  RESET_MESSAGES: null
+  RESET_MESSAGES: null,
+  HIDE_MESSAGES: null,
+  SHOW_MESSAGES: null
 });
 
 var PayloadSources = enumify({

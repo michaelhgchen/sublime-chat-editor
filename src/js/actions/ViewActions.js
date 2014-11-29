@@ -20,11 +20,26 @@ module.exports = {
   },
 
   type: function() { SocketHandler.type(); },
+  
   stopTyping: function() { SocketHandler.stopTyping(); },
+  
   setSocketHandler: function(handler) { SocketHandler = handler; },
+  
   resetMessages: function() {
     AppDispatcher.handleViewAction({
       type: ActionTypes.RESET_MESSAGES
+    });
+  },
+  
+  hideMessages: function() {
+    AppDispatcher.handleViewAction({
+      type: ActionTypes.HIDE_MESSAGES
+    });
+  },
+
+  showMessages: function() {
+    AppDispatcher.handleViewAction({
+      type: ActionTypes.SHOW_MESSAGES
     });
   }
 }
