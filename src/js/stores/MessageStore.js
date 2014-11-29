@@ -6,11 +6,12 @@ var ActionTypes = Constants.ActionTypes;
 var MessageTypes = Constants.MessageTypes;
 
 var messages = [];
+var initialMessages = MessageUtil.convertRawMessage(MessageTypes.JOIN).split('\n');
+var isHiding = false;
 
 // add initial messages
 function initMessages() {
-  var convertedMessage = MessageUtil.convertRawMessage(MessageTypes.JOIN);
-  addMessages(convertedMessage.split('\n'));
+  addMessages(initialMessages);
 }
 
 function addMessage(message) {
@@ -30,9 +31,17 @@ function resetMessages() {
   initMessages();
 }
 
+function hideMessages() {
+  isHiding = true;
+}
+
+function showMessages() {
+  isHiding = false;
+}
+
 var MessageStore = FluxFactory.createStore({
   getMessages: function() {
-    return messages;
+    return isHiding ? initialMessages : messages;
   },
 
   dispatchToken: AppDispatcher.register(function(payload) {
@@ -87,6 +96,16 @@ var MessageStore = FluxFactory.createStore({
 
       case ActionTypes.RESET_MESSAGES:
         resetMessages();
+        MessageStore.emitChange();
+        break;
+
+      case ActionTypes.HIDE_MESSAGES:
+        hideMessages();
+        MessageStore.emitChange();
+        break;
+
+      case ActionTypes.SHOW_MESSAGES:
+        showMessages();
         MessageStore.emitChange();
         break;
 
