@@ -1,8 +1,8 @@
 var enumify = require('../utils/enumify');
 
 var ActionTypes = enumify({
-  SET_USERNAME: null,
-  FAIL_SET_USERNAME: null,
+  LOGIN: null,
+  FAIL_LOGIN: null,
   ADD_USER: null,
   REMOVE_USER: null,
   ADD_MESSAGE: null,
@@ -10,7 +10,8 @@ var ActionTypes = enumify({
   REMOVE_TYPING_USER: null,
   RESET_MESSAGES: null,
   HIDE_MESSAGES: null,
-  SHOW_MESSAGES: null
+  SHOW_MESSAGES: null,
+  LOGOUT: null
 });
 
 var PayloadSources = enumify({
@@ -24,7 +25,8 @@ var MessageTypes = enumify({
   REMOVE_USER: null,
   TYPING: null,
   SEND: null,
-  RECEIVE: null
+  RECEIVE: null,
+  SERVER: null
 });
 
 var LanguageClasses = {

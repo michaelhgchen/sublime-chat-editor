@@ -2,16 +2,22 @@ var AppDispatcher = require('../dispatcher/AppDispatcher');
 var ActionTypes = require('../constants/FluxConstants').ActionTypes;
 
 module.exports = {
-  setUsername: function(data) {
+  logout: function() {
     AppDispatcher.handleServerAction({
-      type: ActionTypes.SET_USERNAME,
+      type: ActionTypes.LOGOUT
+    });
+  },
+
+  login: function(data) {
+    AppDispatcher.handleServerAction({
+      type: ActionTypes.LOGIN,
       data: data
     });
   },
 
   failSetUsername: function(data) {
     AppDispatcher.handleServerAction({
-      type: ActionTypes.FAIL_SET_USERNAME,
+      type: ActionTypes.FAIL_LOGIN,
       data: data
     });
   },

@@ -10,7 +10,7 @@ var Login = React.createClass({
   handleSubmit: function() {
     var name = this.state.name.trim();
 
-    name && ViewActions.setUsername(name);
+    name && ViewActions.login(name);
   },
 
   handleChange: function(e) {

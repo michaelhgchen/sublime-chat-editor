@@ -5,8 +5,9 @@ var Constants = require('../constants/FluxConstants');
 var ActionTypes = Constants.ActionTypes;
 var MessageTypes = Constants.MessageTypes;
 
-var messages = [];
+var loggedIn = false;
 var initialMessages = MessageUtil.convertRawMessage(MessageTypes.JOIN).split('\n');
+var messages = initialMessages;
 var isHiding = false;
 
 // add initial messages
@@ -19,7 +20,7 @@ function addMessage(message) {
 }
 
 function addMessages(messages) {
-  messages.forEach(addMessage);
+  if(loggedIn) messages.forEach(addMessage);
 }
 
 function clearMessages() {
@@ -50,8 +51,13 @@ var MessageStore = FluxFactory.createStore({
     action = payload.action;
 
     switch(action.type) {
-      case ActionTypes.SET_USERNAME:
-        initMessages();
+      case ActionTypes.LOGIN:
+        loggedIn = true;
+        break;
+
+      case ActionTypes.LOGOUT:
+        loggedIn = false;
+        resetMessages();
         MessageStore.emitChange();
         break;
 

@@ -1,15 +1,15 @@
 var enumify = require('../utils/enumify');
 
 var ClientSocketEvents = enumify({
-  SET_USERNAME: null,
+  LOGIN: null,
   SEND_MESSAGE: null,
   TYPING: null,
   STOP_TYPING: null
 });
 
 var ServerSocketEvents = enumify({
-  SET_USERNAME_FAIL: null,
-  SET_USERNAME: null,
+  LOGIN_SUCCESS: null,
+  LOGIN_FAIL: null,
   USER_CONNECT: null,
   USER_DISCONNECT: null,
   USER_MESSAGE: null,

@@ -1,89 +1,128 @@
+/**
+ * Exports a function that takes in a socket as an argument and attaches
+ * appropriate event handlers.  Called on socket connection event.
+ */
+
 var SocketEventsConstants = require('./constants/SocketEventsConstants');
-var ClientSocketConstants = SocketEventsConstants.Client;
-var ServerSocketConstants = SocketEventsConstants.Server;
+var ClientConstants = SocketEventsConstants.Client;
+var ServerConstants = SocketEventsConstants.Server;
 var allUsers = {};
 
-function ChatSocketServerHandler (socket) {
-  var socketUsername;
+// ====================================
+// general
+// ====================================
+// check if socket has a username attached to it ('logged in')
+function isLoggedIn(socket) {
+  return !!socket.username;
+}
 
-  // user tries to set a username
-  socket.on(ClientSocketConstants.SET_USERNAME, function (username) {
-    // if name is already used emit error
-    if(allUsers[username]) {
-      socket.emit(
-        ServerSocketConstants.SET_USERNAME_FAIL, {
-          username: username,
-          error: 'duplicate'
-        }
-      );
+// check if username exists in user storage
+function usernameIsUsed(username) {
+  return !!allUsers[username];
+}
 
-      return;
-    }
+// add username to user storage
+function addUsername(username) {
+  if(usernameIsUsed(username)) throw new Error('Username in use');
+  allUsers[username] = username;
+}
 
-    // otherwise set name in socket and allUsers store
-    socketUsername = username;
-    allUsers[username] = true;
+// remove username from user storage
+function removeUsername(username) {
+  if(!usernameIsUsed(username)) throw new Error('Username is not in use');
+  delete allUsers[username];
+}
 
-    // inform user of success
-    socket.emit(
-      ServerSocketConstants.SET_USERNAME, {
+// add username to socket and user storage
+function login(socket, username) {
+  addUsername(username);
+  socket.username = username;
+}
+
+// remove username from socket and user storage
+function logout(socket) {
+  removeUsername(socket.username);
+}
+
+// ====================================
+// client event handlers
+// ====================================
+function handleLogin(username) {
+  if(usernameIsUsed(username)) {
+    this.emit(
+      ServerConstants.LOGIN_FAIL, {
+        username: username,
+      }
+    );
+  } else {
+    login(this, username);
+
+    this.emit(
+      ServerConstants.LOGIN_SUCCESS, {
         username: username,
         allUsers: allUsers
       }
     );
 
-    // inform other users of a new user
-    socket.broadcast.emit(
-      ServerSocketConstants.USER_CONNECT, {
+    this.broadcast.emit(
+      ServerConstants.USER_CONNECT, {
         username: username
       }
     );
-  });
+  }
+}
 
-  // user sends a message
-  socket.on(ClientSocketConstants.SEND_MESSAGE, function (message) {
-    // inform other users of a new message
-    socket.broadcast.emit(
-      ServerSocketConstants.USER_MESSAGE, {
-        username: socketUsername,
-        message: message
-      }
-    );
-  });
-
-  // user types
-  socket.on(ClientSocketConstants.TYPING, function () {
-    // inform other users of a user typing
-    socket.broadcast.emit(
-      ServerSocketConstants.USER_TYPING, {
-        username: socketUsername
-      }
-    );
-  });
-
-  // user stops typing
-  socket.on(ClientSocketConstants.STOP_TYPING, function () {
-    // inform other users a user stopped typing
-    socket.broadcast.emit(
-      ServerSocketConstants.USER_STOP_TYPING, {
-        username: socketUsername
-      }
-    );
-  });
-
-  // user disconnects
-  socket.on('disconnect', function () {
-    // delete username if username is set and inform other users
-    if (socketUsername) {
-      delete allUsers[socketUsername];
-
-      socket.broadcast.emit(
-        ServerSocketConstants.USER_DISCONNECT, {
-          username: socketUsername
-        }
-      );
+// inform other users of a new message
+function handleSendMessage(message) {
+  this.broadcast.emit(
+    ServerConstants.USER_MESSAGE, {
+      username: this.username,
+      message: message
     }
-  });
+  );
+}
+
+// inform other users of a user typing
+function handleTyping() {
+  this.broadcast.emit(
+    ServerConstants.USER_TYPING, {
+      username: this.username
+    }
+  );
+}
+
+// inform other users a user stopped typing
+function handleStopTyping() {
+  this.broadcast.emit(
+    ServerConstants.USER_STOP_TYPING, {
+      username: this.username
+    }
+  );
+}
+
+// inform other users of a disconnect
+function handleDisconnect() {
+  console.log(Date(), ':', this.username, 'has disconnected\n');
+
+  if(isLoggedIn(this)) {
+    logout(this);
+
+    this.broadcast.emit(
+      ServerConstants.USER_DISCONNECT, {
+        username: this.username
+      }
+    );
+  }
+}
+
+function ChatSocketServerHandler(socket) {
+  console.log(Date(), ': A user has connected\n');
+
+  socket.on(ClientConstants.LOGIN, handleLogin);
+  socket.on(ClientConstants.SEND_MESSAGE, handleSendMessage);
+  socket.on(ClientConstants.TYPING, handleTyping);
+  socket.on(ClientConstants.STOP_TYPING, handleStopTyping);
+  socket.on('disconnect', handleDisconnect);
 }
 
 module.exports = ChatSocketServerHandler;

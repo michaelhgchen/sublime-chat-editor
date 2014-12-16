@@ -1,3 +1,6 @@
+// return the appropriate HTML string based on type + message data
+// currently uses JS syntax coloring
+
 var MessageTypes = require('../constants/FluxConstants').MessageTypes;
 var MessageParser = require('./MessageParser');
 

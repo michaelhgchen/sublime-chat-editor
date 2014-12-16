@@ -10,12 +10,12 @@ function setUsername(name) {
   username = name;
 }
 
-function addUser(user) {
-  allUsers[user] = user;
+function setAllUsers(users) {
+  allUsers = users;
 }
 
-function addAllUsers(users) {
-  allUsers = users;
+function addUser(user) {
+  allUsers[user] = user;
 }
 
 function removeUser(user) {
@@ -41,17 +41,23 @@ var UserStore = FluxFactory.createStore({
     action = payload.action;
 
     switch(action.type) {
-      case ActionTypes.SET_USERNAME:
+      case ActionTypes.LOGIN:
         userError = false;
         data = action.data;
 
         setUsername(data.username);
-        addAllUsers(data.allUsers);
+        setAllUsers(data.allUsers);
         UserStore.emitChange();
         break;
 
-      case ActionTypes.FAIL_SET_USERNAME:
+      case ActionTypes.FAIL_LOGIN:
         userError = true;
+        UserStore.emitChange();
+        break;
+
+      case ActionTypes.LOGOUT:
+        setUsername('');
+        setAllUsers({});
         UserStore.emitChange();
         break;
 
