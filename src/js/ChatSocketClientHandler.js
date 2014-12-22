@@ -116,7 +116,7 @@ Socket.on(
 Socket.on(
   ServerConstants.USER_MESSAGE,
   function(data) {
-    ServerActions.addMessage(data);
+    ServerActions.receiveMessage(data);
   }
 );
 

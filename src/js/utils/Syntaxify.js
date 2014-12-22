@@ -1,7 +1,3 @@
-function getModifiedRegex(regex, modifier) {
-  return new RegExp(regex.toString().slice(1, -1), modifier);
-}
-
 function mergeAlternate(first, second) {
   var merged, index, i, j;
 
@@ -19,11 +15,21 @@ function mergeAlternate(first, second) {
   return merged;
 }
 
-function StringTransformer(passes) {
+// convert regex to a string passable to new RegExp()
+function regexToRegexString(regex) {
+  return regex.toString().slice(1, -1);
+}
+
+// change an existing regex to add a modifier such as 'g' for global
+function addRegexModifier(regex, modifier) {
+  return new RegExp(regexToRegexString(regex), modifier);
+}
+
+function Syntaxify(passes) {
   this._passes = passes;
 }
 
-StringTransformer.prototype.transform = function(source) {
+Syntaxify.prototype.toHTMLString = function(source) {
   var pass, transformed, toTransform, toMatch;
 
   pass = arguments[1];
@@ -31,25 +37,25 @@ StringTransformer.prototype.transform = function(source) {
 
   if(pass === this._passes.length) return source;
 
-  toMatch = getModifiedRegex(this._passes[pass].regex, 'g');
+  toMatch = addRegexModifier(this._passes[pass].regex, 'g');
   transformed = source.match(toMatch);
 
-  if(transformed === null) return this.transform(source, pass + 1);
+  if(transformed === null) return this.toHTMLString(source, pass + 1);
 
   transformed = transformed.map(function(s) {
     return s.replace(toMatch, this._passes[pass].process);
   }.bind(this));
 
-  // TODO: Lol don't do this
-  toTransform = source.replace(toMatch, '^^^^^').split('^^^^^');
+  // TODO: Don't do this
+  toTransform = source.replace(toMatch, '<').split('<');
 
   toTransform = toTransform.map(function(s) {
-    return this.transform(s, pass + 1);
+    return this.toHTMLString(s, pass + 1);
   }.bind(this));
 
   return mergeAlternate(toTransform, transformed).join('');
 }
 
 module.exports = function(passes) {
-  return new StringTransformer(passes);
+  return new Syntaxify(passes);
 }

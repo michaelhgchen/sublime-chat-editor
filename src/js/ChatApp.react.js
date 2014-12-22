@@ -35,13 +35,10 @@ var ChatApp = React.createClass({
 
   render: function() {
     var loggedIn = !!this.state.username.trim();
-    var messages = [];
+    var messages = this.state.messages.slice(0);
 
-    if(this.state.username) {
-      messages = this.state.messages.slice(0);
-
-      if(this.state.typingText) messages.push(this.state.typingText);
-    }
+    // TODO: change the way typing text is added
+    if(this.state.typingText) messages.push(this.state.typingText);
 
     // add blinker
     messages.push('<span class="blinking">|</span>');

@@ -5,22 +5,17 @@ var Constants = require('../constants/FluxConstants');
 var ActionTypes = Constants.ActionTypes;
 var MessageTypes = Constants.MessageTypes;
 
+
+var currentUser = '';
+var previousSender;
+var initialMessages = MessageUtil.convertRawMessage(MessageTypes.JOIN);
+var messages = [];
 var loggedIn = false;
-var initialMessages = MessageUtil.convertRawMessage(MessageTypes.JOIN).split('\n');
-var messages = initialMessages;
 var isHiding = false;
 
 // add initial messages
 function initMessages() {
-  addMessages(initialMessages);
-}
-
-function addMessage(message) {
-  messages.push(message);
-}
-
-function addMessages(messages) {
-  if(loggedIn) messages.forEach(addMessage);
+  addMessageString(initialMessages);
 }
 
 function clearMessages() {
@@ -32,6 +27,18 @@ function resetMessages() {
   initMessages();
 }
 
+function addMessage(message) {
+  messages.push(message);
+}
+
+function addMessages(messages) {
+  messages.forEach(addMessage);
+}
+
+function addMessageString(message) {
+  addMessages(message.split('\n'));
+}
+
 function hideMessages() {
   isHiding = true;
 }
@@ -40,83 +47,123 @@ function showMessages() {
   isHiding = false;
 }
 
+function isPreviousSender(username) {
+  return previousSender === username;
+}
+
+function setPreviousSender(username) {
+  previousSender = username;
+}
+
 var MessageStore = FluxFactory.createStore({
   getMessages: function() {
     return isHiding ? initialMessages : messages;
   },
 
   dispatchToken: AppDispatcher.register(function(payload) {
-    var action, convertedMessage;
+    var action, messageType;
 
     action = payload.action;
 
-    switch(action.type) {
-      case ActionTypes.LOGIN:
-        loggedIn = true;
-        break;
-
-      case ActionTypes.LOGOUT:
-        loggedIn = false;
-        resetMessages();
-        MessageStore.emitChange();
-        break;
-
-      case ActionTypes.ADD_USER:
-        convertedMessage = MessageUtil.convertRawMessage(
-          MessageTypes.ADD_USER,
-          action.data.username
-        );
-        addMessages(convertedMessage.split('\n'));
-        MessageStore.emitChange();
-        break;
-
-      case ActionTypes.REMOVE_USER:
-        convertedMessage = MessageUtil.convertRawMessage(
-          MessageTypes.REMOVE_USER,
-          action.data.username
-        );
-
-        addMessages(convertedMessage.split('\n'));
-        MessageStore.emitChange();
-        break;
-
-      case ActionTypes.ADD_MESSAGE:
-        if(action.data.username) {
-          convertedMessage = MessageUtil.convertRawMessage(
-            MessageTypes.RECEIVE,
-            action.data.username,
-            action.data.message
+    if(loggedIn) {
+      switch(action.type) {
+        case ActionTypes.LOGOUT:
+          loggedIn = false;
+          currentUser = '';
+          resetMessages();
+          MessageStore.emitChange();
+          break;
+        case ActionTypes.RESET_MESSAGES:
+          resetMessages();
+          MessageStore.emitChange();
+          break;
+        case ActionTypes.ADD_USER:
+          addMessageString(
+            MessageUtil.convertRawMessage(
+              MessageTypes.ADD_USER, {
+                username: action.data.username
+              }
+            )
           );
-        } else {
-          convertedMessage = MessageUtil.convertRawMessage(
-            MessageTypes.SEND,
-            null,
-            action.data.message
+          MessageStore.emitChange();
+          break;
+        case ActionTypes.REMOVE_USER:
+          addMessageString(
+            MessageUtil.convertRawMessage(
+              MessageTypes.REMOVE_USER, {
+                username: action.data.username
+              }
+            )
           );
-        }
+          MessageStore.emitChange();
+          break;
+        case ActionTypes.SEND_MESSAGE:
+          messageType = MessageTypes.CONTINUE;
 
-        addMessages(convertedMessage.split('\n'));
+          if(!isPreviousSender(currentUser)) {
+            messageType = MessageTypes.SEND;
+            setPreviousSender(currentUser);
+          }
 
-        MessageStore.emitChange();
-        break;
+          addMessageString(
+            MessageUtil.convertRawMessage(
+              messageType, {
+                username: currentUser,
+                message: action.data.message
+              }
+            )
+          );
 
-      case ActionTypes.RESET_MESSAGES:
-        resetMessages();
-        MessageStore.emitChange();
-        break;
+          MessageStore.emitChange();
+          break;
+        case ActionTypes.RECEIVE_MESSAGE:
+          messageType = MessageTypes.CONTINUE;
 
-      case ActionTypes.HIDE_MESSAGES:
-        hideMessages();
-        MessageStore.emitChange();
-        break;
+          if(!isPreviousSender(action.data.username)) {
+          //   if(previousSender) {
+          //     addMessageString(
+          //       MessageUtil.convertRawMessage(
+          //         MessageTypes.END
+          //       )
+          //     );
+          //   }
+            messageType = MessageTypes.RECEIVE;
+            setPreviousSender(action.data.username);
+          }
 
-      case ActionTypes.SHOW_MESSAGES:
-        showMessages();
-        MessageStore.emitChange();
-        break;
+          addMessageString(
+            MessageUtil.convertRawMessage(
+              messageType, {
+                username: action.data.username,
+                message: action.data.message
+              }
+            )
+          );
+          MessageStore.emitChange();
+          break;
+        case ActionTypes.HIDE_MESSAGES:
+          hideMessages();
+          MessageStore.emitChange();
+          break;
+        case ActionTypes.SHOW_MESSAGES:
+          showMessages();
+          MessageStore.emitChange();
+          break;
+        default:
+          break;
+      }
+    } else {
+      switch(action.type) {
+        case ActionTypes.LOGIN:
+          loggedIn = true;
+          currentUser = action.data.username;
+          resetMessages();
+          MessageStore.emitChange();
+          break;
 
-      default:
-        break;
+        default:
+          break;
+      }
     }
   })
 });

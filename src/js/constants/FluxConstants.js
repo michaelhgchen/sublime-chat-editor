@@ -5,7 +5,8 @@ var ActionTypes = enumify({
   FAIL_LOGIN: null,
   ADD_USER: null,
   REMOVE_USER: null,
-  ADD_MESSAGE: null,
+  SEND_MESSAGE: null,
+  RECEIVE_MESSAGE: null,
   ADD_TYPING_USER: null,
   REMOVE_TYPING_USER: null,
   RESET_MESSAGES: null,
@@ -26,6 +27,8 @@ var MessageTypes = enumify({
   TYPING: null,
   SEND: null,
   RECEIVE: null,
+  CONTINUE: null,
+  END: null,
   SERVER: null
 });
 

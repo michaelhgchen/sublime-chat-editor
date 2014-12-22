@@ -36,9 +36,9 @@ module.exports = {
     });
   },
 
-  addMessage: function(data) {
+  receiveMessage: function(data) {
     AppDispatcher.handleServerAction({
-      type: ActionTypes.ADD_MESSAGE,
+      type: ActionTypes.RECEIVE_MESSAGE,
       data: data
     });
   },

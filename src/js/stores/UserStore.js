@@ -44,7 +44,6 @@ var UserStore = FluxFactory.createStore({
       case ActionTypes.LOGIN:
         userError = false;
         data = action.data;
-
         setUsername(data.username);
         setAllUsers(data.allUsers);
         UserStore.emitChange();

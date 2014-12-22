@@ -15,7 +15,7 @@ module.exports = {
 
   sendMessage: function(message) {
     AppDispatcher.handleViewAction({
-      type: ActionTypes.ADD_MESSAGE,
+      type: ActionTypes.SEND_MESSAGE,
       data: { message: message }
     });
 

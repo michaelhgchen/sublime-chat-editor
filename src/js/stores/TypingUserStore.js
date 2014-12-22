@@ -35,7 +35,11 @@ var TypingUserStore = FluxFactory.createStore({
       typingText += ' are typing...';
     }
 
-    return MessageUtil.convertRawMessage(MessageTypes.TYPING, '', typingText);
+    return MessageUtil.convertRawMessage(
+      MessageTypes.TYPING, {
+        message: typingText
+      }
+    );
   },
 
   dispatchToken: AppDispatcher.register(function(payload) {
@@ -44,7 +48,7 @@ var TypingUserStore = FluxFactory.createStore({
     action = payload.action;
 
     switch(action.type) {
-      case ActionTypes.ADD_MESSAGE:
+      case ActionTypes.RECEIVE_MESSAGE:
         removeTypingUser(action.data.username);
         TypingUserStore.emitChange();
         break;
