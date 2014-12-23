@@ -8,14 +8,14 @@ var MessageTypes = Constants.MessageTypes;
 
 var currentUser = '';
 var previousSender;
-var initialMessages = MessageUtil.convertRawMessage(MessageTypes.JOIN);
+var initialMessages = MessageUtil.convertRawMessage(MessageTypes.JOIN).split('\n');
 var messages = [];
 var loggedIn = false;
 var isHiding = false;
 
 // add initial messages
 function initMessages() {
-  addMessageString(initialMessages);
+  addMessages(initialMessages);
 }
 
 function clearMessages() {
