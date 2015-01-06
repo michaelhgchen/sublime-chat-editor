@@ -43,6 +43,11 @@
   left: 0;
 }
 
+.message-list-contents {
+  height: 100%;
+  overflow-y: auto;
+}
+
 %arrow {
   font-size: 1.5em;
   color: $color-arrow;

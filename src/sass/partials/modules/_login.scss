@@ -6,6 +6,11 @@
   top: $height-message-list-header;
   left: 0;
   z-index: 1;
+  padding-left: 0;
+
+  @include MQ(desktop) {
+    padding-left: 15em;
+  }
 }
 
 .login-container {

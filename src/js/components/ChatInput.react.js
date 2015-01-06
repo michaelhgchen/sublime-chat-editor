@@ -7,7 +7,18 @@ var DOWN_KEY = 40;
 var ChatInput = React.createClass({
   getInitialState: function() {
     return {
-      message:''
+      message:'',
+      focused: false
+    }
+  },
+
+  componentWillReceiveProps: function(nextProps) {
+    if(!this.state.focused
+        && nextProps.focus) {
+      this.focusInput();
+      this.setState({
+        focused: true
+      });
     }
   },
 
@@ -57,6 +68,15 @@ var ChatInput = React.createClass({
   handleKeydown: function(e) {
     if(e.keyCode === ENTER_KEY) this.handleSubmit();
     if(e.keyCode === UP_KEY) this.showPreviousMessage();
+  },
+
+  focusInput: function() {
+    var chatInput = this.refs.chatInput.getDOMNode();
+
+    // lol
+    setTimeout(function() {
+      chatInput.focus();
+    }, 0);
   },
 
   render: function() {

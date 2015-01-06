@@ -7,6 +7,7 @@ var ChatBottom = React.createClass({
     return (
       <div className="chat-bottom">
         <ChatInput
+          focus={this.props.loggedIn}
           disabled={!this.props.loggedIn}
           label="File Name:"/>
         <ChatStats

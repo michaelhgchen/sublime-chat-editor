@@ -4,7 +4,7 @@ var MessageLine = require('./MessageLine.react');
 MessageList = React.createClass({
   // thanks vjeux
   componentWillUpdate: function() {
-    var node = this.getDOMNode();
+    var node = this.refs.messageContents.getDOMNode();
 
     this._shouldScrollBottom =
       (node.scrollTop + node.offsetHeight) <= node.scrollHeight;
@@ -12,7 +12,7 @@ MessageList = React.createClass({
 
   componentDidUpdate: function() {
     if(this._shouldScrollBottom) {
-      var node = this.getDOMNode();
+      var node = this.refs.messageContents.getDOMNode();
 
       node.scrollTop = node.scrollHeight
     }
@@ -32,7 +32,9 @@ MessageList = React.createClass({
           <i className="right-arrow"></i>
           <i className="pull-right down-arrow"></i>
         </div>
-        {messages}
+        <div ref="messageContents" className="message-list-contents">
+          {messages}
+        </div>
       </div>
     );
   },
