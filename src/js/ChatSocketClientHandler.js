@@ -79,6 +79,13 @@ Socket.on(
 // ====================================
 // handle server events
 // ====================================
+Socket.on(
+  ServerConstants.INIT,
+  function(data) {
+    ServerActions.addAllUsers(data);
+  }
+);
+
 // login success
 Socket.on(
   ServerConstants.LOGIN_SUCCESS,

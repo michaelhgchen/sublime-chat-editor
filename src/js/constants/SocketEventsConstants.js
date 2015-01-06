@@ -8,6 +8,7 @@ var ClientSocketEvents = enumify({
 });
 
 var ServerSocketEvents = enumify({
+  INIT: null,
   LOGIN_SUCCESS: null,
   LOGIN_FAIL: null,
   USER_CONNECT: null,

@@ -22,6 +22,13 @@ module.exports = {
     });
   },
 
+  addAllUsers: function(data) {
+    AppDispatcher.handleServerAction({
+      type: ActionTypes.ADD_ALL_USERS,
+      data: data
+    });
+  },
+
   addUser: function(data) {
     AppDispatcher.handleServerAction({
       type: ActionTypes.ADD_USER,

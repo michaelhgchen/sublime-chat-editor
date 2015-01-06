@@ -24,20 +24,19 @@ var Sidebar = React.createClass({
   render: function() {
     var allFolders = [];
     var typingUsers = this.state.typingUsers;
-    var allUsers = Object.keys(this.props.allUsers).map(function(user){
-      if(typingUsers[user]) {
-        return '*' + user;
-      }
 
-      return user;
-    });
+    if(!this.props.hideFolders) {
+      var allUsers = Object.keys(this.props.allUsers).map(function(user){
+        return typingUsers[user] ? ('*' + user) : user;
+      });
 
-    var userFolder = <Folder
-      key="users"
-      name="users"
-      contents={allUsers} />;
+      var userFolder = <Folder
+        key="users"
+        name="users"
+        contents={allUsers} />;
 
-    allFolders.push(userFolder);
+      allFolders.push(userFolder);
+    }
 
     return (
       <div className="user-list-container no-mobile">

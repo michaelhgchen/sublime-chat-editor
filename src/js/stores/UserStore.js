@@ -41,11 +41,15 @@ var UserStore = FluxFactory.createStore({
     action = payload.action;
 
     switch(action.type) {
+      case ActionTypes.ADD_ALL_USERS:
+        setAllUsers(action.data.allUsers);
+        UserStore.emitChange();
+        break;
+
       case ActionTypes.LOGIN:
         userError = false;
-        data = action.data;
-        setUsername(data.username);
-        setAllUsers(data.allUsers);
+        setUsername(action.data.username);
+        addUser(action.data.username);
         UserStore.emitChange();
         break;
 

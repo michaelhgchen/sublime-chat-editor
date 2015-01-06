@@ -7,7 +7,8 @@ var ChatTop = React.createClass({
   render: function() {
     return (
       <div className="chat-display">
-        <Sidebar key="user-list" allUsers={this.props.allUsers} />
+        <Sidebar key="user-list"
+          allUsers={this.props.allUsers} />
         <MessageList messages={this.props.messages} />
       </div>
     );

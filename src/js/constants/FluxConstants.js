@@ -3,6 +3,7 @@ var enumify = require('../utils/enumify');
 var ActionTypes = enumify({
   LOGIN: null,
   FAIL_LOGIN: null,
+  ADD_ALL_USERS: null,
   ADD_USER: null,
   REMOVE_USER: null,
   SEND_MESSAGE: null,

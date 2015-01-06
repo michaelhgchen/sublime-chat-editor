@@ -59,8 +59,7 @@ function handleLogin(username) {
 
     this.emit(
       ServerConstants.LOGIN_SUCCESS, {
-        username: username,
-        allUsers: allUsers
+        username: username
       }
     );
 
@@ -115,9 +114,19 @@ function handleDisconnect() {
   }
 }
 
+// initialization on connection
+function init(socket) {
+  socket.emit(
+    ServerConstants.INIT, {
+      allUsers: allUsers
+    }
+  );
+}
+
 function ChatSocketServerHandler(socket) {
   console.log(Date(), ': A user has connected\n');
 
+  init(socket);
   socket.on(ClientConstants.LOGIN, handleLogin);
   socket.on(ClientConstants.SEND_MESSAGE, handleSendMessage);
   socket.on(ClientConstants.TYPING, handleTyping);
