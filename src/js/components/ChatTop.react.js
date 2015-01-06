@@ -3,18 +3,11 @@ var CSSTransitionGroup = React.addons.CSSTransitionGroup;
 var MessageList = require('./MessageList.react');
 var Sidebar = require('./Sidebar.react');
 
-// TODO: fix this transition when display = none on mobile view
 var ChatTop = React.createClass({
   render: function() {
     return (
       <div className="chat-display">
-        {/*<CSSTransitionGroup transitionName="login-transition">*/}
-          {
-            this.props.loggedIn
-              ? <Sidebar key="user-list" allUsers={this.props.allUsers} />
-              : null
-          }
-        {/*</CSSTransitionGroup>*/}
+        <Sidebar key="user-list" allUsers={this.props.allUsers} />
         <MessageList messages={this.props.messages} />
       </div>
     );

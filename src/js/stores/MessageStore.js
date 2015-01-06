@@ -157,7 +157,6 @@ var MessageStore = FluxFactory.createStore({
         case ActionTypes.LOGIN:
           loggedIn = true;
           currentUser = action.data.username;
-          resetMessages();
           MessageStore.emitChange();
           break;
 
@@ -167,5 +166,8 @@ var MessageStore = FluxFactory.createStore({
     }
   })
 });
+
+// initialization
+initMessages()
 
 module.exports = MessageStore;

@@ -26,7 +26,7 @@ var Login = React.createClass({
 
     var listings = [
       'Choose a Nickname',
-      'Developed by Michael Chen Using: Node, React, Flux and Socket.IO',
+      'Node/Express, React, Flux and Socket.IO',
       'Sublime Chat Editor: A Chat Application That Looks Like Sublime'
     ];
 

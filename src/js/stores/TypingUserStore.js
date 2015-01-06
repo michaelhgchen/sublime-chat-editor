@@ -17,9 +17,10 @@ function removeTypingUser(username) {
 
 var TypingUserStore = FluxFactory.createStore({
   getTypingUsers: function() {
-    return Object.keys(typingUsers);
+    return typingUsers;
   },
 
+  // deprecated LOL
   getTypingUsersText: function() {
     var typingText = '';
     var typingUsers = this.getTypingUsers();
