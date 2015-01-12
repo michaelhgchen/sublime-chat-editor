@@ -162,7 +162,7 @@ gulp.task('uglify', function() {
 // optimize css
 gulp.task('minifycss', function() {
   return gulp.src(CSS_SRC)
-    .pipe(minifyCss({compatibility:'ie8'}))
+    .pipe(minifyCss({noAdvanced:true}))
     .pipe(gulp.dest(BUILD_PATH));
 });
 
