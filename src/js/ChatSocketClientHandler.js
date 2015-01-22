@@ -50,7 +50,7 @@ function logout() {
 Socket.on(
   'disconnect',
   function() {
-    if(isLoggedIn()) console.log('disconnected');
+    // if(isLoggedIn()) console.log('disconnected');
   }
 );
 
@@ -59,7 +59,6 @@ Socket.on(
   'reconnect',
   function() {
     if(isLoggedIn()) {
-      console.log('reconnected');
       ChatSocketClientHandler.login(currentUsername);
     }
   }
@@ -70,7 +69,6 @@ Socket.on(
   'reconnect_failed',
   function() {
     if(isLoggedIn()) {
-      console.log('reconnection failed');
       logout();
     }
   }

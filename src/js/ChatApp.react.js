@@ -5,28 +5,69 @@ var MessageStore = require('./stores/MessageStore');
 var Login = require('./components/Login.react');
 var ChatTop = require('./components/ChatTop.react');
 var ChatBottom = require('./components/ChatBottom.react');
+var assign = require('object-assign');
 
-function getStateFromStores() {
+function getUserStateFromStores() {
   return {
     username: UserStore.getUsername(),
-    allUsers: UserStore.getAllUsers(),
+    allUsers: UserStore.getAllUsers()
+  };
+}
+
+function getMessageStateFromStores() {
+  return {
     messages: MessageStore.getMessages()
-  }
+  };
 }
 
 var ChatApp = React.createClass({
   getInitialState: function() {
-    return getStateFromStores();
+    var initialState = assign(
+      getUserStateFromStores(),
+      getMessageStateFromStores()
+    );
+
+    return initialState;
+  },
+
+  setTitle: function(text) {
+    this.titleElem.text = text;
+  },
+
+  getTitle: function() {
+    return this.titleElem.text;
+  },
+
+  componentDidUpdate: function(prevProps, prevState) {
+    if(this.state.unread) {
+      if(!prevState.unread) {
+        this.setTitle('*' + this.getTitle());
+      }
+    } else {
+      if(prevState.unread) {
+        this.setTitle(this.getTitle().slice(1));
+      }
+    }
   },
 
   componentDidMount: function() {
-    MessageStore.addChangeListener(this._onChange);
-    UserStore.addChangeListener(this._onChange);
+    MessageStore.addChangeListener(this._onMessageChange);
+    UserStore.addChangeListener(this._onUserChange);
+
+    this.titleElem = document.getElementsByTagName('title')[0];
+
+    // HTML5 page visibility API
+    // If set to visible, set unread to false
+    document.addEventListener('visibilitychange', function() {
+      if(!document.hidden) this.setState({ unread: false });
+    }.bind(this));
   },
 
   componentWillUnmount: function() {
     MessageStore.removeChangeListener(this._onChange);
     UserStore.removeChangeListener(this._onChange);
+
+    document.removeEventListener('visibilitychange');
   },
 
   render: function() {
@@ -55,8 +96,15 @@ var ChatApp = React.createClass({
     );
   },
 
-  _onChange: function() {
-    this.setState(getStateFromStores());
+  _onMessageChange: function() {
+    this.setState(assign(
+      getMessageStateFromStores(),
+      { unread: document.hidden }
+    ));
+  },
+
+  _onUserChange: function() {
+    this.setState(getUserStateFromStores());
   }
 });
 
